@@ -14,7 +14,7 @@ class Requirements
 
         # Test PHP Version
         $results[] = array(
-            'name'   => 'PHP Version',
+            'name'   => 'PHP Version > 5.3',
             'result' => self::testPHPVersion()
         );
 
