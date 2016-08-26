@@ -3,6 +3,7 @@
 namespace QUI\Requirements;
 
 use QUI\Interfaces\System\Test;
+use QUI\System\Tests\Tidy;
 
 class Requirements
 {
@@ -60,10 +61,10 @@ class Requirements
         );
 
         # Test PHP Tidy
-        $results[] = array(
-            'name'   => 'PHP Tidy Support',
-            'result' => self::testPHPTidy()
-        );
+//        $results[] = array(
+//            'name'   => 'PHP Tidy Support',
+//            'result' => self::testPHPTidy()
+//        );
 
         # Test PHP GZip
         $results[] = array(
@@ -220,6 +221,7 @@ class Requirements
             $libraries[] = 'GD Lib';
         }
 
+
         if (empty($libraries)) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
@@ -232,7 +234,7 @@ class Requirements
 
     private static function testPHPTidy()
     {
-        if (!class_exists('tidy')) {
+        if (!class_exists('Tidy')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
                 "PHP Tidy Class missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.tidy.missing')
