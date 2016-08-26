@@ -93,7 +93,7 @@ class Requirements
 
         return new TestResult(
             TestResult::STATUS_FAILED,
-            \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.version.insufficient')
+            "PHP Version is not sufficient" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.version.insufficient')
         );
     }
 
@@ -109,7 +109,7 @@ class Requirements
         if (empty($raw)) {
             return new TestResult(
                 TestResult::STATUS_UNKNOWN,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.undetected')
+                "Memorylimit could not be detected" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.undetected')
             );
         }
 
@@ -138,7 +138,7 @@ class Requirements
 
         return new TestResult(
             TestResult::STATUS_FAILED,
-            \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.insufficient')
+            "Memory limit is not sufficient. (> 128M)" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.insufficient')
         );
     }
 
@@ -151,7 +151,7 @@ class Requirements
         if (!defined('PDO::ATTR_DRIVER_NAME')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.pdo.missing')
+                "PHP Extension PDO is missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.pdo.missing')
             );
         }
 
@@ -163,7 +163,7 @@ class Requirements
         if (!class_exists('DOMDocument')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.dom.missing')
+                "PHP Extension DOM missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.dom.missing')
             );
         }
 
@@ -175,7 +175,7 @@ class Requirements
         if (!function_exists('gettext')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gettext.missing')
+                "PHP gettext support missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gettext.missing')
             );
         }
 
@@ -187,7 +187,7 @@ class Requirements
         if (!function_exists('curl_version') && !function_exists('curl_init')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.curl.missing')
+                "PHP extension curl not missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.curl.missing')
             );
         }
 
@@ -199,7 +199,7 @@ class Requirements
         if (!function_exists('json_decode') && !function_exists('json_encode')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.json.missing')
+                "PHP Json support missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.json.missing')
             );
         }
 
@@ -223,7 +223,7 @@ class Requirements
         if (empty($libraries)) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.imagelibs.missing')
+                "PHP Imagelibraries missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.imagelibs.missing')
             );
         }
 
@@ -235,7 +235,7 @@ class Requirements
         if (!class_exists('tidy')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.tidy.missing')
+                "PHP Tidy Class missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.tidy.missing')
             );
         }
 
@@ -247,7 +247,7 @@ class Requirements
         if (!function_exists('gzcompress')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                \QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
+                "PHp Gzcompress missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
             );
         }
 
