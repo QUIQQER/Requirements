@@ -21,5 +21,45 @@
             <de><![CDATA[Das PHP Memory Limit konnte nicht ausgelesen werden]]></de>
             <en><![CDATA[The PHP memory limit could not be retrieved]]></en>
         </locale>
+        <locale name="requirements.error.version.insufficient">
+            <de><![CDATA[Die PHP Version ist nicht ausreichend]]></de>
+            <en><![CDATA[The PHP version is not sufficient]]></en>
+        </locale>
+        <locale name="requirements.error.module.pdo.missing">
+            <de><![CDATA[Das PHP PDO Modul ist nicht installiert]]></de>
+            <en><![CDATA[The PHP PDO module is not installed]]></en>
+        </locale>
+        <locale name="requirements.error.module.dom.missing">
+            <de><![CDATA[Das PHP DOM Modul ist nicht installiert]]></de>
+            <en><![CDATA[The PHP DOM module is not installed]]></en>
+        </locale>
+        <locale name="requirements.error.module.gettext.missing">
+            <de><![CDATA[PHP gettext Unterstützung fehlt]]></de>
+            <en><![CDATA[Your PHP installation does not provide gettext]]></en>
+        </locale>
+        <locale name="requirements.error.module.json.missing">
+            <de><![CDATA[PHP Json Unterstützung fehlt]]></de>
+            <en><![CDATA[Your PHP installation does not provide json support]]></en>
+        </locale>
+        <locale name="requirements.error.module.curl.missing">
+            <de><![CDATA[PHP Curl Unterstützung fehlt]]></de>
+            <en><![CDATA[Your PHP installation does not provide curl support]]></en>
+        </locale>
+        <locale name="requirements.error.module.curl.missing">
+            <de><![CDATA[PHP Curl Unterstützung fehlt]]></de>
+            <en><![CDATA[Your PHP installation does not provide curl support]]></en>
+        </locale>
+        <locale name="requirements.error.module.imagelibs.missing">
+            <de><![CDATA[Es konnte keine PHP Imagelibrary (GD Lib / PHP Image Magick) gefunden werden.]]></de>
+            <en><![CDATA[No Imagelibrary could be found (GD LIb / PHP Image Magick)]]></en>
+        </locale>
+        <locale name="requirements.error.module.tidy.missing">
+            <de><![CDATA[PHP Tidy konnte nicht gefunden werden.]]></de>
+            <en><![CDATA[PHP Tidy could not be found.]]></en>
+        </locale>
+        <locale name="requirements.error.module.gzip.missing">
+            <de><![CDATA[PHP GZip konnte nicht gefunden werden.]]></de>
+            <en><![CDATA[PHP GZip could not be found.]]></en>
+        </locale>
     </groups>
 </locales>
