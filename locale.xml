@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locales>
+    <groups name="quiqqer/requirements" datatype="php">
+        <locale name="requirements.status.failed">
+            <de><![CDATA[Fehlgeschlagen]]></de>
+            <en><![CDATA[Failed]]></en>
+        </locale>
+        <locale name="requirements.status.ok">
+            <de><![CDATA[OK]]></de>
+            <en><![CDATA[OK]]></en>
+        </locale>
+        <locale name="requirements.status.unknown">
+            <de><![CDATA[Unbekannt]]></de>
+            <en><![CDATA[Unknown]]></en>
+        </locale>
+        <locale name="requirements.error.memorylimit.insufficient">
+            <de><![CDATA[Das PHP Memory Limit ist nicht ausreichend (mind. 128M)]]></de>
+            <en><![CDATA[The PHP memory limit is not sufficient. (min. 128M)]]></en>
+        </locale>
+        <locale name="requirements.error.memorylimit.undetected">
+            <de><![CDATA[Das PHP Memory Limit konnte nicht ausgelesen werden]]></de>
+            <en><![CDATA[The PHP memory limit could not be retrieved]]></en>
+        </locale>
+    </groups>
+</locales>
