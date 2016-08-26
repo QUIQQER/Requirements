@@ -87,7 +87,7 @@ class Requirements
      */
     private static function testPHPVersion()
     {
-        if (version_compare(phpversion(), '5.3', '<')) {
+        if (version_compare(phpversion(), '5.3', '>')) {
             return new TestResult(TestResult::STATUS_OK);
         }
 
