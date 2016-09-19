@@ -8,6 +8,16 @@ use QUI\System\Tests\Tidy;
 class Requirements
 {
 
+    /**
+     * Runs all Tests and returns an array.
+     * Array form is array(
+     *      array(
+     *          'name' => 'name of test : string',
+     *          'result' => '@see TestResult'
+     *      )
+     * )
+     * @return array
+     */
     public static function runAll()
     {
         $results = array();
@@ -72,11 +82,17 @@ class Requirements
             'result' => self::testPHPGzip()
         );
 
+        $results[] = array(
+            'name'   => 'PHP MB String',
+            'result' => self::testMbString()
+        );
+
         # Test Apache rewrite
         $results[] = array(
             'name'   => 'Apache mod rewrite',
             'result' => self::testApacheRewrite()
         );
+
 
         return $results;
     }
@@ -159,6 +175,9 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP DOM Module is loaded
+     * @return TestResult
+     */
     private static function testPHPDom()
     {
         if (!class_exists('DOMDocument')) {
@@ -171,6 +190,9 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP GetText module is loaded
+     * @return TestResult
+     */
     private static function testPHPGettext()
     {
         if (!function_exists('gettext')) {
@@ -183,6 +205,9 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP Curl module is loaded
+     * @return TestResult
+     */
     private static function testPHPCurl()
     {
         if (!function_exists('curl_version') && !function_exists('curl_init')) {
@@ -195,6 +220,9 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP Json module is loaded
+     * @return TestResult
+     */
     private static function testPHPJson()
     {
         if (!function_exists('json_decode') && !function_exists('json_encode')) {
@@ -207,6 +235,9 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if a PHP Image Library module is loaded
+     * @return TestResult
+     */
     private static function testPHPImageLibs()
     {
         $libraries = array();
@@ -225,12 +256,13 @@ class Requirements
         if (empty($libraries)) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Imagelibraries missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.imagelibs.missing')
+                "PHP Imagelibraries (GD / Image Magick) missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.imagelibs.missing')
             );
         }
 
         return new TestResult(TestResult::STATUS_OK);
     }
+
 
     private static function testPHPTidy()
     {
@@ -244,18 +276,39 @@ class Requirements
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP Gzip module is loaded
+     * @return TestResult
+     */
     private static function testPHPGzip()
     {
         if (!function_exists('gzcompress')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHp Gzcompress missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
+                "PHP Gzcompress missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
             );
         }
 
         return new TestResult(TestResult::STATUS_OK);
     }
 
+    /** Checks if the PHP MbString module is loaded
+     * @return TestResult
+     */
+    private static function testMbString()
+    {
+        if (!extension_loaded('mbstring')) {
+            return new TestResult(
+                TestResult::STATUS_FAILED,
+                "PHP MB String missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
+            );
+        }
+
+        return new TestResult(TestResult::STATUS_OK);
+    }
+
+    /** Checks if the Apache Rewrite  module is loaded
+     * @return TestResult
+     */
     private static function testApacheRewrite()
     {
         if (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) {
