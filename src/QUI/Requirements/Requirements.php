@@ -24,7 +24,7 @@ class Requirements
 
         # Test PHP Version
         $results[] = array(
-            'name'   => 'PHP Version > 5.3',
+            'name'   => 'PHP Version > 5.5',
             'result' => self::testPHPVersion()
         );
 
@@ -99,12 +99,12 @@ class Requirements
 
 
     /**
-     * Checks the PHP version. Requires PHP 5.3 or higher
+     * Checks the PHP version. Requires PHP 5.5 or higher
      * @return TestResult
      */
     private static function testPHPVersion()
     {
-        if (version_compare(phpversion(), '5.3', '>')) {
+        if (version_compare(phpversion(), '5.5', '>=')) {
             return new TestResult(TestResult::STATUS_OK);
         }
 
