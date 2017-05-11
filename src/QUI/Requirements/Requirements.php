@@ -47,10 +47,10 @@ class Requirements
         );
 
         # Test PHP Module GetText
-        $results[] = array(
-            'name'   => 'PHP GetText support',
-            'result' => self::testPHPGettext()
-        );
+//        $results[] = array(
+//            'name'   => 'PHP GetText support',
+//            'result' => self::testPHPGettext()
+//        );
 
         # Test PHP Module Curl
         $results[] = array(
