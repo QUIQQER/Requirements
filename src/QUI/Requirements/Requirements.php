@@ -16,80 +16,75 @@ class Requirements
      *          'result' => '@see TestResult'
      *      )
      * )
+     *
      * @return array
      */
     public static function runAll()
     {
+        Locale::getInstance()->setlanguage("de");
+
         $results = array();
 
         # Test PHP Version
         $results[] = array(
-            'name'   => 'PHP Version >= 5.6',
+            'name'   => Locale::getInstance()->get("requirements.test.version.name"),
             'result' => self::testPHPVersion()
         );
 
         # Test PHP Memory Limit
         $results[] = array(
-            'name'   => 'PHP Memory Limit > 128M',
+            'name'   => Locale::getInstance()->get("requirements.test.memorylimit.name"),
             'result' => self::testPHPMemLimit()
         );
 
         # Test PHP Module PDO
         $results[] = array(
-            'name'   => 'PHP PDO installed',
+            'name'   => Locale::getInstance()->get("requirements.test.module.pdo.name"),
             'result' => self::testPHPPDO()
         );
 
         # Test PHP Module DOM
         $results[] = array(
-            'name'   => 'PHP DOM installed',
+            'name'   => Locale::getInstance()->get("requirements.test.module.dom.name"),
             'result' => self::testPHPDom()
         );
 
-        # Test PHP Module GetText
-//        $results[] = array(
-//            'name'   => 'PHP GetText support',
-//            'result' => self::testPHPGettext()
-//        );
+
 
         # Test PHP Module Curl
         $results[] = array(
-            'name'   => 'PHP Curl support',
+            'name'   => Locale::getInstance()->get("requirements.test.module.curl.name"),
             'result' => self::testPHPCurl()
         );
 
         # Test PHP Module Json
         $results[] = array(
-            'name'   => 'PHP Json support',
+            'name'   => Locale::getInstance()->get("requirements.test.module.json.name"),
             'result' => self::testPHPJson()
         );
 
         # Test PHP Image Libraries
         $results[] = array(
-            'name'   => 'PHP Image Libraries',
+            'name'   => Locale::getInstance()->get("requirements.test.module.imagelibs.name "),
             'result' => self::testPHPImageLibs()
         );
 
-        # Test PHP Tidy
-//        $results[] = array(
-//            'name'   => 'PHP Tidy Support',
-//            'result' => self::testPHPTidy()
-//        );
+
 
         # Test PHP GZip
         $results[] = array(
-            'name'   => 'PHP Gzip Support',
+            'name'   => Locale::getInstance()->get("requirements.test.module.gzip.name"),
             'result' => self::testPHPGzip()
         );
 
         $results[] = array(
-            'name'   => 'PHP MB String',
+            'name'   => Locale::getInstance()->get("requirements.test.module.mbstring.name"),
             'result' => self::testMbString()
         );
 
         # Test Apache rewrite
         $results[] = array(
-            'name'   => 'Apache mod rewrite',
+            'name'   => Locale::getInstance()->get("requirements.test.module.apache.rewrite.name"),
             'result' => self::testApacheRewrite()
         );
 
@@ -100,6 +95,7 @@ class Requirements
 
     /**
      * Checks the PHP version. Requires PHP 5.5 or higher
+     *
      * @return TestResult
      */
     private static function testPHPVersion()
@@ -110,12 +106,13 @@ class Requirements
 
         return new TestResult(
             TestResult::STATUS_FAILED,
-            "PHP Version is not sufficient" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.version.insufficient')
+            Locale::getInstance()->get("requirements.error.version.insufficient")
         );
     }
 
     /**
      * Reads the php ini memory_limit and checks if it is 128m or higher.
+     *
      * @return TestResult
      */
     private static function testPHPMemLimit()
@@ -126,7 +123,7 @@ class Requirements
         if (empty($raw)) {
             return new TestResult(
                 TestResult::STATUS_UNKNOWN,
-                "Memorylimit could not be detected" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.undetected')
+                Locale::getInstance()->get("requirements.error.memorylimit.undetected")
             );
         }
 
@@ -149,18 +146,19 @@ class Requirements
         }
         $limit = $limit > 0 ? (round((int)$limit / 1048576)) : $limit;
 
-        if ($limit >= 128 || $limit == -1) {
+        if ($limit >= 256 || $limit == -1) {
             return new TestResult(TestResult::STATUS_OK);
         }
 
         return new TestResult(
             TestResult::STATUS_FAILED,
-            "Memory limit is not sufficient. (> 128M)" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.memorylimit.insufficient')
+            Locale::getInstance()->get("requirements.error.memorylimit.insufficient")
         );
     }
 
     /**
      * Checks if the PDO module is installed
+     *
      * @return TestResult
      */
     private static function testPHPPDO()
@@ -168,7 +166,7 @@ class Requirements
         if (!defined('PDO::ATTR_DRIVER_NAME')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Extension PDO is missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.pdo.missing')
+                Locale::getInstance()->get('requirements.error.module.pdo.missing')
             );
         }
 
@@ -176,6 +174,7 @@ class Requirements
     }
 
     /** Checks if the PHP DOM Module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPDom()
@@ -183,7 +182,7 @@ class Requirements
         if (!class_exists('DOMDocument')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Extension DOM missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.dom.missing')
+                Locale::getInstance()->get('requirements.error.module.dom.missing')
             );
         }
 
@@ -191,6 +190,7 @@ class Requirements
     }
 
     /** Checks if the PHP GetText module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPGettext()
@@ -198,7 +198,7 @@ class Requirements
         if (!function_exists('gettext')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP gettext support missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gettext.missing')
+                Locale::getInstance()->get('requirements.error.module.gettext.missing')
             );
         }
 
@@ -206,6 +206,7 @@ class Requirements
     }
 
     /** Checks if the PHP Curl module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPCurl()
@@ -213,7 +214,7 @@ class Requirements
         if (!function_exists('curl_version') && !function_exists('curl_init')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP extension curl not missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.curl.missing')
+                Locale::getInstance()->get('requirements.error.module.curl.missing')
             );
         }
 
@@ -221,6 +222,7 @@ class Requirements
     }
 
     /** Checks if the PHP Json module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPJson()
@@ -228,7 +230,7 @@ class Requirements
         if (!function_exists('json_decode') && !function_exists('json_encode')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Json support missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.json.missing')
+                Locale::getInstance()->get('requirements.error.module.json.missing')
             );
         }
 
@@ -236,6 +238,7 @@ class Requirements
     }
 
     /** Checks if a PHP Image Library module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPImageLibs()
@@ -256,7 +259,7 @@ class Requirements
         if (empty($libraries)) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Imagelibraries (GD / Image Magick) missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.imagelibs.missing')
+                Locale::getInstance()->get('requirements.error.module.imagelibs.missing')
             );
         }
 
@@ -269,7 +272,7 @@ class Requirements
         if (!class_exists('Tidy')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Tidy Class missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.tidy.missing')
+                Locale::getInstance()->get('requirements.error.module.tidy.missing')
             );
         }
 
@@ -277,6 +280,7 @@ class Requirements
     }
 
     /** Checks if the PHP Gzip module is loaded
+     *
      * @return TestResult
      */
     private static function testPHPGzip()
@@ -284,7 +288,7 @@ class Requirements
         if (!function_exists('gzcompress')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP Gzcompress missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
+                Locale::getInstance()->get('requirements.error.module.gzip.missing')
             );
         }
 
@@ -292,6 +296,7 @@ class Requirements
     }
 
     /** Checks if the PHP MbString module is loaded
+     *
      * @return TestResult
      */
     private static function testMbString()
@@ -299,7 +304,7 @@ class Requirements
         if (!extension_loaded('mbstring')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                "PHP MB String missing" #\QUI::getLocale()->get('quiqqer/requirements', 'requirements.error.module.gzip.missing')
+                Locale::getInstance()->get('requirements.error.module.gzip.missing')
             );
         }
 
@@ -307,6 +312,7 @@ class Requirements
     }
 
     /** Checks if the Apache Rewrite  module is loaded
+     *
      * @return TestResult
      */
     private static function testApacheRewrite()

@@ -75,16 +75,16 @@ class TestResult
     {
         switch ($this->status) {
             case self::STATUS_FAILED:
-                return "FAILED";
-                #return \QUI::getLocale()->get('quiqqer/requirements', 'requirements.status.failed');
+                return Locale::getInstance()->get('requirements.status.failed');
                 break;
             case self::STATUS_OK:
-                return "OK";
-                #return \QUI::getLocale()->get('quiqqer/requirements', 'requirements.status.ok');
+                return Locale::getInstance()->get('requirements.status.ok');
                 break;
             case self::STATUS_UNKNOWN:
-                return "UNKNOWN";
-                #return \QUI::getLocale()->get('quiqqer/requirements', 'requirements.status.unknown');
+                return Locale::getInstance()->get('requirements.status.unknown');
+                break;
+            default:
+                return Locale::getInstance()->get('requirements.status.unknown');
                 break;
         }
     }

@@ -45,10 +45,6 @@
             <de><![CDATA[PHP Curl Unterstützung fehlt]]></de>
             <en><![CDATA[Your PHP installation does not provide curl support]]></en>
         </locale>
-        <locale name="requirements.error.module.curl.missing">
-            <de><![CDATA[PHP Curl Unterstützung fehlt]]></de>
-            <en><![CDATA[Your PHP installation does not provide curl support]]></en>
-        </locale>
         <locale name="requirements.error.module.imagelibs.missing">
             <de><![CDATA[Es konnte keine PHP Imagelibrary (GD Lib / PHP Image Magick) gefunden werden.]]></de>
             <en><![CDATA[No Imagelibrary could be found (GD LIb / PHP Image Magick)]]></en>
