@@ -10,7 +10,21 @@ Paketname:
 
 Features (Funktionen)
 --------
-System requirements check
+System requirements check.
+
+Following tests are currently implemented
+
+* PHP Version greater than 5.6
+* PHP memory limit 128M
+* PHP extension:  PDO (MySql)
+* PHP extension:  DOM
+* PHP extension:  Curl
+* PHP extension:  JSON
+* PHP extension:  Image (GD | Imagick)
+* PHP extension:  Gzip
+* PHP extension:  MBstring
+* Apache: Mod rewrite
+
 
 Installation
 ------------
@@ -33,8 +47,12 @@ senden Sie bitte eine E-Mail an support@pcsg.de.
 
 
 Lizenz
--------
+------
+
+MIT
 
 
 Entwickler
 --------
+
+Florian Bogner <f.bogner@pcsg.de>
