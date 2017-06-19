@@ -28,6 +28,10 @@ class Locale extends Singleton
     {
         $variable = trim($variable);
 
+        if (!isset($this->langCode) || empty($this->langCode)) {
+            throw new Exception("language not set!");
+        }
+
         if (!isset($this->locales[$this->langCode][$variable])) {
             throw new Exception("Variable '" . $variable . "' not found in current language '" . $this->langCode . "'!");
         }
