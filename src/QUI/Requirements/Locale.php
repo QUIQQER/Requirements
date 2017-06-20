@@ -2,19 +2,19 @@
 
 namespace QUI\Requirements;
 
-use QUI\Exception;
-use QUI\Utils\Singleton;
+use Exception;
 
 /**
  * Class Locale
  *
  * @package QUI\Requirements
  */
-class Locale extends Singleton
+class Locale
 {
     protected $langCode;
     protected $locales = array();
 
+    protected static $Instance = null;
 
     /**
      * Gets the language variable for the current language
@@ -99,5 +99,19 @@ class Locale extends Singleton
         $this->locales = $locales;
 
         return $locales;
+    }
+
+    /**
+     * @return Locale
+     */
+    public static function getInstance()
+    {
+        if (!is_null(self::$Instance)) {
+            return self::$Instance;
+        }
+
+        self::$Instance = new Locale();
+
+        return self::$Instance;
     }
 }

@@ -34,6 +34,18 @@ class TestResult
     const STATUS_UNKNOWN = 2;
 
     /**
+     * Test created a warning. QUIQQER will run, but further steps are recommended
+     */
+    const STATUS_WARNING = 3;
+
+    /**
+     * Test created a warning. QUIQQER will run, but further steps are recommended
+     */
+    const STATUS_OPTIONAL = 4;
+
+
+
+    /**
      * TestResult constructor.
      * STATUS_FAILED = 0
      * STATUS_OK = 1
@@ -54,6 +66,15 @@ class TestResult
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Returns the message in plain text (without HTML and PHp Tags)
+     * @return string
+     */
+    public function getMessageRaw()
+    {
+        return strip_tags($this->getMessage());
     }
 
     /**
@@ -82,6 +103,9 @@ class TestResult
                 break;
             case self::STATUS_UNKNOWN:
                 return Locale::getInstance()->get('requirements.status.unknown');
+                break;
+            case self::STATUS_WARNING:
+                return Locale::getInstance()->get('requirements.status.warning');
                 break;
             default:
                 return Locale::getInstance()->get('requirements.status.unknown');
