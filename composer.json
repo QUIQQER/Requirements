@@ -2,7 +2,7 @@
   "name": "quiqqer/requirements",
   "type": "quiqqer-module",
   "description": "This package provides methods to check the system requirements for quiqqer",
-  "version": "dev-dev",
+  "version": "2.0.0",
   "license": "GPL-3.0+",
   "authors": [
     {
@@ -20,7 +20,8 @@
   },
   "autoload": {
     "psr-4": {
-      "QUI\\Requirements\\": "src/QUI/Requirements"
+      "QUI\\Requirements\\": "src/QUI/Requirements",
+      "QUI\\Requirements\\Tests\\": "src/QUI/Requirements/Tests"
     }
   }
 }
