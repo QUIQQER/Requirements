@@ -24,7 +24,7 @@ class Locale
      * @return string - The translated value
      * @throws Exception
      */
-    public function get($variable)
+    public function get($variable, $params = array())
     {
         $variable = trim($variable);
 
@@ -36,7 +36,13 @@ class Locale
             throw new Exception("Variable '" . $variable . "' not found in current language '" . $this->langCode . "'!");
         }
 
-        return $this->locales[$this->langCode][$variable];
+        $text = $this->locales[$this->langCode][$variable];
+
+        foreach ($params as $key => $value) {
+            $text = str_replace("%" . $key . "%", $value, $text);
+        }
+
+        return $text;
     }
 
     /**

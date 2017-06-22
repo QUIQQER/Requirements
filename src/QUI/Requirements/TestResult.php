@@ -4,6 +4,7 @@ namespace QUI\Requirements;
 
 /**
  * Class TestResult
+ *
  * @package QUI\Requirements
  */
 class TestResult
@@ -44,13 +45,15 @@ class TestResult
     const STATUS_OPTIONAL = 4;
 
 
-
     /**
      * TestResult constructor.
      * STATUS_FAILED = 0
      * STATUS_OK = 1
      * STATUS_UNKNOWN = 2
-     * @param int $status - Constants defined in QUI\Requirements\Testresult
+     * STATUS_WARNING = 3
+     * STATUS_OPTIONAL = 4
+     *
+     * @param int    $status  - Constants defined in QUI\Requirements\Testresult
      * @param string $message - (optional) Status message.
      */
     public function __construct($status, $message = "")
@@ -61,6 +64,7 @@ class TestResult
 
     /**
      * Gets the status message. Empty string if no status message given.
+     *
      * @return string
      */
     public function getMessage()
@@ -70,11 +74,15 @@ class TestResult
 
     /**
      * Returns the message in plain text (without HTML and PHp Tags)
+     *
      * @return string
      */
     public function getMessageRaw()
     {
-        return strip_tags($this->getMessage());
+        $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
+        $message = strip_tags($message);
+
+        return $message;
     }
 
     /**
@@ -82,6 +90,7 @@ class TestResult
      * STATUS_FAILED = 0
      * STATUS_OK = 1
      * STATUS_UNKNOWN = 2
+     *
      * @return int - Constants defined in QUI\Requirements\Testresult
      */
     public function getStatus()

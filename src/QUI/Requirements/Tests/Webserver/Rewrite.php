@@ -12,6 +12,31 @@ class Rewrite extends Test
 
     protected function run()
     {
-        return new TestResult(TestResult::STATUS_OK, "Alles gut!");
+        if (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) {
+            return new TestResult(TestResult::STATUS_OK);
+        }
+
+        if (getenv('HTTP_MOD_REWRITE') == 'On') {
+            return new TestResult(TestResult::STATUS_OK);
+        }
+
+        // test with apache modules
+        if (function_exists('apache_get_modules') &&
+            in_array('mod_rewrite', apache_get_modules())
+        ) {
+            return new TestResult(TestResult::STATUS_OK);
+        }
+
+        // phpinfo test
+        ob_start();
+        phpinfo();
+        $phpinfo = ob_get_contents();
+        ob_end_clean();
+
+        if (strpos('mod_rewrite', $phpinfo) !== false) {
+            return new TestResult(TestResult::STATUS_OK);
+        }
+
+        return new TestResult(TestResult::STATUS_UNKNOWN);
     }
 }

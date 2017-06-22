@@ -15,6 +15,8 @@ test.database.version.name = "Version"
 test.system.permissions.name = "Rechte"
 test.webserver.rewrite.name = "Rewrite"
 
+test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. Aktuell: %CURRENT%. Benötigt: %REQUIRED%."
+test.message.error.not.writeable.file = "'./%FILE%' ist nicht beschreibbar"
 
 [en]
 requirements.status.failed = "Failed"
@@ -32,3 +34,6 @@ requirements.tests.groups.system = "System"
 test.database.version.name = "Version"
 test.system.permissions.name = "Permissions"
 test.webserver.rewrite.name = "Rewrite"
+
+test.message.error.permission.file = "'./%FILE%' has the wrong permissions. Current: %CURRENT. Required: %REQUIRED%."
+test.message.error.not.writeable.file = "'./%FILE%' is not writable"
