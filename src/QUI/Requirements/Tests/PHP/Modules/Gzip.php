@@ -13,7 +13,7 @@ use QUI\Requirements\Tests\Test;
 class Gzip extends Test
 {
 
-    protected $identifier = "php.modules.pdo";
+    protected $identifier = "php.modules.gzip";
 
 
     protected function run()

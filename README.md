@@ -1,7 +1,7 @@
 Requirements
 ========
 
-This package provides methods to check the system requirements for quiqqer
+This package provides methods to check the system requirements for QUIQQER
 
 Paketname:
 

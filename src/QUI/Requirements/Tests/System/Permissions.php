@@ -21,11 +21,15 @@ class Permissions extends Test
     protected $defaultFilePermission = "0744";
     protected $defaultDirectoryPermission = "0755";
 
-    public function __construct($cmsDir)
+    public function __construct()
     {
         parent::__construct();
 
-        $this->cmsDir = rtrim($cmsDir, "/");
+        if (defined('CMS_DIR')) {
+            $this->cmsDir = CMS_DIR;
+        } else {
+            $this->cmsDir = dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))));
+        }
     }
 
     public function run()

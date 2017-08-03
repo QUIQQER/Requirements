@@ -116,6 +116,9 @@ class TestResult
             case self::STATUS_WARNING:
                 return Locale::getInstance()->get('requirements.status.warning');
                 break;
+            case self::STATUS_OPTIONAL:
+                return Locale::getInstance()->get('requirements.status.optional');
+                break;
             default:
                 return Locale::getInstance()->get('requirements.status.unknown');
                 break;

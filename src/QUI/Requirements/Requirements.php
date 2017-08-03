@@ -61,7 +61,12 @@ class Requirements
             }
 
 
-            $Test = new $className();
+            try {
+                $Test = new $className();
+            } catch (\Exception $Exception) {
+                continue;
+            }
+            
 
 
             if (!($Test instanceof Test)) {

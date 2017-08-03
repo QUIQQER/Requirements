@@ -18,13 +18,14 @@ foreach ($Requirements->getAllTests() as $groupName => $Tests) {
     echo "===== " . $groupName . "=====" . PHP_EOL;
 
     foreach ($Tests as $Test) {
-        echo $Test->getName();
-        echo " : ";
+        echo str_pad($Test->getName() . ": ", 20, " ", STR_PAD_RIGHT);
         // $Test->getResult() executes the test and return the Testresult Object
-        echo $Test->getResult()->getStatusHumanReadable();
-        echo "==>";
-        // We are using getMessageRaw because TestResult::getMessage() can contain html tags
-        echo $Test->getResult()->getMessageRaw();
+        echo str_pad($Test->getResult()->getStatusHumanReadable(), 20, " ", STR_PAD_RIGHT);
+        echo " ==> ";
+        // We are using getMessageRaw because TestResult::getMessage() could contain html tags
+        echo str_pad($Test->getResult()->getMessageRaw(), 25, " ", STR_PAD_RIGHT);
+        echo " | ";
+        echo str_pad($Test->getDescrptionRaw(), 15, " ", STR_PAD_RIGHT);
         echo PHP_EOL;
     }
 }

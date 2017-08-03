@@ -58,7 +58,10 @@ abstract class Test
     public function getDescrptionRaw()
     {
         try {
-            return Locale::getInstance()->get("requirements.tests." . $this->identifier . ".desc");
+            $description = Locale::getInstance()->get("requirements.tests." . $this->identifier . ".desc");
+
+            $description = strip_tags($description);
+            return $description;
         } catch (\Exception $Exception) {
             return "";
         }

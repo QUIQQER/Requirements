@@ -13,7 +13,7 @@ use QUI\Requirements\Tests\Test;
 class Mbstring extends Test
 {
 
-    protected $identifier = "php.modules.pdo";
+    protected $identifier = "php.modules.mbstring";
 
 
     protected function run()
@@ -21,7 +21,7 @@ class Mbstring extends Test
         if (!extension_loaded('mbstring')) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                Locale::getInstance()->get('requirements.error.module.gzip.missing')
+                Locale::getInstance()->get('requirements.error.module.mbstring.missing')
             );
         }
 
