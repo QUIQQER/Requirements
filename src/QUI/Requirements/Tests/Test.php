@@ -61,6 +61,7 @@ abstract class Test
             $description = Locale::getInstance()->get("requirements.tests." . $this->identifier . ".desc");
 
             $description = strip_tags($description);
+
             return $description;
         } catch (\Exception $Exception) {
             return "";
@@ -103,8 +104,14 @@ abstract class Test
         return $this->Result;
     }
 
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
     /**
      * Executes the test and returns the result
+     *
      * @return TestResult
      */
     abstract protected function run();
