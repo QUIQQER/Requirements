@@ -27,7 +27,7 @@ requirements.test.module.mbstring.name = "Erweiterung: PHP-MBString"
 requirements.test.module.imagelibs.name = "Erweiterung: PHP-GD oder PHP-Imagick"
 requirements.test.module.curl.name = "Erweiterung: PHP-Curl"
 requirements.test.module.gettext.name = "Erweiterung: PHP-GetText"
-requirements.test.module.apache.rewrite.name = "Erweiterung: Name"
+requirements.test.module.apache.rewrite.name = "Erweiterung: Apache Rewrite"
 
 requirements.test.memorylimit.desc = ""
 requirements.test.version.desc = ""
