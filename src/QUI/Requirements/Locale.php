@@ -55,11 +55,32 @@ class Locale
     public function setlanguage($langCode)
     {
         $this->loadLocales();
-        if (!in_array($langCode, $this->getAvailableLanguages())) {
-            throw new Exception("Language code is not available");
+        if (in_array($langCode, $this->getAvailableLanguages())) {
+            $this->langCode = $langCode;
+            return;
         }
 
-        $this->langCode = $langCode;
+        // Check for the short form of the code
+        if (strpos($langCode, "_") !== false) {
+            $parts = explode("_", $langCode);
+            if (in_array($parts[0], $this->getAvailableLanguages())) {
+                $this->langCode = $parts[0];
+                return;
+            }
+        }
+
+        // Check for english as default
+        if (in_array("en_GB", $this->getAvailableLanguages())) {
+            $this->langCode = "en_GB";
+            return;
+        }
+
+        if (in_array("en", $this->getAvailableLanguages())) {
+            $this->langCode = "en";
+            return;
+        }
+
+        throw new Exception("Language code is not available");
     }
 
     /**

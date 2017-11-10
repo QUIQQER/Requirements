@@ -17,7 +17,6 @@ class Requirements
         Locale::getInstance()->setlanguage($langCode);
     }
 
-
     /**
      * Returns all available tests
      *
@@ -26,6 +25,39 @@ class Requirements
     public function getAllTests()
     {
         return $this->getTestsFromDirectory(dirname(__FILE__) . "/Tests");
+    }
+
+    /**
+     *
+     * @param array $ignore
+     * @return array
+     */
+    public function getTests(array $ignore)
+    {
+        $result = array();
+        foreach ($this->getAllTests() as $groupName => $Tests) {
+
+            /** @var Test $Test */
+            foreach ($Tests as $Test) {
+                if (in_array($Test->getIdentifier(), $ignore)) {
+                    continue;
+                }
+
+                if (in_array($Test->getGroupIdentifier(), $ignore)) {
+                    continue;
+                }
+
+                foreach ($ignore as $ignoreEntry) {
+                    if (strpos($ignoreEntry, $Test->getGroupIdentifier()) !== false) {
+                        continue 2;
+                    }
+                }
+
+                $result[$groupName][] = $Test;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -60,14 +92,11 @@ class Requirements
                 continue;
             }
 
-
             try {
                 $Test = new $className();
             } catch (\Exception $Exception) {
                 continue;
             }
-            
-
 
             if (!($Test instanceof Test)) {
                 continue;
@@ -78,6 +107,4 @@ class Requirements
 
         return $tests;
     }
-
-
 }
