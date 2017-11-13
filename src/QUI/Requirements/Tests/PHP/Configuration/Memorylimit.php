@@ -29,7 +29,7 @@ class Memorylimit extends Test
         }
 
         $raw  = trim($raw);
-        $last = strtolower(mb_substr($raw, -1));
+        $last = strtolower(substr($raw, -1));
 
         # Convert shorthand notation to bytes
         switch ($last) {
@@ -47,7 +47,7 @@ class Memorylimit extends Test
         }
         $limit = $limit > 0 ? (round((int)$limit / 1048576)) : $limit;
 
-        if ($limit >= 256 || $limit == -1) {
+        if ($limit >= 128 || $limit == -1) {
             return new TestResult(TestResult::STATUS_OK);
         }
 

@@ -93,28 +93,140 @@ requirements.tests.webserver.ssl.desc = "Prüft, ob die Verbindung per HTTPS auf
 
 
 # Test messages
-
 requirements.error.memorylimit.undetected = "Das Arbeitsspeicher Limit konnte nicht ermittelt werden."
-requirements.error.memorylimit.insufficient = " Das Arbeitsspeicherlimit ist sehr gering. Dies kann zu Problemen im Betrieb führen. Wir empfehlen mindestens 256M. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.dom.missing = "Das PHP-Modul 'DOM' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.gzip.missing = "Das PHP-Modul 'Gzip' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.imagelibs.missing = "Weder das PHP-Modul 'gd' noch 'imagick' ist geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.json.missing = "Das PHP-Modul 'json' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.mbstring.missing = "Das PHP-Modul 'mbstring' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.pdo.missing = "Das PHP-Modul 'pdo' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.module.curl.missing = "Das PHP-Modul 'curl' ist nicht geladen oder installiert. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.version.insufficient = "Die installierte Version ist zu gering. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.timezone.notset = "Es ist keine Standard Zeitzone konfiguriert. Dies kann Probleme bei Zeiten und Daten verursachen. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.uploads.deactivated = "Ihr System erlaubt keine Dateiuploads. Wir empfehlen Fileuploads zu aktivieren. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.uploadsize.low = "Die eingestellte Uploadgröße ist sehr gering. Wir empfehlen eine Uploadgröße von mindestens 8M. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.postsize.low = "Die konfigurierte maximale Post Size ist sehr gering. Wir empfehlen mindestens 8M. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.geolocate.not.found = "Es konnte nicht festgestellt werden, ob Geolocation unterstützt wird. Wir empfehlen die Konfiguration von Gelocation. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.webserver.headers.missing = "Das Modul 'headers' konnte nicht gefunden worden. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.webserver.ssl.disabled = "Die Verbindung wurde unverschlüsselt aufgebaut. Wir empfehlen dringend Webserver Verbindungen zu verschlüsseln. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.webserver.rewrite.missing = "Das Modul 'headers' konnte nicht gefunden worden. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.mysql.connectivity = "Die Datenbank ist nicht erreichbar. Bitte überprüfen Sie die Konfiguration. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.mysql.version.incompatible.driver = "Der verwendete Datenbanktreiber wird nicht unterstützt. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
-requirements.error.mysql.version.incompatible.version = "Die Datenbank Version wird nicht unterstützt. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.memorylimit.insufficient = " Das Arbeitsspeicherlimit ist sehr gering.
+Dies kann zu Problemen im Betrieb führen.
+Es werden mindestens 128M benötigt. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.dom.missing = "Das PHP-Modul 'DOM' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung:
+<pre><code>apt-get install php7.X-xml</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.xml.missing = "Das PHP-Modul 'xml' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung:
+<pre><code>apt-get install php7.X-xml</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.gzip.missing = "Das PHP-Modul 'Gzip' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-gzip</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.imagelibs.missing = "Weder das PHP-Modul 'gd' noch 'imagick' ist geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-gd</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.json.missing = "Das PHP-Modul 'json' ist nicht geladen oder installiert.
+<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-json</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.mbstring.missing = "Das PHP-Modul 'mbstring' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-mbstring</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.pdo.missing = "Das PHP-Modul 'pdo' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-mysql</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.curl.missing = "Das PHP-Modul 'curl' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-curl</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.zip.missing="Das PHP-Modul 'zip' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-zip</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.module.iconv.missing="Das PHP-Modul 'iconv' ist nicht geladen oder installiert.<br />
+<b>Lösung:</b><br />
+Installiere das Modul über die Paketverwaltung und starte den Webserver/PHP neu:
+<pre><code>apt-get install php7.X-iconv</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.version.insufficient = "Die installierte Version ist zu gering.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.timezone.notset = "Es ist keine Standard Zeitzone konfiguriert.
+Dies kann Probleme bei Zeiten und Daten verursachen.<br />
+<b>Lösung:</b><br />
+Setze die Zeitzone in der php.ini:
+<pre><code>date.timezone = UTC</code></pre>
+Eine Liste von unterstützen Zeitzonen findest du hier: <a href="http://php.net/manual/de/timezones.php">Unterstützen Zeitzonen</a><br />
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Hilfe</a>"
+
+requirements.error.session.autostart.enabled = "Sessionautostart ist aktiviert.
+Deaktiviere den Sessionautostart.<br />
+<b>Lösung:</b><br />
+session.auto_start in der php.ini deaktivieren:
+<pre><code>session.auto_start = 0</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Help</a>"
+
+
+requirements.error.uploads.deactivated = "Ihr System erlaubt keine Dateiuploads.
+Wir empfehlen Fileuploads zu aktivieren.<br />
+Dazu wird folgende Einstellung in der php.ini verwendet:
+<pre><code>file_uploads = On</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.uploadsize.low = "Die eingestellte Uploadgröße ist sehr gering.
+Wir empfehlen das Limit zu erhöhen.<br />
+Dazu wird folgende Einstellung in der php.ini verwendet:
+<pre><code>upload_max_filesize = 8M
+post_max_size = 8M</code></pre>
+Wir empfehlen eine Uploadgröße von mindestens 8M. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.postsize.low = "Die konfigurierte maximale Post Size ist sehr gering.
+Wir empfehlen das Limit zu erhöhen.<br />
+Dazu wird folgende Einstellung in der php.ini verwendet:
+<pre><code>upload_max_filesize = 8M
+post_max_size = 8M</code></pre>
+Wir empfehlen mindestens 8M.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.geolocate.not.found = "Es konnte nicht festgestellt werden, ob Geolocation unterstützt wird.
+Wir empfehlen die Konfiguration von Gelocation. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.webserver.headers.missing = "Das Modul 'headers' konnte nicht gefunden worden.<br />
+<b>Lösung:</b><br />
+Aktiviere das Modul und starte den Webserver neu (Apache2):
+<pre><code>a2enmod headers</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.webserver.ssl.disabled = "Die Verbindung wurde unverschlüsselt aufgebaut.
+Wir empfehlen dringend Webserver Verbindungen zu verschlüsseln. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.webserver.rewrite.missing = "Das Modul 'rewrite' konnte nicht gefunden worden.
+<br />
+<b>Lösung:</b><br />
+Aktiviere das Modul und starte den Webserver neu (Apache2):
+<pre><code>a2enmod rewrite</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.mysql.connectivity = "Die Datenbank ist nicht erreichbar.Bitte überprüfen Sie die Konfiguration.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.mysql.version.incompatible.driver = "Der verwendete Datenbanktreiber wird nicht unterstützt.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
+
+requirements.error.mysql.version.incompatible.version = "Die Datenbank Version wird nicht unterstützt.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
 
 # Other
 test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. Aktuell: %CURRENT%. Benötigt: %REQUIRED%."
@@ -210,26 +322,139 @@ requirements.tests.php.modules.zip.name = "ZIP"
 requirements.tests.php.modules.zip.desc = "Checks if the module 'zip' is enabled"
 
 # Test messages
-requirements.error.module.curl.missing = ""
-requirements.error.memorylimit.undetected = ""
-requirements.error.memorylimit.insufficient = ""
-requirements.error.module.dom.missing = ""
-requirements.error.module.gzip.missing = ""
-requirements.error.module.imagelibs.missing = ""
-requirements.error.module.json.missing = ""
-requirements.error.module.mbstring.missing = ""
-requirements.error.module.pdo.missing = ""
-requirements.error.version.insufficient = ""
-requirements.error.timezone.notset = ""
-requirements.error.uploads.deactivated = ""
-requirements.error.uploadsize.low = ""
-requirements.error.postsize.low = ""
-requirements.error.webserver.ssl.disabled = ""
-requirements.error.webserver.headers.missing = ""
-requirements.error.webserver.rewrite.missing = ""
-requirements.error.mysql.connectivity = ""
-requirements.error.mysql.version.incompatible.driver = ""
-requirements.error.mysql.version.incompatible.version = ""
+requirements.error.memorylimit.undetected = "Could not detect the configured memory limit."
+
+requirements.error.memorylimit.insufficient = "The configured memory limit is to low.
+This can severly impact the QUIQQER.
+QUIQQER will need at least 128M to perform correctly. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.dom.missing = "The PHP module 'dom' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager:
+<pre><code>apt-get install php7.X-xml</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.xml.missing = "The PHP module 'xml' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-xml</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.gzip.missing = "The PHP module 'gzip' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-gzip</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.imagelibs.missing = "The PHP module 'gd' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-gd</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.json.missing = "The PHP module 'json' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-json</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.mbstring.missing = "The PHP module 'mbstring' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-mbstring</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.pdo.missing = "The PHP module 'pdo_mysql' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-mysql</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.curl.missing = "The PHP module 'curl' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-curl</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.zip.missing="The PHP module 'zip' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-zip</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.module.iconv.missing="The PHP module 'iconv' is not installed or not active.<br />
+<b>Solution:</b><br />
+Install the module via the package manager and restart the webserver:
+<pre><code>apt-get install php7.X-iconv</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.version.insufficient = "The installed version of PHP is to low. Please install PHP5.6 or higher.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+
+requirements.error.timezone.notset = "There is no default timezone configured.
+This can have major impacts on QUIQQER.<br />
+<b>Solution:</b><br />
+Configure the timezone in the php.ini
+<pre><code>date.timezone = UTC</code></pre>
+<a href="http://php.net/manual/de/timezones.php">List of supported timezones</a><br />
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Help</a>"
+
+requirements.error.session.autostart.enabled = "Sessionautostart is enabled.
+Please disabled the session autostart.<br />
+<b>Solution:</b><br />
+Disable session.auto_start  in the php.ini
+<pre><code>session.auto_start = 0</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Help</a>"
+
+requirements.error.uploads.deactivated = "Your system does not allow file uploads.
+We recommend the permitting file uploads.<br />
+To enable uploads set the following setting in your php.ini:
+<pre><code>file_uploads = On</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.uploadsize.low = "The configured upload size is to low.
+We recommnend  increasing the limit.<br />
+To increase the limit set the following settings in the php.ini
+<pre><code>upload_max_filesize = 8M
+post_max_size = 8M</code></pre>
+We recommend to set the limit to at least 8M. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.postsize.low = "The configured "Post max size" is to low.
+We recommnend  increasing the limit.<br />
+To increase the limit set the following settings in the php.ini
+<pre><code>upload_max_filesize = 8M
+post_max_size = 8M</code></pre>
+We recommend to set the limit to at least 8M.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.geolocate.not.found = "GeoLocation support could not be detected.<br />
+We recommend to enable geolocation support. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.webserver.headers.missing = "The module 'headers' was not found.<br />
+<b>Solution:</b><br />
+Enable the module and restart the webserver (Apache2):
+<pre><code>a2enmod headers && /etc/init.d/apache2 restart</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.webserver.ssl.disabled = "Die Verbindung wurde unverschlüsselt aufgebaut.
+Wir empfehlen dringend Webserver Verbindungen zu verschlüsseln. <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.webserver.rewrite.missing = "The module 'rewrite' was not found.<br />
+<b>Solution:</b><br />
+Enable the module and restart the webserver (Apache2):
+<pre><code>a2enmod rewrite && /etc/init.d/apache2 restart</code></pre>
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.mysql.connectivity = "Could not connect to the database. Please verify your connection settings are correct.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.mysql.version.incompatible.driver = "The chosen database driver is not supported.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
+requirements.error.mysql.version.incompatible.version = "The installed database version is not supported.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
+
 
 
 

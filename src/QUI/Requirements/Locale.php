@@ -42,6 +42,17 @@ class Locale
             $text = str_replace("%" . $key . "%", $value, $text);
         }
 
+        // Make serverspecific replacements
+        // Replace PHP Version
+        if (strpos($text, "%qr-php%") !== false) {
+            $text = str_replace("%qr-php%", substr(phpversion(), 0, 3), $text);
+        }
+
+        // Replace Webservertype
+        if (strpos($text, "%qr-webserver%") !== false) {
+            $text = str_replace("%qr-webserver%", substr(phpversion(), 0, 3), $text);
+        }
+
         return $text;
     }
 

@@ -18,11 +18,10 @@ class SessionAutostart extends Test
         if ($currentValue != $requiredValue) {
             return new TestResult(
                 TestResult::STATUS_FAILED,
-                Locale::getInstance()->get("requirements.error.memorylimit.undetected")
+                Locale::getInstance()->get("requirements.error.session.autostart.enabled")
             );
         }
 
         return new TestResult(TestResult::STATUS_OK);
     }
-
 }

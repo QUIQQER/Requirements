@@ -18,7 +18,8 @@ class UploadSize extends Test
         $requiredValue = "on";
         $currentValue  = trim(strtolower(ini_get("file_uploads")));
 
-        if ($currentValue != $requiredValue) {
+
+        if ($currentValue != true && $currentValue != $requiredValue) {
             return new TestResult(
                 TestResult::STATUS_WARNING,
                 Locale::getInstance()->get("requirements.error.uploads.deactivated")
@@ -53,5 +54,4 @@ class UploadSize extends Test
 
         return new TestResult(TestResult::STATUS_OK);
     }
-
 }

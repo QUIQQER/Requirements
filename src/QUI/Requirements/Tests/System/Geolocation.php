@@ -17,18 +17,17 @@ class Geolocation extends Test
         }
 
         if (function_exists('apache_get_modules')) {
-
             if (in_array('mod_geoip', apache_get_modules())) {
                 return new TestResult(TestResult::STATUS_OK);
             }
 
             return new TestResult(
                 TestResult::STATUS_WARNING,
-                Locale::getInstance()->get("requirements.error.webserver.headers.missing")
+                Locale::getInstance()->get("requirements.error.geolocate.not.found")
             );
         }
 
-        if(extension_loaded("geoip")){
+        if (extension_loaded("geoip")) {
             return new TestResult(TestResult::STATUS_OK);
         }
         
@@ -48,6 +47,4 @@ class Geolocation extends Test
             "requirements.error.geolocate.not.found"
         );
     }
-
-
 }

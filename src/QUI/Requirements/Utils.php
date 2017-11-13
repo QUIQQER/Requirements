@@ -6,7 +6,7 @@ class Utils
 {
     /**
      * Parses the megabyte value from the human readable size notation.
-     * 
+     *
      * @param $humanReadableSize - in Example: 256M or 512K or 1G
      *
      * @return float
@@ -15,7 +15,7 @@ class Utils
     {
 
         $raw  = trim($humanReadableSize);
-        $last = strtolower(mb_substr($raw, -1));
+        $last = strtolower(substr($raw, -1));
 
         # Convert shorthand notation to bytes
         switch ($last) {
