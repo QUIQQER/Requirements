@@ -44,7 +44,7 @@ class Geolocation extends Test
         
         return new TestResult(
             TestResult::STATUS_WARNING,
-            "requirements.error.geolocate.not.found"
+            Locale::getInstance()->get("requirements.error.geolocate.not.found")
         );
     }
 }

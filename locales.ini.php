@@ -168,7 +168,7 @@ Dies kann Probleme bei Zeiten und Daten verursachen.<br />
 <b>Lösung:</b><br />
 Setze die Zeitzone in der php.ini:
 <pre><code>date.timezone = UTC</code></pre>
-Eine Liste von unterstützen Zeitzonen findest du hier: <a href="http://php.net/manual/de/timezones.php">Unterstützen Zeitzonen</a><br />
+<a href="http://php.net/manual/de/timezones.php">Unterstützen Zeitzonen</a><br />
 <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Hilfe</a>"
 
 requirements.error.session.autostart.enabled = "Sessionautostart ist aktiviert.
@@ -398,14 +398,14 @@ This can have major impacts on QUIQQER.<br />
 Configure the timezone in the php.ini
 <pre><code>date.timezone = UTC</code></pre>
 <a href="http://php.net/manual/de/timezones.php">List of supported timezones</a><br />
-<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Help</a>"
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Additional Help</a>"
 
 requirements.error.session.autostart.enabled = "Sessionautostart is enabled.
 Please disabled the session autostart.<br />
 <b>Solution:</b><br />
 Disable session.auto_start  in the php.ini
 <pre><code>session.auto_start = 0</code></pre>
-<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Weitere Help</a>"
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Additional Help</a>"
 
 requirements.error.uploads.deactivated = "Your system does not allow file uploads.
 We recommend the permitting file uploads.<br />

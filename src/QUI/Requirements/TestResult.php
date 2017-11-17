@@ -44,7 +44,6 @@ class TestResult
      */
     const STATUS_OPTIONAL = 4;
 
-
     /**
      * TestResult constructor.
      * STATUS_FAILED = 0
@@ -53,12 +52,12 @@ class TestResult
      * STATUS_WARNING = 3
      * STATUS_OPTIONAL = 4
      *
-     * @param int    $status  - Constants defined in QUI\Requirements\Testresult
+     * @param int $status - Constants defined in QUI\Requirements\Testresult
      * @param string $message - (optional) Status message.
      */
     public function __construct($status, $message = "")
     {
-        $this->status  = $status;
+        $this->status = $status;
         $this->message = $message;
     }
 
@@ -80,7 +79,23 @@ class TestResult
     public function getMessageRaw()
     {
         $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
+        $message = preg_replace('#<a.*?>.*?</a>#i', '', $message);
         $message = strip_tags($message);
+        $message = trim($message);
+
+        return $message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessageConsole()
+    {
+        $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
+        $message = preg_replace('#<a.*?>.*?</a>#i', '', $message);
+        
+        $message = strip_tags($message);
+        $message = trim($message);
 
         return $message;
     }
