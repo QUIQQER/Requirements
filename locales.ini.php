@@ -228,6 +228,11 @@ requirements.error.mysql.version.incompatible.driver = "Der verwendete Datenbank
 requirements.error.mysql.version.incompatible.version = "Die Datenbank Version wird nicht unterstützt.
 <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>"
 
+requirements.error.system.permissions = "Die Dateirechte sind nicht korrekt.
+Bitte stelle sicher, dass der Benutzer des Webservers Schreibrechte auf folgende Verzeichnisse und Datein hat.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>
+<pre><code>chown -R www-data:www-data /pfad/zum/document/root</code></pre>"
+
 # Other
 test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. Aktuell: %CURRENT%. Benötigt: %REQUIRED%."
 test.message.error.not.writeable.file = "'./%FILE%' ist nicht beschreibbar"
@@ -455,7 +460,10 @@ requirements.error.mysql.version.incompatible.driver = "The chosen database driv
 requirements.error.mysql.version.incompatible.version = "The installed database version is not supported.
 <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>"
 
-
+requirements.error.system.permissions = "The systems filepermissions are not correct. 
+Please make sure that the webservers user can write the following files and directories.
+<a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>
+<pre><code>chown -R www-data:www-data /path/to/the/document/root</code></pre>"
 
 
 

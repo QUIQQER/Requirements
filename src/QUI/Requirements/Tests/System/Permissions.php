@@ -37,149 +37,90 @@ class Permissions extends Test
 
     public function run()
     {
-        $checks = array(
+        /*
+         * These directories must be writeable and it will get tested if they can be created, if they do not exist
+         */
+        $required = array(
             "var/tmp",
             "var/cache",
             "var",
             "etc/",
             "media/",
             "packages/",
+            "/",
+            
+        );
+
+        /*
+         * These directories must be writeable, if they exist. 
+         */
+        $writeable = array(
+            "/templates/presets"
         );
 
         $result = array();
-
-
-        foreach ($checks as $check) {
+        foreach ($required as $check) {
             $fullpath = $this->cmsDir . "/" . $check;
             
             $exists = is_dir($fullpath) || file_exists($fullpath);
             // File exists, check if it is writeable
-            if($exists && !is_writable($fullpath)){
-               
+            if ($exists && !is_writable($fullpath)) {
                 $result[$check] = false;
                 continue;
             }
             
             // Directory or file does not exists yet, try to create it
-            if(!$exists && @mkdir($fullpath,0755,true) === false){
+            if (!$exists && @mkdir($fullpath, 0755, true) === false) {
                 $result[$check] = false;
                 continue;
             }
             
             // Clean up after creating the directory
-            if(!$exists && is_dir($fullpath)){
+            if (!$exists && is_dir($fullpath)) {
                 rmdir($fullpath);
             }
 
             $result[$check] = true;
         }
         
+        // Test writeable directories
+        foreach ($writeable as $check) {
+            $fullpath = $this->cmsDir . "/" . $check;
+
+            $exists = is_dir($fullpath) || file_exists($fullpath);
+            
+            if (!$exists) {
+                continue;
+            }
+            
+            // File exists, check if it is writeable
+            if (!is_writable($fullpath)) {
+                $result[$check] = false;
+                continue;
+            }
+            
+            $result[$check] = true;
+        }
+        
         
         // Build the test result
         $resultState = TestResult::STATUS_OK;
-        $message = "";
-        foreach($checks as $check){
-            
+        $message = Locale::getInstance()->get('requirements.error.system.permissions');
+        foreach ($required as $check) {
             $writeable = $result[$check];
-            
-            if($writeable){
-                $message .= "<span class='fa fa-check'></span>&nbsp;".$check."<br />";
+            if ($writeable) {
+                $message .= "<span class='fa fa-check system-check '></span>&nbsp;".$check."<br />";
                 continue;
             }
 
             //Error
-            $message .= "<span class='fa fa-times'></span>&nbsp;".$check."<br />";
+            $message .= "<span class='fa fa-close system-check'></span>&nbsp;".$check."<br />";
             $resultState = TestResult::STATUS_FAILED;
         }
         
-        return new TestResult($resultState,$message);
+        return new TestResult($resultState, $message);
     }
 
-//    public function run()
-//    {
-//
-//        // ==================================== //
-//        // Check folder permissions folders
-//        // ==================================== //
-//        $checks = array(//"var/cache/" => "0755",
-//        );
-//
-//        $errors = array();
-//
-//        // Check required permissions
-//        foreach ($checks as $file => $requiredPermission) {
-//            $fullPath = $this->cmsDir . "/" . $file;
-//
-//            if (!file_exists($fullPath)) {
-//                continue;
-//            }
-//
-//            $perm = substr(decoct(fileperms($fullPath)), -4);
-//
-//            if ($perm != $requiredPermission) {
-//                $errors[] = Locale::getInstance()->get("test.message.error.permission.file", array(
-//                    "FILE"     => $file,
-//                    "CURRENT"  => $perm,
-//                    "REQUIRED" => $requiredPermission
-//                ));
-//            }
-//        }
-//
-//        // ==================================== //
-//        // Check writeable folders
-//        // ==================================== //
-//        $requiredWritable = array(
-//            "", // Root diectory
-//            "var/",
-//            "packages/",
-//            "media/",
-//            "etc/"
-//        );
-//
-//        /** @var string $file - Relative path within the CMS Directory */
-//        foreach ($requiredWritable as $file) {
-//
-//            /** @var string $fullPath - Fullpath to the given directory/file */
-//            $fullPath = $this->cmsDir . "/" . $file;
-//
-//            if (!file_exists($fullPath) && !is_dir($fullPath)) {
-//                continue;
-//            }
-//
-//            if (!is_writable($fullPath)) {
-//                $errors[] = Locale::getInstance()->get("test.message.error.not.writeable.file", array(
-//                    "FILE" => $file
-//                ));
-//            }
-//
-//
-////            // Scan the files and the subdirectories  of the given directory
-////            if (!is_dir($fullPath)) {
-////                continue;
-////            }
-////
-////            $content = $this->scanDirRecursively($fullPath);
-////            /** @var string $entry - Fullpath to each element in the directory and its subdirectories */
-////            foreach ($content as $entry) {
-////                if(!is_writable($entry)){
-////                    $errors[] = Locale::getInstance()->get("test.message.error.not.writeable.file", array(
-////                        "FILE" => str_replace($this->cmsDir,"",$entry)
-////                    ));
-////                }
-////            }
-//        }
-//
-//
-//        // Compile result
-//
-//        if (!empty($errors)) {
-//            $errorString = implode("<br />", $errors);
-//
-//            return new TestResult(TestResult::STATUS_FAILED, $errorString);
-//        }
-//
-//        return new TestResult(TestResult::STATUS_OK, "Alles gut!");
-//    }
 
     /**
      * Scans the given directory recursively
