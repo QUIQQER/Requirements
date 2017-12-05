@@ -14,6 +14,7 @@ requirements.tests.groups.php.configuration = "PHP - Konfiguration"
 requirements.tests.groups.php.functions = "PHP - Funktionen"
 requirements.tests.groups.php = "PHP"
 requirements.tests.groups.system = "System"
+requirements.tests.groups.quiqqer = "QUIQQER"
 
 # Tests 
 requirements.tests.database.version.name = "Version"
@@ -90,6 +91,9 @@ requirements.tests.webserver.headers.desc = "Prüft, ob das Apache Modul 'header
 
 requirements.tests.webserver.ssl.name = "Verbindung per SSL"
 requirements.tests.webserver.ssl.desc = "Prüft, ob die Verbindung per HTTPS aufgebaut wurde."
+
+requirements.tests.quiqqer.checksums.name = "Checksummen"
+requirements.tests.quiqqer.checksums.desc = "Prüft, ob die installierten Pakete verändert wurden."
 
 
 # Test messages
@@ -233,9 +237,22 @@ Bitte stelle sicher, dass der Benutzer des Webservers Schreibrechte auf folgende
 <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>
 <pre><code>chown -R www-data:www-data /pfad/zum/document/root</code></pre>"
 
+requirements.error.quiqqer.checksums="Es wurden Pakete mit modifizierten oder zusätzlichen Datein gefunden. Folgende Pakete und Dateien wurden verändert:"
+requirements.error.quiqqer.checksums.missing = "Nicht alle pakete konnten erfolgreich überprüft werden. Dies passiert wenn keine Checksummendatei des Paketauthors bereitgestellt wurde. Folgende pakete sind hiervon betroffen:"
+
 # Other
 test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. Aktuell: %CURRENT%. Benötigt: %REQUIRED%."
 test.message.error.not.writeable.file = "'./%FILE%' ist nicht beschreibbar"
+
+checksums.table.header.file="Datei"
+checksums.table.header.local="Lokale Prüfsummen"
+checksums.table.header.remote="Paketserver Prüfsummen"
+
+checksums.state.ok= "OK"
+checksums.state.unknown= "Unbekannt"
+checksums.state.modified= "Verändert"
+checksums.state.added= "Hinzugefügt"
+checksums.state.removed= "Entfernt"
 
 [en]
 # States
@@ -252,6 +269,7 @@ requirements.tests.groups.php.modules = "PHP - Modules"
 requirements.tests.groups.php.configuration = "PHP - Configuration"
 requirements.tests.groups.php = "PHP"
 requirements.tests.groups.system = "System"
+requirements.tests.groups.quiqqer = "QUIQQER"
 
 # Tests 
 requirements.tests.database.version.name = "Version"
@@ -325,6 +343,9 @@ requirements.tests.php.modules.xml.desc = "Checks if the module 'xml' is enabled
 
 requirements.tests.php.modules.zip.name = "ZIP"
 requirements.tests.php.modules.zip.desc = "Checks if the module 'zip' is enabled"
+
+requirements.tests.quiqqer.checksums.name = "Checksums"
+requirements.tests.quiqqer.checksums.desc = "Checks if the installed QUIQQER packages have been modified."
 
 # Test messages
 requirements.error.memorylimit.undetected = "Could not detect the configured memory limit."
@@ -465,6 +486,18 @@ Please make sure that the webservers user can write the following files and dire
 <a target='_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>
 <pre><code>chown -R www-data:www-data /path/to/the/document/root</code></pre>"
 
+requirements.error.quiqqer.checksums="Some packages contain modified or added files. You can find the modified packages and files below:"
+requirements.error.quiqqer.checksums.missing = "Some packages could not be verified.This happens when the package author does not provide a checksum file. The following packages are imapcted by this:"
+
+checksums.table.header.file="File"
+checksums.table.header.local="Local checksums"
+checksums.table.header.remote="Packageserver checksums"
+
+checksums.state.ok= "OK"
+checksums.state.unknown= "Unknown"
+checksums.state.modified= "Modified"
+checksums.state.added= "Added"
+checksums.state.removed= "Removed"
 
 
 # Other

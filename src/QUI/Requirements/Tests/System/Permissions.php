@@ -109,7 +109,7 @@ class Permissions extends Test
         foreach ($required as $check) {
             $writeable = $result[$check];
             if ($writeable) {
-                $message .= "<span class='fa fa-check system-check '></span>&nbsp;".$check."<br />";
+                $message .= "<span class='fa fa-check system-check'></span>&nbsp;".$check."<br />";
                 continue;
             }
 

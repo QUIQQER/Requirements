@@ -29,7 +29,7 @@ class Locale
         $variable = trim($variable);
 
         if (!isset($this->langCode) || empty($this->langCode)) {
-            throw new Exception("language not set!");
+            $this->setlanguage("en");
         }
 
         if (!isset($this->locales[$this->langCode][$variable])) {

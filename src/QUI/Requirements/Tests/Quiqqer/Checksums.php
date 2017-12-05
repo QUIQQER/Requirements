@@ -1,0 +1,619 @@
+<?php
+
+namespace QUI\Requirements\Tests\Quiqqer;
+
+use function DusanKasan\Knapsack\contains;
+use QUI\Composer\Composer;
+use QUI\Exception;
+use QUI\Requirements\Locale;
+use QUI\Requirements\TestResult;
+use QUI\Requirements\Tests\Test;
+use QUI\Utils\Request\Url;
+use QUI\Utils\System\File;
+
+class Checksums extends Test
+{
+
+    protected $identifier = "quiqqer.version";
+
+    const MOD_CHANGED = "modified";
+    const MOD_ADDED = "added";
+
+    const STATE_OK = 0;
+    const STATE_ADDED = 1;
+    const STATE_MODIFIED = 2;
+    const STATE_REMOVED = 3;
+    const STATE_UNKNOWN = 4;
+
+    // Load the packages.json and check which packages are available on which server
+    protected $privatePackages = array();
+    protected $privateRepository = null;
+    protected $publicPackages = array();
+
+    protected $ignoredFiles = array(
+        "checklist.md5"
+    );
+
+    /**
+     * @return TestResult
+     * @throws Exception
+     * @throws \Exception
+     */
+    protected function run()
+    {
+        // Load the packages
+        $this->publicPackages = $this->loadAvailablePublicPackages();
+        try {
+            $this->privatePackages = $this->loadAvailablePublicPackages();
+        } catch (\Exception $Exception) {
+            $this->privatePackages = array();
+        }
+
+        $Composer = new Composer(VAR_DIR . "/composer/");
+        $packages = $Composer->show();
+
+        $result = array();
+        foreach ($packages as $packageName) {
+            try {
+                $result[$packageName] = $this->checkPackage($packageName);
+            } catch (\Exception $Exception) {
+                continue;
+            }
+        }
+        
+        if($this->hasErrors($result)){
+            return new TestResult(TestResult::STATUS_FAILED,$this->buildHTMLOutput($result));
+        }
+
+        if($this->hasErrors($result)){
+            return new TestResult(TestResult::STATUS_WARNING,$this->buildHTMLOutput($result));
+        }
+
+        return new TestResult(TestResult::STATUS_OK);
+    }
+
+    /**
+     * Builds the HTMl Output
+     *
+     * @param $result
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function buildHTMLOutput($result)
+    {
+        $output = "";
+        foreach ($result as $package => $files) {
+
+            $packageClass = "package-ok";
+
+            $rows = "";
+            foreach ($files as $file => $states) {
+
+                $rowOK = ($states['local'] == self::STATE_OK && $states['remote'] == self::STATE_OK);
+                $rowWarning = ($states['local'] == self::STATE_UNKNOWN || $states['remote'] == self::STATE_UNKNOWN);
+                $rowError = ($states['local'] == self::STATE_ADDED ||
+                    $states['local'] == self::STATE_MODIFIED ||
+                    $states['local'] == self::STATE_REMOVED ||
+                    $states['remote'] == self::STATE_ADDED ||
+                    $states['remote'] == self::STATE_MODIFIED ||
+                    $states['remote'] == self::STATE_REMOVED
+                );
+
+                $rowClass = "tr-ok";
+                if (!$rowError && $rowWarning) {
+                    $rowClass = "tr-warning";
+                    $packageClass = "package-warning";
+                }
+                if ($rowError) {
+                    $rowClass = "tr-error";
+                    $packageClass = "package-error";
+                }
+
+                try {
+                    $row = "<tr class='" . $rowClass . "'>";
+                    $row .= "<td>" . $file . "</td>";
+                    $row .= "<td>" . $this->getStateHumanReadable($states['local']) . "</td>";
+                    $row .= "<td>" . $this->getStateHumanReadable($states['remote']) . "</td>";
+                    $row .= "</tr>";
+                    $rows .= $row;
+                } catch (\Exception $Exception) {
+                    continue;
+                }
+            }
+
+            $output .= "<div class='" . $packageClass . "'>";
+            $output .= "<h2>" . $package . "</h2>";
+            $output .= "<table>";
+            $output .= "<thead>";
+            $output .= "    <tr>";
+            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.file") . "</th>";
+            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.local") . "</th>";
+            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.remote") . "</th>";
+            $output .= "    </tr>";
+            $output .= "</thead>";
+            $output .= "<tbody>";
+            $output .= $rows;
+            $output .= "</tbody>";
+            $output .= "</table>";
+            $output .= "</div>";
+        }
+
+        return $output;
+    }
+
+    /**
+     *
+     * @param $result
+     *
+     * @return string
+     */
+    protected function buildConsoleOutput($result)
+    {
+        $output = "";
+        foreach ($result as $package => $files) {
+            $output .= "========== " . str_pad($package, 30, " ", STR_PAD_BOTH) . " ==========" . PHP_EOL;
+            foreach ($files as $file => $states) {
+                try {
+                    $output .= "\t" . str_pad($file, 100, " ", STR_PAD_RIGHT);
+                    $output .= "\t" . str_pad($this->getStateHumanReadable($states['local']), 15, " ", STR_PAD_LEFT);
+                    $output .= "\t" . str_pad($this->getStateHumanReadable($states['remote']), 15, " ", STR_PAD_LEFT);
+                    $output .= PHP_EOL;
+                } catch (\Exception $Exception) {
+                    continue;
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Checks the given package
+     *
+     * @param $package
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function checkPackage($package)
+    {
+
+        $result = array();
+        $packageDir = OPT_DIR . $package;
+
+        $packageContent = $this->getDirContents($packageDir);
+
+        // Check the local package md5
+        try {
+            $localResult = $this->checkLocalPackageMD5($package);
+            foreach ($packageContent as $file) {
+                $result[$file]['local'] = $localResult[$file];
+            }
+        } catch (\Exception $Exception) {
+            foreach ($packageContent as $file) {
+                $result[$file]['local'] = self::STATE_UNKNOWN;
+            }
+        }
+
+        // Check the remote package md5
+        if (!file_exists($packageDir . "/composer.json")) {
+            foreach ($packageContent as $file) {
+                $result[$file]['remote'] = self::STATE_UNKNOWN;
+            }
+
+            return $result;
+        }
+        $packageData = json_decode(file_get_contents($packageDir . "/composer.json"), true);
+        if (!isset($packageData['type']) || strpos(strtolower($packageData['type']), "quiqqer") === false) {
+            foreach ($packageContent as $file) {
+                $result[$file]['remote'] = self::STATE_UNKNOWN;
+            }
+
+            return $result;
+        }
+
+        if (!isset($packageData['version'])) {
+            foreach ($packageContent as $file) {
+                $result[$file]['remote'] = self::STATE_UNKNOWN;
+            }
+
+            return $result;
+        }
+
+        try {
+            $remoteResult = $this->checkRemotePackageMD5($package, $packageData['version']);
+            foreach ($packageContent as $file) {
+                $result[$file]['remote'] = $remoteResult[$file];
+            }
+        } catch (\Exception $Exception) {
+            foreach ($packageContent as $file) {
+                $result[$file]['remote'] = self::STATE_UNKNOWN;
+            }
+
+            return $result;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Checks the packages content.
+     * Returns an array wirh all files and their states.
+     * States:
+     *
+     * @see Checksums::STATE_OK
+     * @see Checksums::STATE_ADDED
+     * @see Checksums::STATE_MODIFIED
+     * @see Checksums::STATE_REMOVED
+     *
+     * @see Checksum::MOD_CHANGED
+     *
+     * @param $package
+     * @param $version
+     *
+     * @return array| true
+     * @throws Exception
+     */
+    protected function checkRemotePackageMD5($package, $version)
+    {
+        try {
+            $validChecksums = $this->getCorrectRemoteChecksums($package, $version);
+        } catch (Exception $Exception) {
+            throw $Exception;
+        }
+
+        $packageDir = OPT_DIR . $package;
+        $packageContent = $this->getDirContents($packageDir);
+
+        $fileStates = array();
+        foreach ($packageContent as $file) {
+
+            if (in_array($file, $this->ignoredFiles)) {
+                $fileStates[$file] = self::STATE_OK;
+                continue;
+            }
+
+            if (!isset($validChecksums[$file])) {
+                $fileStates[$file] = self::STATE_ADDED;
+                continue;
+            }
+
+            $validChecksum = $validChecksums[$file];
+            $currentChecksum = md5_file($packageDir . "/" . $file);
+
+            $fileValid = ($validChecksum == $currentChecksum);
+
+            if (!$fileValid) {
+                $fileStates[$file] = self::STATE_MODIFIED;
+                continue;
+            }
+
+            $fileStates[$file] = self::STATE_OK;
+        }
+
+        return $fileStates;
+    }
+
+    /**
+     * Checks the packages local checksum file
+     *
+     * @param $package
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function checkLocalPackageMD5($package)
+    {
+
+        try {
+            $validChecksums = $this->getCorrectLocalChecksums($package);
+        } catch (\Exception $Exception) {
+            throw new Exception("Could not read the packages local checksums.");
+        }
+
+        $packageDir = OPT_DIR . $package;
+        $packageContent = $this->getDirContents($packageDir);
+
+        $fileStates = array();
+        foreach ($packageContent as $file) {
+
+            if (in_array($file, $this->ignoredFiles)) {
+                $fileStates[$file] = self::STATE_OK;
+                continue;
+            }
+
+            if (!isset($validChecksums[$file])) {
+                $fileStates[$file] = self::STATE_ADDED;
+                continue;
+            }
+
+            $validChecksum = $validChecksums[$file];
+            $currentChecksum = md5_file($packageDir . "/" . $file);
+
+            $fileValid = ($validChecksum == $currentChecksum);
+            if (!$fileValid) {
+                $fileStates[$file] = self::STATE_MODIFIED;
+                continue;
+            }
+
+            $fileStates[$file] = self::STATE_OK;
+        }
+
+        return $fileStates;
+    }
+
+    /**
+     * Gets the md5 Checksums for the files contained in the package
+     *
+     * @param $package
+     * @param $version
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    protected function getCorrectRemoteChecksums($package, $version)
+    {
+        $vendor = explode("/", $package, 2)[0];
+        $packageName = explode("/", $package, 2)[1];;
+
+        $isPrivate = !in_array($package, $this->publicPackages);
+
+        // Build the checksum url for private and public packages respectively
+        if ($isPrivate) {
+            $privaterepository = $this->getPrivatePackagesRepo();
+            if (!isset($privaterepository[$package][$version]['dist']['url'])) {
+                throw new Exception("Could not retrieve a checksum from the updateserver", 404);
+            }
+
+            $downloadURL = $privaterepository[$package][$version]['dist']['url'];
+            $url = str_replace("updateserver/bin/download.php", "updateserver/bin/getChecksum.php", $downloadURL);
+        } else {
+            $url = "https://update.quiqqer.com/files/" . $package . "/" . $packageName . "-" . $version . ".zip.md5";
+        }
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true
+        ));
+
+        $result = curl_exec($ch);
+        $info = curl_getinfo($ch);
+
+        if ($info['http_code'] !== 200) {
+            throw new Exception("Could not retrieve a checksum from the updateserver", 404);
+        }
+
+        $lines = explode(PHP_EOL, $result);
+        $checksums = array();
+
+        foreach ($lines as $line) {
+            if (empty(trim($line))) {
+                continue;
+            }
+
+            $md5Sum = explode("  ", $line, 2)[0];
+            $file = explode("  ", $line, 2)[1];
+
+            $checksums[$file] = $md5Sum;
+        }
+
+        return $checksums;
+    }
+
+    /**
+     * Gets the local checksums from the package
+     *
+     * @param $package
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function getCorrectLocalChecksums($package)
+    {
+        $packageDir = OPT_DIR . $package;
+
+        $checksumFiles = array(
+            "checklist.md5",
+            "checksums.md5"
+        );
+
+        $checksums = array();
+        foreach ($checksumFiles as $checksumFile) {
+            $path = $packageDir . "/" . $checksumFile;
+
+            if (!file_exists($path)) {
+                continue;
+            }
+
+            $content = file_get_contents($path);
+            $lines = explode(PHP_EOL, $content);
+            foreach ($lines as $line) {
+                if (empty(trim($line))) {
+                    continue;
+                }
+
+                $md5Sum = explode("  ", $line, 2)[0];
+                $file = explode("  ", $line, 2)[1];
+
+                $checksums[$file] = $md5Sum;
+            }
+
+            return $checksums;
+        }
+
+        throw new Exception("This package does not provide a checksum file");
+    }
+
+    /**
+     * Loads the packages,that are avaialable on the public updateserver
+     *
+     * @throws Exception
+     * @return array
+     */
+    protected function loadAvailablePublicPackages()
+    {
+        $url = "https://update.quiqqer.com/packages.json";
+
+        $json = Url::get($url);
+        $packages = json_decode($json, true);
+
+        $packages = array_keys($packages['packages']);
+
+        return $packages;
+    }
+
+    /**
+     * Loads the avaialble packages from the private update server
+     *
+     * @return array
+     * @throws Exception
+     */
+    protected function loadAvailablePrivatePackages()
+    {
+        $data = $this->getPrivatePackagesRepo();
+
+        return array_keys($data['packages']);
+    }
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    protected function getPrivatePackagesRepo()
+    {
+        if (!is_null($this->privateRepository) && !empty($this->privateRepository)) {
+            return $this->privateRepository;
+        }
+
+        $composerJson = json_decode(file_get_contents(VAR_DIR . "/composer/composer.json"), true);
+        $repositories = $composerJson['repositories'];
+
+        $header = array();
+        foreach ($repositories as $repoData) {
+            if (!isset($repoData['url'])) {
+                continue;
+            }
+
+            if ($repoData['url'] != "https://license.quiqqer.com/private") {
+                continue;
+            }
+
+            if (!isset($repoData['options']['http']['header'])) {
+                continue;
+            }
+
+            $header = $repoData['options']['http']['header'];
+        }
+
+        if (empty($header)) {
+            throw new Exception("Could not retrieve private packages. No headers provided.");
+        }
+
+        $json = Url::get("https://license.quiqqer.com/private/packages.json", array(
+            CURLOPT_HTTPHEADER => $header
+        ));
+
+        $data = json_decode($json, true);
+        $this->privateRepository = $data;
+
+        return $data['packages'];
+    }
+
+    /**
+     * Gets all files within the package
+     *
+     * @param $directory
+     *
+     * @return array
+     */
+    protected function getDirContents($directory)
+    {
+        $packageContent = array();
+
+        $DirectoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
+        $Iterator = new \RecursiveIteratorIterator($DirectoryIterator);
+
+        foreach ($Iterator as $key => $value) {
+            $packageContent[] = str_replace($directory . "/", "", $value);
+        }
+
+        return $packageContent;
+    }
+
+    /**
+     * Returns a human readable and localized state
+     *
+     * @param $state
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getStateHumanReadable($state)
+    {
+        switch ($state) {
+            case Checksums::STATE_UNKNOWN:
+                return Locale::getInstance()->get("checksums.state.unknown");
+                break;
+            case Checksums::STATE_OK:
+                return Locale::getInstance()->get("checksums.state.ok");
+                break;
+            case Checksums::STATE_MODIFIED:
+                return Locale::getInstance()->get("checksums.state.modified");
+                break;
+            case Checksums::STATE_ADDED:
+                return Locale::getInstance()->get("checksums.state.added");
+                break;
+            case Checksums::STATE_REMOVED:
+                return Locale::getInstance()->get("checksums.state.removed");
+                break;
+        }
+
+        return Locale::getInstance()->get("checksums.state.unknown");
+    }
+
+    /**
+     * @param $result
+     *
+     * @return bool
+     */
+    protected function hasWarnings($result)
+    {
+        return $this->in_array_r(self::STATE_UNKNOWN, $result, true);
+    }
+
+    /**
+     * @param $result
+     *
+     * @return bool
+     */
+    protected function hasErrors($result)
+    {
+        $hasErrors = $this->in_array_r(self::STATE_ADDED, $result, true);
+        $hasErrors = $hasErrors || $this->in_array_r(self::STATE_MODIFIED, $result, true);
+        $hasErrors = $hasErrors || $this->in_array_r(self::STATE_REMOVED, $result, true);
+
+        return $hasErrors;
+    }
+
+    /**
+     * Checks if the needle is in the array recursively
+     *
+     * @param $needle
+     * @param $haystack
+     * @param bool $strict
+     *
+     * @return bool
+     */
+    protected function in_array_r($needle, $haystack, $strict = false)
+    {
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle,
+                        $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

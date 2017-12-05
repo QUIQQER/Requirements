@@ -48,7 +48,7 @@ print_r($Tests);
 ```
 
 You can provide multiple identifiers in an array.  
-Every test has an identifier, whichyou can find in the tests properties:
+Every test has an identifier, which you can find in the tests properties:
 ```
 class Memorylimit extends Test
 {
