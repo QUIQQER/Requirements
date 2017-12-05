@@ -20,6 +20,11 @@ class TestResult
     private $message;
 
     /**
+     * @var string - The status message which should be displayed on the console.
+     */
+    protected $consoleMessage;
+    
+    /**
      * Test has failed
      */
     const STATUS_FAILED = 0;
@@ -54,8 +59,9 @@ class TestResult
      *
      * @param int $status - Constants defined in QUI\Requirements\Testresult
      * @param string $message - (optional) Status message.
+     * @param string $consoleMessage - (optional) A special message which should be displayed on the console
      */
-    public function __construct($status, $message = "")
+    public function __construct($status, $message = "",$consoleMessage ="")
     {
         $this->status = $status;
         $this->message = $message;
@@ -91,6 +97,10 @@ class TestResult
      */
     public function getMessageConsole()
     {
+        if(!empty($this->consoleMessage)){
+            return $this->consoleMessage;
+        }
+        
         $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
         $message = preg_replace('#<a.*?>.*?</a>#i', '', $message);
         

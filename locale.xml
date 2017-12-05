@@ -1,0 +1,20 @@
+<locales>
+    <groups name="quiqqer/requirements" datatype="php,js">
+        <locale name="cron.test.checksums.title">
+            <de><![CDATA[Test - Prüfsummen]]></de>
+            <en><![CDATA[Test - Checksums]]></en>
+        </locale>
+        <locale name="cron.test.checksums.desc">
+            <de><![CDATA[Prüft mit Hilfe der MD5 Checksummen, ob die installierten Pakete verändert wurden.]]></de>
+            <en><![CDATA[Checks the installed packages for modifications using the MD5 checksums.]]></en>
+        </locale>
+        <locale name="cron.test.checksums.error.email.missing">
+            <de><![CDATA[Der Prüfsummen Cron ist aktiviert, aber es wurde keine Email angegeben. Es werden also keine Benachrachtigungen über modifizierte Pakete versendet!]]></de>
+            <en><![CDATA[The checksum cron is active, but no email has been configured. You will not receive any notifications about modified packages from this cron.]]></en>
+        </locale>
+        <locale name="cron.test.checksums.mail.subject">
+            <de><![CDATA[Modifizierte Pakete]]></de>
+            <en><![CDATA[Modified packages]]></en>
+        </locale>
+    </groups>
+</locales>

@@ -3,6 +3,7 @@
 namespace QUI\Requirements\Tests\Quiqqer;
 
 use function DusanKasan\Knapsack\contains;
+use QUI\Cache\Manager;
 use QUI\Composer\Composer;
 use QUI\Exception;
 use QUI\Requirements\Locale;
@@ -49,24 +50,26 @@ class Checksums extends Test
             $this->privatePackages = array();
         }
 
-        $Composer = new Composer(VAR_DIR . "/composer/");
-        $packages = $Composer->show();
-
+        $packages = \QUI::getPackageManager()->getInstalled();
         $result = array();
-        foreach ($packages as $packageName) {
+        foreach ($packages as $packageData) {
             try {
+                $packageName = $packageData['name'];
                 $result[$packageName] = $this->checkPackage($packageName);
             } catch (\Exception $Exception) {
                 continue;
             }
         }
-        
-        if($this->hasErrors($result)){
-            return new TestResult(TestResult::STATUS_FAILED,$this->buildHTMLOutput($result));
+
+        $htmlOutput = $this->buildHTMLOutput($result);
+        $consoleOutput = $this->buildConsoleOutput($result);
+
+        if ($this->hasErrors($result)) {
+            return new TestResult(TestResult::STATUS_FAILED, $htmlOutput, $consoleOutput);
         }
 
-        if($this->hasErrors($result)){
-            return new TestResult(TestResult::STATUS_WARNING,$this->buildHTMLOutput($result));
+        if ($this->hasWarnings($result)) {
+            return new TestResult(TestResult::STATUS_WARNING, $htmlOutput, $consoleOutput);
         }
 
         return new TestResult(TestResult::STATUS_OK);
@@ -87,11 +90,16 @@ class Checksums extends Test
 
             $packageClass = "package-ok";
 
+            Manager::clear("quiqqer/requirements/checks/result/package/" . $package);
+
             $rows = "";
             foreach ($files as $file => $states) {
 
+                // Check if file is valid
                 $rowOK = ($states['local'] == self::STATE_OK && $states['remote'] == self::STATE_OK);
+                // Check if file has warnings
                 $rowWarning = ($states['local'] == self::STATE_UNKNOWN || $states['remote'] == self::STATE_UNKNOWN);
+                // Check if file is corrupted
                 $rowError = ($states['local'] == self::STATE_ADDED ||
                     $states['local'] == self::STATE_MODIFIED ||
                     $states['local'] == self::STATE_REMOVED ||
@@ -122,20 +130,25 @@ class Checksums extends Test
                 }
             }
 
-            $output .= "<div class='" . $packageClass . "'>";
-            $output .= "<h2>" . $package . "</h2>";
-            $output .= "<table>";
-            $output .= "<thead>";
-            $output .= "    <tr>";
-            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.file") . "</th>";
-            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.local") . "</th>";
-            $output .= "        <th>" . Locale::getInstance()->get("checksums.table.header.remote") . "</th>";
-            $output .= "    </tr>";
-            $output .= "</thead>";
-            $output .= "<tbody>";
-            $output .= $rows;
-            $output .= "</tbody>";
-            $output .= "</table>";
+            // Build the table containing all the files of the package
+            $table = "<table>";
+            $table .= "<thead>";
+            $table .= "    <tr>";
+            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.file") . "</th>";
+            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.local") . "</th>";
+            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.remote") . "</th>";
+            $table .= "    </tr>";
+            $table .= "</thead>";
+            $table .= "<tbody>";
+            $table .= $rows;
+            $table .= "</tbody>";
+            $table .= "</table>";
+
+            Manager::set("quiqqer/requirements/checks/result/package/" . $package, $table, 1800);
+
+            // Build output for package
+            $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
+            $output .= "<span>" . $package . "</span>";
             $output .= "</div>";
         }
 
