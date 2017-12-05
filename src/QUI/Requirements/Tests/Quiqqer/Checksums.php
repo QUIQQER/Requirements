@@ -15,7 +15,7 @@ use QUI\Utils\System\File;
 class Checksums extends Test
 {
 
-    protected $identifier = "quiqqer.version";
+    protected $identifier = "quiqqer.checksums";
 
     const MOD_CHANGED = "modified";
     const MOD_ADDED = "added";
@@ -90,7 +90,14 @@ class Checksums extends Test
 
             $packageClass = "package-ok";
 
-            Manager::clear("quiqqer/requirements/checks/result/package/" . $package);
+
+            $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
+            $cache     = array();
+            //Manager::clear("quiqqer/requirements/checks/result/package/" . $package);
+
+            if (file_exists($cacheFile)){
+                unlink($cacheFile);
+            }
 
             $rows = "";
             foreach ($files as $file => $states) {
@@ -144,13 +151,19 @@ class Checksums extends Test
             $table .= "</tbody>";
             $table .= "</table>";
 
-            Manager::set("quiqqer/requirements/checks/result/package/" . $package, $table, 1800);
+
+            $cache[$package] = $table;
+            //Manager::set("quiqqer/requirements/checks/result/package/" . $package, $table, 1800);
+
 
             // Build output for package
             $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
             $output .= "<span>" . $package . "</span>";
             $output .= "</div>";
         }
+
+        file_put_contents($cacheFile,json_encode($cache));
+
 
         return $output;
     }
