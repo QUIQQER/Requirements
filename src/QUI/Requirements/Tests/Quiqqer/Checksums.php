@@ -9,6 +9,7 @@ use QUI\Exception;
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
+use QUI\System\Log;
 use QUI\Utils\Request\Url;
 use QUI\Utils\System\File;
 
@@ -86,18 +87,16 @@ class Checksums extends Test
     protected function buildHTMLOutput($result)
     {
         $output = "";
+        $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
+        $cache     = array();
+
+        if (file_exists($cacheFile)){
+            unlink($cacheFile);
+        }
+
         foreach ($result as $package => $files) {
 
             $packageClass = "package-ok";
-
-
-            $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
-            $cache     = array();
-            //Manager::clear("quiqqer/requirements/checks/result/package/" . $package);
-
-            if (file_exists($cacheFile)){
-                unlink($cacheFile);
-            }
 
             $rows = "";
             foreach ($files as $file => $states) {
@@ -151,10 +150,7 @@ class Checksums extends Test
             $table .= "</tbody>";
             $table .= "</table>";
 
-
             $cache[$package] = $table;
-            //Manager::set("quiqqer/requirements/checks/result/package/" . $package, $table, 1800);
-
 
             // Build output for package
             $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
@@ -162,8 +158,8 @@ class Checksums extends Test
             $output .= "</div>";
         }
 
+        // "cache" file
         file_put_contents($cacheFile,json_encode($cache));
-
 
         return $output;
     }
