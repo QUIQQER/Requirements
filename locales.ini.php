@@ -244,7 +244,7 @@ requirements.error.quiqqer.checksums.missing = "Nicht alle pakete konnten erfolg
 test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. Aktuell: %CURRENT%. Benötigt: %REQUIRED%."
 test.message.error.not.writeable.file = "'./%FILE%' ist nicht beschreibbar"
 
-checksums.table.header.file = "Datei"
+checksums.table.header.file = "Lokale Datei"
 checksums.table.header.local = "Lokale Prüfsummen"
 checksums.table.header.remote = "Paketserver Prüfsummen"
 
