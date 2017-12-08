@@ -2,6 +2,7 @@
 
 namespace QUI\Requirements;
 
+use QUI\Requirements\Tests\Quiqqer\Checksums;
 use QUI\Requirements\Tests\Test;
 
 class Requirements
@@ -30,9 +31,10 @@ class Requirements
     /**
      *
      * @param array $ignore
+     *
      * @return array
      */
-    public function getTests(array $ignore)
+    public function getTests(array $ignore = array())
     {
         $result = array();
         foreach ($this->getAllTests() as $groupName => $Tests) {
@@ -101,7 +103,7 @@ class Requirements
             if (!($Test instanceof Test)) {
                 continue;
             }
-
+            
             $tests[$Test->getGroupName()][] = $Test;
         }
 
