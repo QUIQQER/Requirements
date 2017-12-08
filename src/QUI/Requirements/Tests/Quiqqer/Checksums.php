@@ -109,12 +109,16 @@ class Checksums extends Test
             $rows = "";
             // Build the outputs of the files for each package
             foreach ($files as $file => $states) {
-                if (!isset($states['remote'])) {
-                    $states['remote'] = self::STATE_UNKNOWN;
+                if (in_array($file, $this->ignoredFiles)) {
+                    continue;
                 }
-
+                
                 if (!isset($states['local']) && isset($states['remote'])) {
                     $states['local'] = self::STATE_REMOVED;
+                }
+
+                if (!isset($states['remote'])) {
+                    $states['remote'] = self::STATE_UNKNOWN;
                 }
 
                 foreach ($states as $s) {
@@ -156,23 +160,27 @@ class Checksums extends Test
                 }
 
                 try {
+                    $checksumFile = isset($this->checksums[$package][$file]['file']) ? $this->checksums[$package][$file]['file'] : "--";
+                    $checksumLocal = isset($this->checksums[$package][$file]['local']) ? $this->checksums[$package][$file]['local'] : "--";
+                    $checksumRemote = isset($this->checksums[$package][$file]['remote']) ? $this->checksums[$package][$file]['remote'] : "--";
+
                     $row = "<tr class='" . $rowClass . "' title='" . $this->getPackageStateDescription($packageState) . "'>";
                     $row .= "<td>" . $file . "</td>";
 
-                    $row .= "<td title='" . $this->checksums[$package][$file]['file'] . "'>" .
-                        substr($this->checksums[$package][$file]['file'], 0, 4) .
+                    $row .= "<td title='" . $checksumFile . "'>" .
+                        substr($checksumFile, 0, 4) .
                         "</td>";
 
-                    $row .= "<td title='" . $this->checksums[$package][$file]['local'] . "' class='td-state-".$states['local']."'>" .
+                    $row .= "<td title='" . $checksumLocal . "' class='td-state-" . $states['local'] . "'>" .
                         $this->getStateHumanReadable($states['local']) .
-                        " (" . substr($this->checksums[$package][$file]['local'], 0, 4) . ")".
+                        " (" . substr($checksumLocal, 0, 4) . ")" .
                         "</td>";
 
-                    $row .= "<td title='" . $this->checksums[$package][$file]['remote'] . "' class='td-state-".$states['remote']."'>" .
+                    $row .= "<td title='" . $checksumRemote . "' class='td-state-" . $states['remote'] . "'>" .
                         $this->getStateHumanReadable($states['remote']) .
-                        " (" . substr($this->checksums[$package][$file]['remote'], 0, 4) .")".
+                        " (" . substr($checksumRemote, 0, 4) . ")" .
                         "</td>";
-                    
+
                     $row .= "</tr>";
                     $rows .= $row;
                 } catch (\Exception $Exception) {
