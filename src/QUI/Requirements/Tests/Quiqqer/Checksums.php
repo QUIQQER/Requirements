@@ -9,13 +9,14 @@ use QUI\Exception;
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
+use QUI\System\Log;
 use QUI\Utils\Request\Url;
 use QUI\Utils\System\File;
 
 class Checksums extends Test
 {
 
-    protected $identifier = "quiqqer.version";
+    protected $identifier = "quiqqer.checksums";
 
     const MOD_CHANGED = "modified";
     const MOD_ADDED = "added";
@@ -86,11 +87,16 @@ class Checksums extends Test
     protected function buildHTMLOutput($result)
     {
         $output = "";
+        $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
+        $cache     = array();
+
+        if (file_exists($cacheFile)){
+            unlink($cacheFile);
+        }
+
         foreach ($result as $package => $files) {
 
             $packageClass = "package-ok";
-
-            Manager::clear("quiqqer/requirements/checks/result/package/" . $package);
 
             $rows = "";
             foreach ($files as $file => $states) {
@@ -144,13 +150,16 @@ class Checksums extends Test
             $table .= "</tbody>";
             $table .= "</table>";
 
-            Manager::set("quiqqer/requirements/checks/result/package/" . $package, $table, 1800);
+            $cache[$package] = $table;
 
             // Build output for package
             $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
             $output .= "<span>" . $package . "</span>";
             $output .= "</div>";
         }
+
+        // "cache" file
+        file_put_contents($cacheFile,json_encode($cache));
 
         return $output;
     }
