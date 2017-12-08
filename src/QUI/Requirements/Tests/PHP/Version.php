@@ -19,13 +19,21 @@ class Version extends Test
 
     protected function run()
     {
-        if (version_compare(phpversion(), '5.6', '>=')) {
-            return new TestResult(TestResult::STATUS_OK);
+        $requiredVersion = '5.6';
+        if (!version_compare(phpversion(), $requiredVersion, '>=')) {
+            return new TestResult(
+                TestResult::STATUS_FAILED,
+                Locale::getInstance()->get("requirements.error.version.insufficient")
+            );
         }
 
+
+        $okMessage= Locale::getInstance()->get("requirements.message.version.ok");
+        $okMessage = str_replace("%VERSION%", phpversion(), $okMessage);
+        $okMessage = str_replace("%REQUIRED_VERSION%", $requiredVersion, $okMessage);
         return new TestResult(
-            TestResult::STATUS_FAILED,
-            Locale::getInstance()->get("requirements.error.version.insufficient")
+            TestResult::STATUS_OK,
+            $okMessage
         );
     }
 }

@@ -97,6 +97,8 @@ requirements.tests.quiqqer.checksums.desc = "Prüft, ob die installierten Pakete
 
 
 # Test messages
+
+requirements.message.version.ok = "<p><strong>Installiert:</strong> %VERSION%</p><p><strong>Mindestanforderung:</strong> %REQUIRED_VERSION%</p>"
 requirements.error.memorylimit.undetected = "Das Arbeitsspeicher Limit konnte nicht ermittelt werden."
 
 requirements.error.memorylimit.insufficient = " Das Arbeitsspeicherlimit ist sehr gering.
@@ -235,7 +237,7 @@ requirements.error.mysql.version.incompatible.version = "Die Datenbank Version w
 requirements.error.system.permissions = "Die Dateirechte sind nicht korrekt.
 Bitte stelle sicher, dass der Benutzer des Webservers Schreibrechte auf folgende Verzeichnisse und Datein hat.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>
-<pre><code>chown -R www-data : www-data /pfad/zum/document/root</code></pre>"
+<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Es wurden Pakete mit modifizierten oder zusätzlichen Datein gefunden. Folgende Pakete und Dateien wurden verändert:"
 requirements.error.quiqqer.checksums.missing = "Nicht alle pakete konnten erfolgreich überprüft werden. Dies passiert wenn keine Checksummendatei des Paketauthors bereitgestellt wurde. Folgende pakete sind hiervon betroffen:"
@@ -348,6 +350,8 @@ requirements.tests.quiqqer.checksums.name = "Package integrity"
 requirements.tests.quiqqer.checksums.desc = "Checks if the installed QUIQQER packages have been modified."
 
 # Test messages
+requirements.message.version.ok = "<p><strong>Installed:</strong> %VERSION%</p><p><strong>Required:</strong> %REQUIRED_VERSION%</p>"
+
 requirements.error.memorylimit.undetected = "Could not detect the configured memory limit."
 
 requirements.error.memorylimit.insufficient = "The configured memory limit is to low.
@@ -484,7 +488,7 @@ requirements.error.mysql.version.incompatible.version = "The installed database 
 requirements.error.system.permissions = "The systems filepermissions are not correct.
 Please make sure that the webservers user can write the following files and directories.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>
-<pre><code>chown -R www-data : www-data /path/to/the/document/root</code></pre>"
+<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Some packages contain modified or added files. You can find the modified packages and files below:"
 requirements.error.quiqqer.checksums.missing = "Some packages could not be verified.This happens when the package author does not provide a checksum file. The following packages are imapcted by this:"

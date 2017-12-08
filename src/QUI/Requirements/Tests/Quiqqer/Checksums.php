@@ -87,22 +87,24 @@ class Checksums extends Test
     protected function buildHTMLOutput($result)
     {
         $output = "";
-        $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
-        $cache     = array();
+        $cacheFile = VAR_DIR . "/tmp/requirements_checks_result_package";
+        $cache = array();
 
-        if (file_exists($cacheFile)){
+        if (file_exists($cacheFile)) {
             unlink($cacheFile);
         }
 
+        // SORT_FLAG_CASE | SORT_STRING  ==> Sort as case INSENSITIVE string
+        ksort($result, SORT_FLAG_CASE | SORT_STRING);
+
         foreach ($result as $package => $files) {
+            ksort($files, SORT_FLAG_CASE | SORT_STRING);
 
             $packageClass = "package-ok";
 
             $rows = "";
+            // Build the outputs of the files for each package
             foreach ($files as $file => $states) {
-
-                // Check if file is valid
-                $rowOK = ($states['local'] == self::STATE_OK && $states['remote'] == self::STATE_OK);
                 // Check if file has warnings
                 $rowWarning = ($states['local'] == self::STATE_UNKNOWN || $states['remote'] == self::STATE_UNKNOWN);
                 // Check if file is corrupted
@@ -115,7 +117,7 @@ class Checksums extends Test
                 );
 
                 $rowClass = "tr-ok";
-                if (!$rowError && $rowWarning) {
+                if (!$rowError && $rowWarning && $packageClass !== "package-error") {
                     $rowClass = "tr-warning";
                     $packageClass = "package-warning";
                 }
@@ -134,6 +136,11 @@ class Checksums extends Test
                 } catch (\Exception $Exception) {
                     continue;
                 }
+            }
+
+            // Ignore the package if all files are valid
+            if ($packageClass == "package-ok") {
+                continue;
             }
 
             // Build the table containing all the files of the package
@@ -159,7 +166,7 @@ class Checksums extends Test
         }
 
         // "cache" file
-        file_put_contents($cacheFile,json_encode($cache));
+        file_put_contents($cacheFile, json_encode($cache));
 
         return $output;
     }
@@ -290,7 +297,6 @@ class Checksums extends Test
 
         $fileStates = array();
         foreach ($packageContent as $file) {
-
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
                 continue;
@@ -339,7 +345,6 @@ class Checksums extends Test
 
         $fileStates = array();
         foreach ($packageContent as $file) {
-
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
                 continue;
@@ -377,7 +382,8 @@ class Checksums extends Test
     protected function getCorrectRemoteChecksums($package, $version)
     {
         $vendor = explode("/", $package, 2)[0];
-        $packageName = explode("/", $package, 2)[1];;
+        $packageName = explode("/", $package, 2)[1];
+        ;
 
         $isPrivate = !in_array($package, $this->publicPackages);
 
@@ -630,8 +636,11 @@ class Checksums extends Test
     protected function in_array_r($needle, $haystack, $strict = false)
     {
         foreach ($haystack as $item) {
-            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle,
-                        $item, $strict))) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r(
+                $needle,
+                $item,
+                $strict
+            ))) {
                 return true;
             }
         }

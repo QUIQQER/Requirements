@@ -20,6 +20,7 @@ class Requirements
 
     /**
      * Returns all available tests
+     * It is recommended to use @see Requirements::getTests()
      *
      * @return array
      */
@@ -37,6 +38,7 @@ class Requirements
     public function getTests(array $ignore = array())
     {
         $result = array();
+        $checksumsGroupName = "";
         foreach ($this->getAllTests() as $groupName => $Tests) {
 
             /** @var Test $Test */
@@ -55,8 +57,19 @@ class Requirements
                     }
                 }
 
+                if ($Test->getIdentifier() == "quiqqer.checksums") {
+                    $checksumsGroupName = $Test->getGroupName();
+                }
+                
                 $result[$groupName][] = $Test;
             }
+        }
+        
+        // Put the group of the checksums test at the end of the array
+        if (!empty($checksumsGroupName) && isset($result[$checksumsGroupName])) {
+            $checksumsGroup = $result[$checksumsGroupName];
+            unset($result[$checksumsGroupName]);
+            $result[$checksumsGroupName] = $checksumsGroup;
         }
 
         return $result;

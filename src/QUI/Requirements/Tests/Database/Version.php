@@ -2,7 +2,6 @@
 
 namespace QUI\Requirements\Tests\Database;
 
-
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
@@ -11,7 +10,6 @@ class Version extends Test
 {
 
     protected $identifier = "database.version";
-
 
     protected function run()
     {
@@ -23,7 +21,7 @@ class Version extends Test
             return new TestResult(TestResult::STATUS_UNKNOWN);
         }
 
-        $driver  = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $driver = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME);
         $version = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
 
         $requiredDrivers = array(
@@ -55,6 +53,10 @@ class Version extends Test
             );
         }
 
-        return new TestResult(TestResult::STATUS_OK);
+        $okMessage = Locale::getInstance()->get("requirements.message.version.ok");
+        $okMessage = str_replace("%VERSION%", $version, $okMessage);
+        $okMessage = str_replace("%REQUIRED_VERSION%", $required, $okMessage);
+
+        return new TestResult(TestResult::STATUS_OK, $okMessage);
     }
 }
