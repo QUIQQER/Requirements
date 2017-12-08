@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crons>
+    <cron exec="\QUI\Requirements\Cron::executeChecksumTest">
+        <title>
+            <locale group="quiqqer/requirements" var="cron.test.checksums.title" />
+        </title>
+        <description>
+            <locale group="quiqqer/requirements" var="cron.test.checksums.desc" />
+        </description>
+        <!-- optional -->
+        <params>
+            <param name="email" type="string"/>
+            <param name="sendOnWarning" type="bool"/>
+        </params>
+    </cron>
+</crons>

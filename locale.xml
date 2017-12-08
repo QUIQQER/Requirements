@@ -1,61 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <locales>
-    <groups name="quiqqer/requirements" datatype="php">
-        <locale name="requirements.status.failed">
-            <de><![CDATA[Fehlgeschlagen]]></de>
-            <en><![CDATA[Failed]]></en>
+    <groups name="quiqqer/requirements" datatype="php,js">
+        <locale name="cron.test.checksums.title">
+            <de><![CDATA[Test - Prüfsummen]]></de>
+            <en><![CDATA[Test - Checksums]]></en>
         </locale>
-        <locale name="requirements.status.ok">
-            <de><![CDATA[OK]]></de>
-            <en><![CDATA[OK]]></en>
+        <locale name="cron.test.checksums.desc">
+            <de><![CDATA[Prüft mit Hilfe der MD5 Checksummen, ob die installierten Pakete verändert wurden.]]></de>
+            <en><![CDATA[Checks the installed packages for modifications using the MD5 checksums.]]></en>
         </locale>
-        <locale name="requirements.status.unknown">
-            <de><![CDATA[Unbekannt]]></de>
-            <en><![CDATA[Unknown]]></en>
+        <locale name="cron.test.checksums.error.email.missing">
+            <de><![CDATA[Der Prüfsummen Cron ist aktiviert, aber es wurde keine Email angegeben. Es werden also keine Benachrachtigungen über modifizierte Pakete versendet!]]></de>
+            <en><![CDATA[The checksum cron is active, but no email has been configured. You will not receive any notifications about modified packages from this cron.]]></en>
         </locale>
-        <locale name="requirements.error.memorylimit.insufficient">
-            <de><![CDATA[Das PHP Memory Limit ist nicht ausreichend (mind. 128M)]]></de>
-            <en><![CDATA[The PHP memory limit is not sufficient. (min. 128M)]]></en>
-        </locale>
-        <locale name="requirements.error.memorylimit.undetected">
-            <de><![CDATA[Das PHP Memory Limit konnte nicht ausgelesen werden]]></de>
-            <en><![CDATA[The PHP memory limit could not be retrieved]]></en>
-        </locale>
-        <locale name="requirements.error.version.insufficient">
-            <de><![CDATA[Die PHP Version ist nicht ausreichend]]></de>
-            <en><![CDATA[The PHP version is not sufficient]]></en>
-        </locale>
-        <locale name="requirements.error.module.pdo.missing">
-            <de><![CDATA[Das PHP PDO Modul ist nicht installiert]]></de>
-            <en><![CDATA[The PHP PDO module is not installed]]></en>
-        </locale>
-        <locale name="requirements.error.module.dom.missing">
-            <de><![CDATA[Das PHP DOM Modul ist nicht installiert]]></de>
-            <en><![CDATA[The PHP DOM module is not installed]]></en>
-        </locale>
-        <locale name="requirements.error.module.gettext.missing">
-            <de><![CDATA[PHP gettext Unterstützung fehlt]]></de>
-            <en><![CDATA[Your PHP installation does not provide gettext]]></en>
-        </locale>
-        <locale name="requirements.error.module.json.missing">
-            <de><![CDATA[PHP Json Unterstützung fehlt]]></de>
-            <en><![CDATA[Your PHP installation does not provide json support]]></en>
-        </locale>
-        <locale name="requirements.error.module.curl.missing">
-            <de><![CDATA[PHP Curl Unterstützung fehlt]]></de>
-            <en><![CDATA[Your PHP installation does not provide curl support]]></en>
-        </locale>
-        <locale name="requirements.error.module.imagelibs.missing">
-            <de><![CDATA[Es konnte keine PHP Imagelibrary (GD Lib / PHP Image Magick) gefunden werden.]]></de>
-            <en><![CDATA[No Imagelibrary could be found (GD LIb / PHP Image Magick)]]></en>
-        </locale>
-        <locale name="requirements.error.module.tidy.missing">
-            <de><![CDATA[PHP Tidy konnte nicht gefunden werden.]]></de>
-            <en><![CDATA[PHP Tidy could not be found.]]></en>
-        </locale>
-        <locale name="requirements.error.module.gzip.missing">
-            <de><![CDATA[PHP GZip konnte nicht gefunden werden.]]></de>
-            <en><![CDATA[PHP GZip could not be found.]]></en>
+        <locale name="cron.test.checksums.mail.subject">
+            <de><![CDATA[Modifizierte Pakete]]></de>
+            <en><![CDATA[Modified packages]]></en>
         </locale>
     </groups>
 </locales>
