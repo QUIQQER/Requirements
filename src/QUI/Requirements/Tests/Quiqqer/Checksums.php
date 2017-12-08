@@ -223,7 +223,7 @@ class Checksums extends Test
     }
 
     /**
-     *
+     * Builds the output which can be displayed on the console
      * @param $result
      *
      * @return string
@@ -365,13 +365,13 @@ class Checksums extends Test
                 continue;
             }
 
+            $currentChecksum = md5_file($packageDir . "/" . $file);
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
             }
-
             $validChecksum = $validChecksums[$file];
-            $currentChecksum = md5_file($packageDir . "/" . $file);
+            
 
             $this->checksums[$package][$file]['file'] = $currentChecksum;
             $this->checksums[$package][$file]['remote'] = $validChecksum;
@@ -422,13 +422,15 @@ class Checksums extends Test
                 continue;
             }
 
+            $currentChecksum = md5_file($packageDir . "/" . $file);
+            
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
             }
 
             $validChecksum = $validChecksums[$file];
-            $currentChecksum = md5_file($packageDir . "/" . $file);
+           
 
             $this->checksums[$package][$file]['file'] = $currentChecksum;
             $this->checksums[$package][$file]['local'] = $validChecksum;
@@ -450,7 +452,31 @@ class Checksums extends Test
 
         return $fileStates;
     }
+    
+    /**
+     * Gets all files within the package
+     *
+     * @param $directory
+     *
+     * @return array
+     */
+    protected function getDirContents($directory)
+    {
+        $packageContent = array();
 
+        $DirectoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
+        $Iterator = new \RecursiveIteratorIterator($DirectoryIterator);
+
+        foreach ($Iterator as $key => $value) {
+            $packageContent[] = str_replace($directory . "/", "", $value);
+        }
+
+        return $packageContent;
+    }
+
+    /* ***************************** */
+    /* ********* Checksums ********* */
+    /* ***************************** */
     /**
      * Gets the md5 Checksums for the files contained in the package
      *
@@ -554,6 +580,10 @@ class Checksums extends Test
         throw new Exception("This package does not provide a checksum file");
     }
 
+
+    /* ***************************** */
+    /* ******* Updateserver ******** */
+    /* ***************************** */
     /**
      * Loads the packages,that are avaialable on the public updateserver
      *
@@ -629,27 +659,10 @@ class Checksums extends Test
         return $data['packages'];
     }
 
-    /**
-     * Gets all files within the package
-     *
-     * @param $directory
-     *
-     * @return array
-     */
-    protected function getDirContents($directory)
-    {
-        $packageContent = array();
 
-        $DirectoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
-        $Iterator = new \RecursiveIteratorIterator($DirectoryIterator);
-
-        foreach ($Iterator as $key => $value) {
-            $packageContent[] = str_replace($directory . "/", "", $value);
-        }
-
-        return $packageContent;
-    }
-
+    /* ***************************** */
+    /* ****** Localization ********* */
+    /* ***************************** */
     /**
      * Returns a human readable and localized state
      *
@@ -713,6 +726,13 @@ class Checksums extends Test
         return $description;
     }
 
+    
+    /* ********************** */
+    /* ****** Helper ******** */
+    /* ********************** */
+    
+    #region Helper
+
     /**
      * @param $result
      *
@@ -760,4 +780,6 @@ class Checksums extends Test
 
         return false;
     }
+
+    #endregion
 }

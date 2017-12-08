@@ -257,11 +257,11 @@ checksums.state.modified = "Verändert"
 checksums.state.added = "Hinzugefügt"
 checksums.state.removed = "Entfernt"
 
-checksums.state.ok.desc = "OK"
-checksums.state.unknown.desc = "Unknown"
-checksums.state.modified.desc = "Modified"
-checksums.state.added.desc = "Added"
-checksums.state.removed.desc = "Removed"
+checksums.state.ok.desc = "Die Datei befindet sich in ihrem Originalen Zustand."
+checksums.state.unknown.desc = "Es wurden keine Prüfsumm gefunden, mit wlecher die Datei verglichen werden kann."
+checksums.state.modified.desc = "Die Datei wurde verändert."
+checksums.state.added.desc = "Die Datei wurde auf dem lokalen Dateisystem hinzugefügt und ist im originalem Paket nicht vorhanden."
+checksums.state.removed.desc = "Die Datei wurde auf dem lokalen Dateisystem entfernt und ist im originalem Paket enthalten."
 
 [en]
 # States
@@ -511,11 +511,11 @@ checksums.state.modified = "Modified"
 checksums.state.added = "Added"
 checksums.state.removed = "Removed"
 
-checksums.state.ok.desc = "OK"
-checksums.state.unknown.desc = "Unknown"
-checksums.state.modified.desc = "Modified"
-checksums.state.added.desc = "Added"
-checksums.state.removed.desc = "Removed"
+checksums.state.ok.desc = "The file is in its original state."
+checksums.state.unknown.desc = "There are no checksums available to compare the file with."
+checksums.state.modified.desc = "The file has modifications compared to its original state."
+checksums.state.added.desc = "The file was added to the local filesystem."
+checksums.state.removed.desc = "The file is missing on the local filesystem."
 
 # Other
 test.message.error.permission.file = "'./%FILE%' has the wrong permissions. Current: %CURRENT. Required: %REQUIRED%."
