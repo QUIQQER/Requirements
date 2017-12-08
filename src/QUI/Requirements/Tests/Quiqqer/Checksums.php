@@ -382,13 +382,13 @@ class Checksums extends Test
             }
 
             $currentChecksum = md5_file($packageDir . "/" . $file);
+            $this->checksums[$package][$file]['file'] = $currentChecksum;
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
             }
             $validChecksum = $validChecksums[$file];
-
-            $this->checksums[$package][$file]['file'] = $currentChecksum;
+            
             $this->checksums[$package][$file]['remote'] = $validChecksum;
 
             $fileValid = ($validChecksum == $currentChecksum);
@@ -438,7 +438,8 @@ class Checksums extends Test
             }
 
             $currentChecksum = md5_file($packageDir . "/" . $file);
-
+            $this->checksums[$package][$file]['file'] = $currentChecksum;
+            
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
@@ -446,7 +447,7 @@ class Checksums extends Test
 
             $validChecksum = $validChecksums[$file];
 
-            $this->checksums[$package][$file]['file'] = $currentChecksum;
+            
             $this->checksums[$package][$file]['local'] = $validChecksum;
 
             $fileValid = ($validChecksum == $currentChecksum);
