@@ -720,7 +720,7 @@ class Checksums extends Test
      */
     protected function hasWarnings($result)
     {
-        return $this->in_array_r(self::STATE_UNKNOWN, $result, true);
+        return $this->isInArrayRecursive(self::STATE_UNKNOWN, $result, true);
     }
 
     /**
@@ -730,9 +730,9 @@ class Checksums extends Test
      */
     protected function hasErrors($result)
     {
-        $hasErrors = $this->in_array_r(self::STATE_ADDED, $result, true);
-        $hasErrors = $hasErrors || $this->in_array_r(self::STATE_MODIFIED, $result, true);
-        $hasErrors = $hasErrors || $this->in_array_r(self::STATE_REMOVED, $result, true);
+        $hasErrors = $this->isInArrayRecursive(self::STATE_ADDED, $result, true);
+        $hasErrors = $hasErrors || $this->isInArrayRecursive(self::STATE_MODIFIED, $result, true);
+        $hasErrors = $hasErrors || $this->isInArrayRecursive(self::STATE_REMOVED, $result, true);
 
         return $hasErrors;
     }
@@ -746,10 +746,10 @@ class Checksums extends Test
      *
      * @return bool
      */
-    protected function in_array_r($needle, $haystack, $strict = false)
+    protected function isInArrayRecursive($needle, $haystack, $strict = false)
     {
         foreach ($haystack as $item) {
-            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r(
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->isInArrayRecursive(
                 $needle,
                 $item,
                 $strict
