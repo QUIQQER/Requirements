@@ -237,7 +237,7 @@ requirements.error.mysql.version.incompatible.version = "Die Datenbank Version w
 requirements.error.system.permissions = "Die Dateirechte sind nicht korrekt.
 Bitte stelle sicher, dass der Benutzer des Webservers Schreibrechte auf folgende Verzeichnisse und Datein hat.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>
-<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
+<pre><code>chown -R %USER% : %GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Es wurden Pakete mit modifizierten oder zusätzlichen Datein gefunden. Folgende Pakete und Dateien wurden verändert:"
 requirements.error.quiqqer.checksums.missing = "Nicht alle pakete konnten erfolgreich überprüft werden. Dies passiert wenn keine Checksummendatei des Paketauthors bereitgestellt wurde. Folgende pakete sind hiervon betroffen:"
@@ -247,14 +247,21 @@ test.message.error.permission.file = "'./%FILE%' Hat die falschen Dateirechte. A
 test.message.error.not.writeable.file = "'./%FILE%' ist nicht beschreibbar"
 
 checksums.table.header.file = "Lokale Datei"
-checksums.table.header.local = "Lokale Prüfsummen"
-checksums.table.header.remote = "Paketserver Prüfsummen"
+checksums.table.header.checksum.file = "Aktuelle Prüfsumme"
+checksums.table.header.checksum.local = "Soll-Prüfsumme (Lokal)"
+checksums.table.header.checksum.remote = "Soll-Prüfsumme (Online)"
 
 checksums.state.ok = "OK"
 checksums.state.unknown = "Unbekannt"
 checksums.state.modified = "Verändert"
 checksums.state.added = "Hinzugefügt"
 checksums.state.removed = "Entfernt"
+
+checksums.state.ok.desc = "OK"
+checksums.state.unknown.desc = "Unknown"
+checksums.state.modified.desc = "Modified"
+checksums.state.added.desc = "Added"
+checksums.state.removed.desc = "Removed"
 
 [en]
 # States
@@ -488,14 +495,15 @@ requirements.error.mysql.version.incompatible.version = "The installed database 
 requirements.error.system.permissions = "The systems filepermissions are not correct.
 Please make sure that the webservers user can write the following files and directories.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>
-<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
+<pre><code>chown -R %USER% : %GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Some packages contain modified or added files. You can find the modified packages and files below:"
 requirements.error.quiqqer.checksums.missing = "Some packages could not be verified.This happens when the package author does not provide a checksum file. The following packages are imapcted by this:"
 
-checksums.table.header.file = "File"
-checksums.table.header.local = "Local checksums"
-checksums.table.header.remote = "Packageserver checksums"
+checksums.table.header.file = "Local file"
+checksums.table.header.checksum.file = "Current Checksum"
+checksums.table.header.checksum.local = "Desired checksum (local)"
+checksums.table.header.checksum.remote = "Desired checksum (online)"
 
 checksums.state.ok = "OK"
 checksums.state.unknown = "Unknown"
@@ -503,6 +511,11 @@ checksums.state.modified = "Modified"
 checksums.state.added = "Added"
 checksums.state.removed = "Removed"
 
+checksums.state.ok.desc = "OK"
+checksums.state.unknown.desc = "Unknown"
+checksums.state.modified.desc = "Modified"
+checksums.state.added.desc = "Added"
+checksums.state.removed.desc = "Removed"
 
 # Other
 test.message.error.permission.file = "'./%FILE%' has the wrong permissions. Current: %CURRENT. Required: %REQUIRED%."
