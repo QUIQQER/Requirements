@@ -228,7 +228,7 @@ class Checksums extends Test
             $output .= "</div>";
         }
 
-        $output .= "<span class='unknown-packages-warning' title='" . implode(", ", $unknownPackages) . "'>";
+        $output .= "<span class='unknown-packages-warning' title='" . implode(PHP_EOL, $unknownPackages) . "'>";
         $output .= Locale::getInstance()->get("checksums.unknown.packages");
         $output .= "</span>";
 

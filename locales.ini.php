@@ -263,7 +263,7 @@ checksums.state.modified.desc = "Die Datei wurde verändert."
 checksums.state.added.desc = "Die Datei wurde auf dem lokalen Dateisystem hinzugefügt und ist im originalem Paket nicht vorhanden."
 checksums.state.removed.desc = "Die Datei wurde auf dem lokalen Dateisystem entfernt und ist im originalem Paket enthalten."
 
-checksums.unknown.packages = "Manche pakete konnten nicht überprüft werden, da keine Referenzprüfsummen bereitgestellt wurden."
+checksums.unknown.packages = "Manche Pakete konnten nicht überprüft werden, da keine Referenzprüfsummen bereitgestellt wurden."
 
 [en]
 # States
