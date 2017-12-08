@@ -2,7 +2,7 @@
     "name": "quiqqer\/requirements",
     "type": "quiqqer-module",
     "description": "This package provides methods to check the system requirements for quiqqer",
-    "version": "2.0.0-dev",
+    "version": "dev-dev",
     "license": "GPL-3.0+",
     "authors": [
         {
