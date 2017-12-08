@@ -171,7 +171,7 @@ class Checksums extends Test
                     $checksumLocal = isset($this->checksums[$package][$file]['local']) ? $this->checksums[$package][$file]['local'] : "--";
                     $checksumRemote = isset($this->checksums[$package][$file]['remote']) ? $this->checksums[$package][$file]['remote'] : "--";
 
-                    $row = "<tr class='" . $rowClass . "' title='" . $this->getPackageStateDescription($rowState) . "'>";
+                    $row = "<tr class='" . $rowClass . "' title='" . $this->getRowStateDescription($rowState) . "'>";
                     $row .= "<td>" . $file . "</td>";
 
                     $row .= "<td title='" . $checksumFile . "'>" .
@@ -271,7 +271,6 @@ class Checksums extends Test
      * @param $package
      *
      * @return array
-     * @throws Exception
      */
     protected function checkPackage($package)
     {
@@ -717,7 +716,7 @@ class Checksums extends Test
      * @return string
      * @throws \Exception
      */
-    protected function getPackageStateDescription($state)
+    protected function getRowStateDescription($state)
     {
         $description = "";
         switch ($state) {
@@ -826,10 +825,10 @@ class Checksums extends Test
             return self::STATE_ADDED;
         }
 
-        if ($fileStates['local'] == self::STATE_UNKNOWN || $fileStates['remote'] == self::STATE_UNKNOWN) {
+        if ($fileStates['local'] == self::STATE_UNKNOWN && $fileStates['remote'] == self::STATE_UNKNOWN) {
             return self::STATE_UNKNOWN;
         }
-
+        
         return self::STATE_OK;
     }
     #endregion
