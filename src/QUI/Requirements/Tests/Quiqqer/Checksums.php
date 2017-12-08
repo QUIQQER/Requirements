@@ -108,7 +108,27 @@ class Checksums extends Test
             $packageClass = "package-ok";
             $packageState = self::STATE_OK;
 
-            $rows = "";
+            $rowsString = "";
+            // Sort the files - Errors > Warnings > OK
+            uasort($files, function ($a, $b) {
+                $aState = $this->getRowState($a);
+                $bState = $this->getRowState($b);
+                
+                if ($aState == $bState) {
+                    return 0;
+                }
+                
+                if (in_array($aState, array(self::STATE_ADDED,self::STATE_MODIFIED,self::STATE_REMOVED))) {
+                    return -1;
+                }
+                
+                if ($bState == self::STATE_OK) {
+                    return -1;
+                }
+                
+                return 1;
+            });
+
             // Build the outputs of the files for each package
             foreach ($files as $file => $states) {
                 if (in_array($file, $this->ignoredFiles)) {
@@ -123,28 +143,7 @@ class Checksums extends Test
                     $states['remote'] = self::STATE_UNKNOWN;
                 }
 
-                $rowState = self::STATE_OK;
-                foreach ($states as $s) {
-                    switch ($s) {
-                        // Package has unknown checksums
-                        case self::STATE_UNKNOWN:
-                            if ($packageState == self::STATE_OK) {
-                                $packageState = self::STATE_UNKNOWN;
-                            }
-                            if ($rowState == self::STATE_OK) {
-                                $rowState = self::STATE_UNKNOWN;
-                            }
-                            break;
-                        // Package has errors!
-                        case self::STATE_ADDED:
-                        case self::STATE_MODIFIED:
-                        case self::STATE_REMOVED:
-                            $packageState = $s;
-                            $rowState = $s;
-                            break;
-                    }
-                }
-
+                $rowState = $this->getRowState($states);
                 // Check if file has warnings
                 $rowWarning = ($states['local'] == self::STATE_UNKNOWN || $states['remote'] == self::STATE_UNKNOWN);
                 // Check if file is corrupted
@@ -160,6 +159,7 @@ class Checksums extends Test
                 if (!$rowError && $rowWarning && $packageClass !== "package-error") {
                     $rowClass = "tr-warning";
                     $packageClass = "package-warning";
+                    $packageState = self::STATE_UNKNOWN;
                 }
                 if ($rowError) {
                     $rowClass = "tr-error";
@@ -189,7 +189,7 @@ class Checksums extends Test
                         "</td>";
 
                     $row .= "</tr>";
-                    $rows .= $row;
+                    $rowsString .= $row;
                 } catch (\Exception $Exception) {
                     continue;
                 }
@@ -211,7 +211,7 @@ class Checksums extends Test
             $table .= "    </tr>";
             $table .= "</thead>";
             $table .= "<tbody>";
-            $table .= $rows;
+            $table .= $rowsString;
             $table .= "</tbody>";
             $table .= "</table>";
 
@@ -796,5 +796,41 @@ class Checksums extends Test
         return false;
     }
 
+    /**
+     * Returns the state of the row
+     *
+     * @param $fileStates - Array of the file in format (['local'] => STATE,  ['remote'] => STATE)
+     *
+     * @return int
+     */
+    protected function getRowState($fileStates)
+    {
+        if (!isset($fileStates['local']) && isset($fileStates['remote'])) {
+            $fileStates['local'] = self::STATE_REMOVED;
+        }
+
+        if (!isset($fileStates['remote'])) {
+            $fileStates['remote'] = self::STATE_UNKNOWN;
+        }
+        
+        
+        if ($fileStates['local'] == self::STATE_REMOVED || $fileStates['remote'] == self::STATE_REMOVED) {
+            return self::STATE_REMOVED;
+        }
+
+        if ($fileStates['local'] == self::STATE_MODIFIED || $fileStates['remote'] == self::STATE_MODIFIED) {
+            return self::STATE_MODIFIED;
+        }
+
+        if ($fileStates['local'] == self::STATE_ADDED || $fileStates['remote'] == self::STATE_ADDED) {
+            return self::STATE_ADDED;
+        }
+
+        if ($fileStates['local'] == self::STATE_UNKNOWN || $fileStates['remote'] == self::STATE_UNKNOWN) {
+            return self::STATE_UNKNOWN;
+        }
+
+        return self::STATE_OK;
+    }
     #endregion
 }
