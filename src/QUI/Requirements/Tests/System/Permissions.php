@@ -34,7 +34,6 @@ class Permissions extends Test
         $this->cmsDir = rtrim($this->cmsDir, "/");
     }
 
-
     public function run()
     {
         /*
@@ -48,7 +47,7 @@ class Permissions extends Test
             "media/",
             "packages/",
             "/",
-            
+
         );
 
         /*
@@ -61,20 +60,20 @@ class Permissions extends Test
         $result = array();
         foreach ($required as $check) {
             $fullpath = $this->cmsDir . "/" . $check;
-            
+
             $exists = is_dir($fullpath) || file_exists($fullpath);
             // File exists, check if it is writeable
             if ($exists && !is_writable($fullpath)) {
                 $result[$check] = false;
                 continue;
             }
-            
+
             // Directory or file does not exists yet, try to create it
             if (!$exists && @mkdir($fullpath, 0755, true) === false) {
                 $result[$check] = false;
                 continue;
             }
-            
+
             // Clean up after creating the directory
             if (!$exists && is_dir($fullpath)) {
                 rmdir($fullpath);
@@ -82,27 +81,26 @@ class Permissions extends Test
 
             $result[$check] = true;
         }
-        
+
         // Test writeable directories
         foreach ($writeable as $check) {
             $fullpath = $this->cmsDir . "/" . $check;
 
             $exists = is_dir($fullpath) || file_exists($fullpath);
-            
+
             if (!$exists) {
                 continue;
             }
-            
+
             // File exists, check if it is writeable
             if (!is_writable($fullpath)) {
                 $result[$check] = false;
                 continue;
             }
-            
+
             $result[$check] = true;
         }
-        
-        
+
         // Build the test result
         $resultState = TestResult::STATUS_OK;
         // Build the base help message with the needed command to change file ownership
@@ -110,30 +108,29 @@ class Permissions extends Test
 
         $processUser = posix_getpwuid(posix_geteuid());
         $userName = $processUser['name'];
-        
+
         $groupInfo = posix_getgrgid($processUser['gid']);
         $groupName = $groupInfo['name'];
-        
+
         $message = str_replace("%USER%", $userName, $message);
         $message = str_replace("%GROUP%", $groupName, $message);
-        $message = str_replace("%PATH%", CMS_DIR, $message);
-        
+        $message = str_replace("%PATH%", $this->cmsDir, $message);
+
         // Add the corrupted files
         foreach ($required as $check) {
             $writeable = $result[$check];
             if ($writeable) {
-                $message .= "<span class='fa fa-check system-check'></span>&nbsp;".$check."<br />";
+                $message .= "<span class='fa fa-check system-check'></span>&nbsp;" . $check . "<br />";
                 continue;
             }
 
             //Error
-            $message .= "<span class='fa fa-close system-check'></span>&nbsp;".$check."<br />";
+            $message .= "<span class='fa fa-close system-check'></span>&nbsp;" . $check . "<br />";
             $resultState = TestResult::STATUS_FAILED;
         }
-        
+
         return new TestResult($resultState, $message);
     }
-
 
     /**
      * Scans the given directory recursively
@@ -156,7 +153,6 @@ class Permissions extends Test
             if ($entry == "." || $entry == "..") {
                 continue;
             }
-
 
             if (is_dir($directory . "/" . $entry)) {
                 $result = array_merge($result, $this->scanDirRecursively($directory . "/" . $entry));
