@@ -1,0 +1,6 @@
+test.php
+/.idea/*
+/vendor
+/index.php
+/index.tpl
+/testWeb.php
