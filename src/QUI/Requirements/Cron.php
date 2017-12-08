@@ -61,11 +61,11 @@ class Cron
                     .tr-warning{display: none}
             </style>";
         }
-
+        
+        $body = $body . Locale::getInstance()->get("checksums.cron.email.intro") ."<br />";
         $body = $body . $TestResult->getMessage();
 
         \QUI::getMailManager()->send($email, $subject, $body);
-
-        $TestResult->getMessageConsole();
+        
     }
 }

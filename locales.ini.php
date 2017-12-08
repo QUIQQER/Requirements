@@ -265,6 +265,8 @@ checksums.state.removed.desc = "Die Datei wurde auf dem lokalen Dateisystem entf
 
 checksums.unknown.packages = "Manche Pakete konnten nicht überprüft werden, da keine Referenzprüfsummen bereitgestellt wurden."
 
+checksums.cron.email.intro = "Pakete auf Ihrem System wurden verändert. Bitte überprüfe folgende Pakete auf Integrität."
+
 [en]
 # States
 requirements.status.failed = "Failed"
@@ -519,7 +521,9 @@ checksums.state.modified.desc = "The file has modifications compared to its orig
 checksums.state.added.desc = "The file was added to the local filesystem."
 checksums.state.removed.desc = "The file is missing on the local filesystem."
 
-checksums.unknown.packages = "Some packages could not be veriefied as no checksums have been provided as reference."
+checksums.unknown.packages = "Some packages could not be verified as no checksums have been provided as reference."
+
+checksums.cron.email.intro = "Some packages on your system have been modified compared to their original state. Please check the following packages fo integrity."
 
 # Other
 test.message.error.permission.file = "'./%FILE%' has the wrong permissions. Current: %CURRENT. Required: %REQUIRED%."
