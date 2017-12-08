@@ -100,6 +100,8 @@ class Checksums extends Test
         // SORT_FLAG_CASE | SORT_STRING  ==> Sort as case INSENSITIVE string
         ksort($result, SORT_FLAG_CASE | SORT_STRING);
 
+        $unknownPackages = array();
+
         foreach ($result as $package => $files) {
             ksort($files, SORT_FLAG_CASE | SORT_STRING);
 
@@ -112,7 +114,7 @@ class Checksums extends Test
                 if (in_array($file, $this->ignoredFiles)) {
                     continue;
                 }
-                
+
                 if (!isset($states['local']) && isset($states['remote'])) {
                     $states['local'] = self::STATE_REMOVED;
                 }
@@ -121,6 +123,7 @@ class Checksums extends Test
                     $states['remote'] = self::STATE_UNKNOWN;
                 }
 
+                $rowState = self::STATE_OK;
                 foreach ($states as $s) {
                     switch ($s) {
                         // Package has unknown checksums
@@ -128,12 +131,16 @@ class Checksums extends Test
                             if ($packageState == self::STATE_OK) {
                                 $packageState = self::STATE_UNKNOWN;
                             }
+                            if ($rowState == self::STATE_OK) {
+                                $rowState = self::STATE_UNKNOWN;
+                            }
                             break;
                         // Package has errors!
                         case self::STATE_ADDED:
                         case self::STATE_MODIFIED:
                         case self::STATE_REMOVED:
                             $packageState = $s;
+                            $rowState = $s;
                             break;
                     }
                 }
@@ -164,7 +171,7 @@ class Checksums extends Test
                     $checksumLocal = isset($this->checksums[$package][$file]['local']) ? $this->checksums[$package][$file]['local'] : "--";
                     $checksumRemote = isset($this->checksums[$package][$file]['remote']) ? $this->checksums[$package][$file]['remote'] : "--";
 
-                    $row = "<tr class='" . $rowClass . "' title='" . $this->getPackageStateDescription($packageState) . "'>";
+                    $row = "<tr class='" . $rowClass . "' title='" . $this->getPackageStateDescription($rowState) . "'>";
                     $row .= "<td>" . $file . "</td>";
 
                     $row .= "<td title='" . $checksumFile . "'>" .
@@ -210,11 +217,20 @@ class Checksums extends Test
 
             $cache[$package] = $table;
 
+            if ($packageState == self::STATE_UNKNOWN) {
+                $unknownPackages[] = $package;
+                continue;
+            }
+
             // Build output for package
             $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
             $output .= "<span>" . $package . "</span>";
             $output .= "</div>";
         }
+
+        $output .= "<span class='unknown-packages-warning' title='" . implode(", ", $unknownPackages) . "'>";
+        $output .= Locale::getInstance()->get("checksums.unknown.packages");
+        $output .= "</span>";
 
         // "cache" file
         file_put_contents($cacheFile, json_encode($cache));
@@ -224,6 +240,7 @@ class Checksums extends Test
 
     /**
      * Builds the output which can be displayed on the console
+     *
      * @param $result
      *
      * @return string
@@ -371,7 +388,6 @@ class Checksums extends Test
                 continue;
             }
             $validChecksum = $validChecksums[$file];
-            
 
             $this->checksums[$package][$file]['file'] = $currentChecksum;
             $this->checksums[$package][$file]['remote'] = $validChecksum;
@@ -423,14 +439,13 @@ class Checksums extends Test
             }
 
             $currentChecksum = md5_file($packageDir . "/" . $file);
-            
+
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
             }
 
             $validChecksum = $validChecksums[$file];
-           
 
             $this->checksums[$package][$file]['file'] = $currentChecksum;
             $this->checksums[$package][$file]['local'] = $validChecksum;
@@ -452,7 +467,7 @@ class Checksums extends Test
 
         return $fileStates;
     }
-    
+
     /**
      * Gets all files within the package
      *
@@ -726,11 +741,11 @@ class Checksums extends Test
         return $description;
     }
 
-    
+
     /* ********************** */
     /* ****** Helper ******** */
     /* ********************** */
-    
+
     #region Helper
 
     /**

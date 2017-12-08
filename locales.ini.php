@@ -258,10 +258,12 @@ checksums.state.added = "Hinzugefügt"
 checksums.state.removed = "Entfernt"
 
 checksums.state.ok.desc = "Die Datei befindet sich in ihrem Originalen Zustand."
-checksums.state.unknown.desc = "Es wurden keine Prüfsumm gefunden, mit wlecher die Datei verglichen werden kann."
+checksums.state.unknown.desc = "Es wurde keine Prüfsumme gefunden, mit wlecher die Datei verglichen werden kann."
 checksums.state.modified.desc = "Die Datei wurde verändert."
 checksums.state.added.desc = "Die Datei wurde auf dem lokalen Dateisystem hinzugefügt und ist im originalem Paket nicht vorhanden."
 checksums.state.removed.desc = "Die Datei wurde auf dem lokalen Dateisystem entfernt und ist im originalem Paket enthalten."
+
+checksums.unknown.packages = "Manche pakete konnten nicht überprüft werden, da keine Referenzprüfsummen bereitgestellt wurden."
 
 [en]
 # States
@@ -516,6 +518,8 @@ checksums.state.unknown.desc = "There are no checksums available to compare the 
 checksums.state.modified.desc = "The file has modifications compared to its original state."
 checksums.state.added.desc = "The file was added to the local filesystem."
 checksums.state.removed.desc = "The file is missing on the local filesystem."
+
+checksums.unknown.packages = "Some packages could not be veriefied as no checksums have been provided as reference."
 
 # Other
 test.message.error.permission.file = "'./%FILE%' has the wrong permissions. Current: %CURRENT. Required: %REQUIRED%."
