@@ -237,7 +237,7 @@ requirements.error.mysql.version.incompatible.version = "Die Datenbank Version w
 requirements.error.system.permissions = "Die Dateirechte sind nicht korrekt.
 Bitte stelle sicher, dass der Benutzer des Webservers Schreibrechte auf folgende Verzeichnisse und Datein hat.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Hilfe</a>
-<pre><code>chown -R %USER% : %GROUP% %PATH%</code></pre>"
+<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Es wurden Pakete mit modifizierten oder zusätzlichen Datein gefunden. Folgende Pakete und Dateien wurden verändert:"
 requirements.error.quiqqer.checksums.missing = "Nicht alle pakete konnten erfolgreich überprüft werden. Dies passiert wenn keine Checksummendatei des Paketauthors bereitgestellt wurde. Folgende pakete sind hiervon betroffen:"
@@ -499,7 +499,7 @@ requirements.error.mysql.version.incompatible.version = "The installed database 
 requirements.error.system.permissions = "The systems filepermissions are not correct.
 Please make sure that the webservers user can write the following files and directories.
 <a target = '_blank' href='https://dev.quiqqer.com/quiqqer/quiqqer/wikis/setup/vorraussetzungen#troubleshooting'>Help</a>
-<pre><code>chown -R %USER% : %GROUP% %PATH%</code></pre>"
+<pre><code>chown -R %USER%:%GROUP% %PATH%</code></pre>"
 
 requirements.error.quiqqer.checksums = "Some packages contain modified or added files. You can find the modified packages and files below:"
 requirements.error.quiqqer.checksums.missing = "Some packages could not be verified.This happens when the package author does not provide a checksum file. The following packages are imapcted by this:"

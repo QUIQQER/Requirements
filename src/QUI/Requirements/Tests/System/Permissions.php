@@ -104,7 +104,7 @@ class Permissions extends Test
         // Build the test result
         $resultState = TestResult::STATUS_OK;
         // Build the base help message with the needed command to change file ownership
-        $message = Locale::getInstance()->get('requirements.error.system.permissions');
+        $solution = Locale::getInstance()->get('requirements.error.system.permissions');
 
         $processUser = posix_getpwuid(posix_geteuid());
         $userName = $processUser['name'];
@@ -112,11 +112,12 @@ class Permissions extends Test
         $groupInfo = posix_getgrgid($processUser['gid']);
         $groupName = $groupInfo['name'];
 
-        $message = str_replace("%USER%", $userName, $message);
-        $message = str_replace("%GROUP%", $groupName, $message);
-        $message = str_replace("%PATH%", $this->cmsDir, $message);
+        $solution = str_replace("%USER%", $userName, $solution);
+        $solution = str_replace("%GROUP%", $groupName, $solution);
+        $solution = str_replace("%PATH%", $this->cmsDir, $solution);
 
         // Add the corrupted files
+        $message = "";
         foreach ($required as $check) {
             $writeable = $result[$check];
             if ($writeable) {
@@ -129,6 +130,10 @@ class Permissions extends Test
             $resultState = TestResult::STATUS_FAILED;
         }
 
+        if ($resultState == TestResult::STATUS_FAILED) {
+            $message = $solution . $message;
+        }
+        
         return new TestResult($resultState, $message);
     }
 
