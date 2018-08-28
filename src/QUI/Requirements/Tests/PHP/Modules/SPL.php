@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class SPL extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.SPL";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!extension_loaded('SPL')) {

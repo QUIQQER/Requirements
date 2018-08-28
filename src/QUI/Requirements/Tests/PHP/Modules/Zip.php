@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Zip extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.zip";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!extension_loaded('zip')) {

@@ -6,13 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
-
+/**
+ * Class Md5File
+ *
+ * @package QUI\Requirements\Tests\PHP\Modules
+ */
 class Md5File extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.functions.md5file";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('md5_file')) {

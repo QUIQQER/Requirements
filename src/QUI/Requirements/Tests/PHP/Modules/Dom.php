@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Dom extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.dom";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!class_exists('DOMDocument')) {

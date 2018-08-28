@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Openssl extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.openssl";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!extension_loaded('openssl')) {

@@ -14,13 +14,30 @@ use QUI\Requirements\Tests\Test;
 class Permissions extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "system.permissions";
 
+    /**
+     * @var string
+     */
     protected $cmsDir;
 
+    /**
+     * @var string
+     */
     protected $defaultFilePermission = "0744";
+    /**
+     * @var string
+     */
     protected $defaultDirectoryPermission = "0755";
 
+    /**
+     * Permissions constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         parent::__construct();
@@ -34,30 +51,33 @@ class Permissions extends Test
         $this->cmsDir = rtrim($this->cmsDir, "/");
     }
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     public function run()
     {
         /*
          * These directories must be writeable and it will get tested if they can be created, if they do not exist
          */
-        $required = array(
+        $required = [
             "var/tmp",
             "var/cache",
             "var",
             "etc/",
             "media/",
             "packages/",
-            "/",
-
-        );
+            "/"
+        ];
 
         /*
          * These directories must be writeable, if they exist. 
          */
-        $writeable = array(
+        $writeable = [
             "/templates/presets"
-        );
+        ];
 
-        $result = array();
+        $result = [];
         foreach ($required as $check) {
             $fullpath = $this->cmsDir . "/" . $check;
 
@@ -146,12 +166,12 @@ class Permissions extends Test
      */
     protected function scanDirRecursively($directory)
     {
-        $result = array();
+        $result = [];
 
         $directory = rtrim($directory, "/");
 
         if (!is_readable($directory)) {
-            return array();
+            return [];
         }
 
         foreach (scandir($directory) as $entry) {

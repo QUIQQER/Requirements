@@ -12,7 +12,7 @@ use Exception;
 class Locale
 {
     protected $langCode;
-    protected $locales = array();
+    protected $locales = [];
 
     protected static $Instance = null;
 
@@ -21,10 +21,12 @@ class Locale
      *
      * @param $variable
      *
+     * @param array $params
+     *
      * @return string - The translated value
      * @throws Exception
      */
-    public function get($variable, $params = array())
+    public function get($variable, $params = [])
     {
         $variable = trim($variable);
 

@@ -6,11 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Version
+ *
+ * @package QUI\Requirements\Tests\Database
+ */
 class Version extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "database.version";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!class_exists("\QUI")) {
@@ -24,9 +36,9 @@ class Version extends Test
         $driver = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME);
         $version = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
 
-        $requiredDrivers = array(
+        $requiredDrivers = [
             "mysql" => "5.6"
-        );
+        ];
 
         if (!isset($requiredDrivers[$driver])) {
             return new TestResult(
@@ -37,7 +49,7 @@ class Version extends Test
 
         $required = $requiredDrivers[$driver];
 
-        $matches = array();
+        $matches = [];
         preg_match("~([0-9]+\.[0-9]+\.[0-9]+)~", $version, $matches);
 
         if (!isset($matches[1])) {

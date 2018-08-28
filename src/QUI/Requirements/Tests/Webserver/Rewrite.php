@@ -6,43 +6,78 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Rewrite
+ *
+ * @package QUI\Requirements\Tests\Webserver
+ */
 class Rewrite extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "webserver.rewrite";
 
+    /**
+     * @return TestResult
+     */
     protected function run()
     {
-        if (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) {
+        if (php_sapi_name() == "cli") {
+            return new TestResult(TestResult::STATUS_UNKNOWN);
+        }
+
+        if ($this->testRedirectByRequest()) {
             return new TestResult(TestResult::STATUS_OK);
+        } else {
+            return new TestResult(TestResult::STATUS_FAILED);
+        }
+    }
+
+    /**
+     * Executes a curl request against the server and checks if the request gets redirected properly.
+     *
+     * @return bool
+     */
+    protected function testRedirectByRequest()
+    {
+        if (php_sapi_name() == "cli") {
+            return false;
         }
 
-        if (getenv('HTTP_MOD_REWRITE') == 'On') {
-            return new TestResult(TestResult::STATUS_OK);
+        $baseDir      = dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))));
+        $htAccesspath = $baseDir."/.htaccess";
+
+        $serverUrl = $_SERVER['HTTP_HOST'];
+
+        if (file_exists($htAccesspath)) {
+            rename($htAccesspath, $htAccesspath.".bak");
         }
 
-        // test with apache modules
-        if (function_exists('apache_get_modules')) {
+        $checkValue = time();
 
-            if (in_array('mod_rewrite', apache_get_modules())) {
-                return new TestResult(TestResult::STATUS_OK);
-            }
+        $htAccessContent = "RewriteEngine on".PHP_EOL;
+        $htAccessContent .= "RewriteRule ^rewritetest$ rewritetest.html [NC]".PHP_EOL;
 
-            return new TestResult(
-                TestResult::STATUS_WARNING,
-                Locale::getInstance()->get("requirements.error.webserver.rewrite.missing")
-            );
+        file_put_contents($htAccesspath, $htAccessContent);
+        file_put_contents($baseDir."/rewritetest.html", $checkValue);
+
+        $ch = curl_init($serverUrl."/rewritetest");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        unlink($htAccesspath);
+        unlink($baseDir."/rewritetest.html");
+        if (file_exists($htAccesspath.".bak")) {
+            rename($htAccesspath.".bak", $htAccesspath);
         }
 
-        // phpinfo test
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
-
-        if (strpos('mod_rewrite', $phpinfo) !== false) {
-            return new TestResult(TestResult::STATUS_OK);
+        if ($result == $checkValue) {
+            return true;
         }
 
-        return new TestResult(TestResult::STATUS_UNKNOWN);
+        return false;
     }
 }

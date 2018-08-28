@@ -6,13 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
-
+/**
+ * Class Mail
+ *
+ * @package QUI\Requirements\Tests\PHP\Modules
+ */
 class Mail extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.functions.mail";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('mail')) {

@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Memorylimit extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.configuration.memorylimit";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         $raw = ini_get('memory_limit');

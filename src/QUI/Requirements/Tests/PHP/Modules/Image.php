@@ -13,12 +13,18 @@ use QUI\Requirements\Tests\Test;
 class Image extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.image";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
-        $libraries = array();
+        $libraries = [];
 
         // ImageMagick PHP
         if (class_exists('Imagick')) {

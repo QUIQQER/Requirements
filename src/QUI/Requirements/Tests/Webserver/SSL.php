@@ -6,12 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class SSL
+ *
+ * @package QUI\Requirements\Tests\Webserver
+ */
 class SSL extends Test
 {
 
-
+    /**
+     * @var string
+     */
     protected $identifier = "webserver.ssl";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
 
@@ -39,6 +50,4 @@ class SSL extends Test
         
         return new TestResult(TestResult::STATUS_UNKNOWN);
     }
-
-
 }

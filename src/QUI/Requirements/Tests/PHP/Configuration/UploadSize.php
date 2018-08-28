@@ -7,10 +7,22 @@ use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 use QUI\Requirements\Utils;
 
+/**
+ * Class UploadSize
+ *
+ * @package QUI\Requirements\Tests\PHP\Configuration
+ */
 class UploadSize extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "php.configuration.uploadsize";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         

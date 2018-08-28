@@ -6,10 +6,22 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Geolocation
+ *
+ * @package QUI\Requirements\Tests\System
+ */
 class Geolocation extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "system.geolocate";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (isset($_SERVER["GEOIP_COUNTRY_CODE"])) {

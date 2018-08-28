@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Gzip extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.gzip";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('gzcompress')) {

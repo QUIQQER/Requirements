@@ -5,9 +5,17 @@ namespace QUITests\Requirements;
 use QUI;
 use QUI\Requirements\Requirements;
 
+/**
+ * Class RequirementsTest
+ *
+ * @package QUITests\Requirements
+ */
 class RequirementsTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Test the PHP Memory Limit check
+     */
     public function testPHPMemLimit()
     {
         # Save current memory limit

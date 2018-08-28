@@ -2,17 +2,27 @@
 
 namespace QUI\Requirements\Tests\Database;
 
-
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Connectivity
+ *
+ * @package QUI\Requirements\Tests\Database
+ */
 class Connectivity extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "database.connectivity";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!class_exists("\QUI")) {
