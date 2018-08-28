@@ -22,11 +22,11 @@ class Cron
 
         // Notify the admins about a misconfigured cron
         if (!isset($params['email'])) {
-            $AdminUsers = \QUI::getUsers()->getUsers(array(
-                "where" => array(
+            $AdminUsers = \QUI::getUsers()->getUsers([
+                "where" => [
                     "su" => 1
-                )
-            ));
+                ]
+            ]);
 
             foreach ($AdminUsers as $AdminUser) {
                 \QUI::getMessagesHandler()->sendAttention(

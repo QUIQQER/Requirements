@@ -61,7 +61,7 @@ class Checksums extends Test
      * Contains the packagelist of the private packages
      * @var array
      */
-    protected $privatePackages = array();
+    protected $privatePackages = [];
     /**
      * @var null|array
      */
@@ -69,20 +69,20 @@ class Checksums extends Test
     /**
      * @var array
      */
-    protected $publicPackages = array();
+    protected $publicPackages = [];
     
     /**
      * Hols the checksums for future reference
      * @var array
      */
-    protected $checksums = array();
+    protected $checksums = [];
 
     /**
      * @var array
      */
-    protected $ignoredFiles = array(
+    protected $ignoredFiles = [
         "checklist.md5"
-    );
+    ];
 
     /**
      * @return TestResult
@@ -96,11 +96,11 @@ class Checksums extends Test
         try {
             $this->privatePackages = $this->loadAvailablePublicPackages();
         } catch (\Exception $Exception) {
-            $this->privatePackages = array();
+            $this->privatePackages = [];
         }
 
         $packages = \QUI::getPackageManager()->getInstalled();
-        $result = array();
+        $result = [];
         foreach ($packages as $packageData) {
             try {
                 $packageName = $packageData['name'];
@@ -136,7 +136,7 @@ class Checksums extends Test
     {
         $output = "";
         $cacheFile = VAR_DIR . "/tmp/requirements_checks_result_package";
-        $cache = array();
+        $cache = [];
 
         if (file_exists($cacheFile)) {
             unlink($cacheFile);
@@ -145,7 +145,7 @@ class Checksums extends Test
         // SORT_FLAG_CASE | SORT_STRING  ==> Sort as case INSENSITIVE string
         ksort($result, SORT_FLAG_CASE | SORT_STRING);
 
-        $unknownPackages = array();
+        $unknownPackages = [];
 
         foreach ($result as $package => $files) {
             ksort($files, SORT_FLAG_CASE | SORT_STRING);
@@ -163,7 +163,7 @@ class Checksums extends Test
                     return 0;
                 }
                 
-                if (in_array($aState, array(self::STATE_ADDED,self::STATE_MODIFIED,self::STATE_REMOVED))) {
+                if (in_array($aState, [self::STATE_ADDED,self::STATE_MODIFIED,self::STATE_REMOVED])) {
                     return -1;
                 }
                 
@@ -320,7 +320,7 @@ class Checksums extends Test
     protected function checkPackage($package)
     {
 
-        $result = array();
+        $result = [];
         $packageDir = OPT_DIR . $package;
         $packageContent = $this->getDirContents($packageDir);
 
@@ -419,7 +419,7 @@ class Checksums extends Test
         $packageDir = OPT_DIR . $package;
         $packageContent = $this->getDirContents($packageDir);
 
-        $fileStates = array();
+        $fileStates = [];
         foreach ($packageContent as $file) {
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
@@ -475,7 +475,7 @@ class Checksums extends Test
         $packageDir = OPT_DIR . $package;
         $packageContent = $this->getDirContents($packageDir);
 
-        $fileStates = array();
+        $fileStates = [];
         foreach ($packageContent as $file) {
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
@@ -522,7 +522,7 @@ class Checksums extends Test
      */
     protected function getDirContents($directory)
     {
-        $packageContent = array();
+        $packageContent = [];
 
         $DirectoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
         $Iterator = new \RecursiveIteratorIterator($DirectoryIterator);
@@ -568,9 +568,9 @@ class Checksums extends Test
         }
 
         $ch = curl_init($url);
-        curl_setopt_array($ch, array(
+        curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true
-        ));
+        ]);
 
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
@@ -580,7 +580,7 @@ class Checksums extends Test
         }
 
         $lines = explode(PHP_EOL, $result);
-        $checksums = array();
+        $checksums = [];
 
         foreach ($lines as $line) {
             if (empty(trim($line))) {
@@ -608,12 +608,12 @@ class Checksums extends Test
     {
         $packageDir = OPT_DIR . $package;
 
-        $checksumFiles = array(
+        $checksumFiles = [
             "checklist.md5",
             "checksums.md5"
-        );
+        ];
 
-        $checksums = array();
+        $checksums = [];
         foreach ($checksumFiles as $checksumFile) {
             $path = $packageDir . "/" . $checksumFile;
 
@@ -688,7 +688,7 @@ class Checksums extends Test
         $composerJson = json_decode(file_get_contents(VAR_DIR . "/composer/composer.json"), true);
         $repositories = $composerJson['repositories'];
 
-        $header = array();
+        $header = [];
         foreach ($repositories as $repoData) {
             if (!isset($repoData['url'])) {
                 continue;
@@ -709,9 +709,9 @@ class Checksums extends Test
             throw new Exception("Could not retrieve private packages. No headers provided.");
         }
 
-        $json = Url::get("https://license.quiqqer.com/private/packages.json", array(
+        $json = Url::get("https://license.quiqqer.com/private/packages.json", [
             CURLOPT_HTTPHEADER => $header
-        ));
+        ]);
 
         $data = json_decode($json, true);
         $this->privateRepository = $data;

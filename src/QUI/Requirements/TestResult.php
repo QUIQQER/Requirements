@@ -61,7 +61,7 @@ class TestResult
      * @param string $message - (optional) Status message.
      * @param string $consoleMessage - (optional) A special message which should be displayed on the console
      */
-    public function __construct($status, $message = "",$consoleMessage ="")
+    public function __construct($status, $message = "", $consoleMessage = "")
     {
         $this->status = $status;
         $this->message = $message;
@@ -84,7 +84,7 @@ class TestResult
      */
     public function getMessageRaw()
     {
-        $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
+        $message = str_replace(["<br />", "<br/>", "<br>"], PHP_EOL, $this->getMessage());
         $message = preg_replace('#<a.*?>.*?</a>#i', '', $message);
         $message = strip_tags($message);
         $message = trim($message);
@@ -97,11 +97,11 @@ class TestResult
      */
     public function getMessageConsole()
     {
-        if(!empty($this->consoleMessage)){
+        if (!empty($this->consoleMessage)) {
             return $this->consoleMessage;
         }
         
-        $message = str_replace(array("<br />", "<br/>", "<br>"), PHP_EOL, $this->getMessage());
+        $message = str_replace(["<br />", "<br/>", "<br>"], PHP_EOL, $this->getMessage());
         $message = preg_replace('#<a.*?>.*?</a>#i', '', $message);
         
         $message = strip_tags($message);

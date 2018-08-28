@@ -37,9 +37,9 @@ class Requirements
      *
      * @return array
      */
-    public function getTests(array $ignore = array())
+    public function getTests(array $ignore = [])
     {
-        $result = array();
+        $result = [];
         $checksumsGroupName = "";
         foreach ($this->getAllTests() as $groupName => $Tests) {
 
@@ -84,7 +84,7 @@ class Requirements
      */
     protected function getTestsFromDirectory($directory)
     {
-        $tests = array();
+        $tests = [];
         foreach (scandir($directory) as $entry) {
             if ($entry == "." || $entry == "..") {
                 continue;

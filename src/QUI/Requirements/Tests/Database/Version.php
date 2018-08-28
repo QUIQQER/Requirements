@@ -36,9 +36,9 @@ class Version extends Test
         $driver = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_DRIVER_NAME);
         $version = \QUI::getDataBase()->getPDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
 
-        $requiredDrivers = array(
+        $requiredDrivers = [
             "mysql" => "5.6"
-        );
+        ];
 
         if (!isset($requiredDrivers[$driver])) {
             return new TestResult(
@@ -49,7 +49,7 @@ class Version extends Test
 
         $required = $requiredDrivers[$driver];
 
-        $matches = array();
+        $matches = [];
         preg_match("~([0-9]+\.[0-9]+\.[0-9]+)~", $version, $matches);
 
         if (!isset($matches[1])) {

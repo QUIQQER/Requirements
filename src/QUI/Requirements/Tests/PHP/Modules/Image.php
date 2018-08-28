@@ -24,7 +24,7 @@ class Image extends Test
      */
     protected function run()
     {
-        $libraries = array();
+        $libraries = [];
 
         // ImageMagick PHP
         if (class_exists('Imagick')) {
