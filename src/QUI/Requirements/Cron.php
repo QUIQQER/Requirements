@@ -4,8 +4,19 @@ namespace QUI\Requirements;
 
 use QUI\Requirements\Tests\Quiqqer\Checksums;
 
+/**
+ * Class Cron
+ *
+ * @package QUI\Requirements
+ */
 class Cron
 {
+    /**
+     * @param $params
+     * @param $CronManager
+     *
+     * @throws \Exception
+     */
     public static function executeChecksumTest($params, $CronManager)
     {
 
@@ -45,8 +56,10 @@ class Cron
         }
 
         // Send mail
-        $subject = \QUI::getLocale()->get("quiqqer/requirements",
-                "cron.test.checksums.mail.subject") . " - " . \QUI::conf("globals", "host");
+        $subject = \QUI::getLocale()->get(
+            "quiqqer/requirements",
+            "cron.test.checksums.mail.subject"
+        ) . " - " . \QUI::conf("globals", "host");
 
         // Hide valid files & packages
         $body = "<style>
@@ -66,6 +79,5 @@ class Cron
         $body = $body . $TestResult->getMessage();
 
         \QUI::getMailManager()->send($email, $subject, $body);
-        
     }
 }

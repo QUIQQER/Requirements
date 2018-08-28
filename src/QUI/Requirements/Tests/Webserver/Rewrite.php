@@ -6,10 +6,21 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Rewrite
+ *
+ * @package QUI\Requirements\Tests\Webserver
+ */
 class Rewrite extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "webserver.rewrite";
 
+    /**
+     * @return TestResult
+     */
     protected function run()
     {
         if (php_sapi_name() == "cli") {

@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class PDO extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.pdo";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!defined('PDO::ATTR_DRIVER_NAME')) {

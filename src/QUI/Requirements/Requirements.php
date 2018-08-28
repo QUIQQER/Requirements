@@ -11,7 +11,9 @@ class Requirements
     /***
      * Requirements constructor.
      *
-     * @param $langCode
+     * @param string $langCode
+     *
+     * @throws \Exception
      */
     public function __construct($langCode = "en")
     {

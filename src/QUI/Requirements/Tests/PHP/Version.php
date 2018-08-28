@@ -14,9 +14,15 @@ use QUI\Requirements\Tests\Test;
 class Version extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.version";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         $requiredVersion = '5.6';

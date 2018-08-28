@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Iconv extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.iconv";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!extension_loaded('iconv')) {

@@ -14,13 +14,30 @@ use QUI\Requirements\Tests\Test;
 class Permissions extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "system.permissions";
 
+    /**
+     * @var string
+     */
     protected $cmsDir;
 
+    /**
+     * @var string
+     */
     protected $defaultFilePermission = "0744";
+    /**
+     * @var string
+     */
     protected $defaultDirectoryPermission = "0755";
 
+    /**
+     * Permissions constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         parent::__construct();
@@ -34,6 +51,10 @@ class Permissions extends Test
         $this->cmsDir = rtrim($this->cmsDir, "/");
     }
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     public function run()
     {
         /*

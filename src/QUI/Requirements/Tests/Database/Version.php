@@ -6,11 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Version
+ *
+ * @package QUI\Requirements\Tests\Database
+ */
 class Version extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "database.version";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!class_exists("\QUI")) {

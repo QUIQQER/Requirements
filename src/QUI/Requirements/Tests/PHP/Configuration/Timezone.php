@@ -6,10 +6,22 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class Timezone
+ *
+ * @package QUI\Requirements\Tests\PHP\Configuration
+ */
 class Timezone extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "php.configuration.timezone";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     public function run()
     {
         $timezone = ini_get("date.timezone");

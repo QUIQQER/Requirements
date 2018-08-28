@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Curl extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.curl";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('curl_version') && !function_exists('curl_init')) {

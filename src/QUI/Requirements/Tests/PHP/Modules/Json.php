@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Json extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.json";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('json_decode') && !function_exists('json_encode')) {

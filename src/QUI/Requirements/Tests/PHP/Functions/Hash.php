@@ -6,13 +6,23 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
-
+/**
+ * Class Hash
+ *
+ * @package QUI\Requirements\Tests\PHP\Modules
+ */
 class Hash extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.functions.hash";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!function_exists('hash')) {

@@ -13,9 +13,15 @@ use QUI\Requirements\Tests\Test;
 class Mbstring extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "php.modules.mbstring";
 
-
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         if (!extension_loaded('mbstring')) {

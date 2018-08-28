@@ -6,10 +6,22 @@ use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 use QUI\Requirements\Tests\Test;
 
+/**
+ * Class SessionAutostart
+ *
+ * @package QUI\Requirements\Tests\PHP\Configuration
+ */
 class SessionAutostart extends Test
 {
+    /**
+     * @var string
+     */
     protected $identifier = "php.configuration.sessionautostart";
 
+    /**
+     * @return TestResult
+     * @throws \Exception
+     */
     protected function run()
     {
         $requiredValue = "0";

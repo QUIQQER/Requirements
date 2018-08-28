@@ -13,28 +13,73 @@ use QUI\System\Log;
 use QUI\Utils\Request\Url;
 use QUI\Utils\System\File;
 
+/**
+ * Class Checksums
+ *
+ * @package QUI\Requirements\Tests\Quiqqer
+ */
 class Checksums extends Test
 {
 
+    /**
+     * @var string
+     */
     protected $identifier = "quiqqer.checksums";
 
+    /**
+     * @const string
+     */
     const MOD_CHANGED = "modified";
+    /**
+     * @const string
+     */
     const MOD_ADDED = "added";
 
+    /**
+     * @const int
+     */
     const STATE_OK = 0;
+    /**
+     * @const int
+     */
     const STATE_ADDED = 1;
+    /**
+     * @const int
+     */
     const STATE_MODIFIED = 2;
+    /**
+     * @const int
+     */
     const STATE_REMOVED = 3;
+    /**
+     * @const int
+     */
     const STATE_UNKNOWN = 4;
 
-    // Load the packages.json and check which packages are available on which server
+    
+    /**
+     * Contains the packagelist of the private packages
+     * @var array
+     */
     protected $privatePackages = array();
+    /**
+     * @var null|array
+     */
     protected $privateRepository = null;
+    /**
+     * @var array
+     */
     protected $publicPackages = array();
-
-    // Store the checksums in this array for future reference
+    
+    /**
+     * Hols the checksums for future reference
+     * @var array
+     */
     protected $checksums = array();
 
+    /**
+     * @var array
+     */
     protected $ignoredFiles = array(
         "checklist.md5"
     );
