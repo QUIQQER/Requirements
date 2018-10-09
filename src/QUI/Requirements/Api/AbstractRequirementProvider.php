@@ -16,12 +16,27 @@ use QUI;
 abstract class AbstractRequirementProvider
 {
     /**
+     * List of tests
+     *
+     * @var array
+     */
+    protected $tests = [];
+
+    /**
+     * @param QUI\Requirements\Tests\Test $Test
+     */
+    public function addTest(QUI\Requirements\Tests\Test $Test)
+    {
+        $this->tests[] = $Test;
+    }
+
+    /**
      * Return all available Tests
      *
      * @return array
      */
-    public static function getTests()
+    public function getTests()
     {
-        return [];
+        return $this->tests;
     }
 }
