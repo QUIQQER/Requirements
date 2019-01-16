@@ -321,7 +321,7 @@ requirements.tests.webserver.rewrite.desc = "Checks if the webserver supports re
 requirements.tests.database.connectivity.name = "Connection"
 requirements.tests.database.connectivity.desc = "Checks the database connection."
 
-requirements.tests.php.configuration.sessionautostart.name = "Sesssion autostart"
+requirements.tests.php.configuration.sessionautostart.name = "Session autostart"
 requirements.tests.php.configuration.sessionautostart.desc = "Checks if session autostart is disabled"
 
 requirements.tests.php.configuration.timezone.name = "Timezone"
