@@ -1,6 +1,6 @@
 <?php
 
-namespace QUI\Requirements\Tests\PHP\Modules;
+namespace QUI\Requirements\Tests\PHP\Functions;
 
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
