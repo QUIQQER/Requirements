@@ -9,7 +9,7 @@ use QUI\Requirements\Tests\Test;
 /**
  * Class CreateFunction
  *
- * @package QUI\Requirements\Tests\PHP\Modules
+ * @package QUI\Requirements\Tests\PHP\Functions
  */
 class CreateFunction extends Test
 {

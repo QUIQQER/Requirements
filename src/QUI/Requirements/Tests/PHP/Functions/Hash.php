@@ -9,7 +9,7 @@ use QUI\Requirements\Tests\Test;
 /**
  * Class Hash
  *
- * @package QUI\Requirements\Tests\PHP\Modules
+ * @package QUI\Requirements\Tests\PHP\Functions
  */
 class Hash extends Test
 {

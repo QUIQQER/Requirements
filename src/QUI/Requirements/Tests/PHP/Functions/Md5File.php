@@ -9,7 +9,7 @@ use QUI\Requirements\Tests\Test;
 /**
  * Class Md5File
  *
- * @package QUI\Requirements\Tests\PHP\Modules
+ * @package QUI\Requirements\Tests\PHP\Functions
  */
 class Md5File extends Test
 {
