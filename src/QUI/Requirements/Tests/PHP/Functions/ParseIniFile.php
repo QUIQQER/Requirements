@@ -9,7 +9,7 @@ use QUI\Requirements\Tests\Test;
 /**
  * Class ParseIniFile
  *
- * @package QUI\Requirements\Tests\PHP\Modules
+ * @package QUI\Requirements\Tests\PHP\Functions
  */
 class ParseIniFile extends Test
 {
