@@ -16,5 +16,14 @@
             <de><![CDATA[Modifizierte Pakete]]></de>
             <en><![CDATA[Modified packages]]></en>
         </locale>
+
+        <locale name="cron.test.systemcheck.title">
+            <de><![CDATA[Systemcheck ausführen]]></de>
+            <en><![CDATA[Perform system check]]></en>
+        </locale>
+        <locale name="cron.test.systemcheck.desc">
+            <de><![CDATA[Führt den Systemcheck aus und speichert die Ergebnisse zwischen. Die Ergebnisse werden von manchen Programmfunktionen benötigt.]]></de>
+            <en><![CDATA[Performs the system check and stores the results temporarily. The results are required by some program functions.]]></en>
+        </locale>
     </groups>
 </locales>

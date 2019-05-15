@@ -13,4 +13,13 @@
             <param name="sendOnWarning" type="bool"/>
         </params>
     </cron>
+
+    <cron exec="\QUI\Requirements\Cron::storeSystemCheckResults">
+        <title>
+            <locale group="quiqqer/requirements" var="cron.test.systemcheck.title" />
+        </title>
+        <description>
+            <locale group="quiqqer/requirements" var="cron.test.systemcheck.desc" />
+        </description>
+    </cron>
 </crons>
