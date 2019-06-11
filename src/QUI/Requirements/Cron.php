@@ -2,6 +2,7 @@
 
 namespace QUI\Requirements;
 
+use QUI\Cron\Manager;
 use QUI\Requirements\Tests\Quiqqer\Checksums;
 
 /**
@@ -79,5 +80,18 @@ class Cron
         $body = $body . $TestResult->getMessage();
 
         \QUI::getMailManager()->send($email, $subject, $body);
+    }
+
+
+    /**
+     * Checks the system health.
+     * Runs the system check and stores the results' statuses
+     *
+     * @param $params
+     * @param Manager $CronManager
+     */
+    public static function storeSystemCheckResults($params, Manager $CronManager)
+    {
+        Utils::getSystemCheckResults(true);
     }
 }
