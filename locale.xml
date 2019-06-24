@@ -1,8 +1,8 @@
 <locales>
     <groups name="quiqqer/requirements" datatype="php,js">
         <locale name="cron.test.checksums.title">
-            <de><![CDATA[Test - Prüfsummen]]></de>
-            <en><![CDATA[Test - Checksums]]></en>
+            <de><![CDATA[System-Gesundheit: Prüfsummen]]></de>
+            <en><![CDATA[System Health: Checksums]]></en>
         </locale>
         <locale name="cron.test.checksums.desc">
             <de><![CDATA[Prüft mit Hilfe der MD5 Checksummen, ob die installierten Pakete verändert wurden.]]></de>
@@ -18,8 +18,8 @@
         </locale>
 
         <locale name="cron.test.systemcheck.title">
-            <de><![CDATA[Systemcheck ausführen]]></de>
-            <en><![CDATA[Perform system check]]></en>
+            <de><![CDATA[System-Gesundheit: Systemcheck ausführen]]></de>
+            <en><![CDATA[System Health: Perform System Check]]></en>
         </locale>
         <locale name="cron.test.systemcheck.desc">
             <de><![CDATA[Führt den Systemcheck aus und speichert die Ergebnisse zwischen. Die Ergebnisse werden von manchen Programmfunktionen benötigt.]]></de>
