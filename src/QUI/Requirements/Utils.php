@@ -85,4 +85,69 @@ class Utils
 
         return $results;
     }
+
+
+    /**
+     * Returns the results of a given array of tests in html format.
+     * By default the results are taken from cache.
+     * If the seconds parameter is set to false, the tests are executed and the live-results are used.
+     * Executing all tests may take a lot of time!
+     *
+     * @param array   $allTests  - Array of tests (as returned by Requirements->getTests())
+     * @param boolean $fromCache - Return results from cache or execute test to get live result?
+     *
+     * @return string
+     */
+    public static function htmlFormatTestResults($allTests, $fromCache = true)
+    {
+        $html = '<div class="check-table">';
+
+        /** @var \QUI\Requirements\Tests\Test $Test */
+        foreach ($allTests as $category => $Tests) {
+            $html .= '<div class="system-check check-table-row">';
+            $html .= '<div class="check-table-col check-table-col-test">';
+            $html .= $category;
+            $html .= '</div>';
+            $html .= '<div class="check-table-col check-table-col-message">';
+            $html .= '<ul>';
+            foreach ($Tests as $Test) {
+                $Result           = $fromCache ? $Test->getResultFromCache() : $Test->getResult();
+                $testMessageClass = 'test-message';
+
+                // extra class for checksum
+                if ($Test->getIdentifier() == 'quiqqer.checksums') {
+                    $testMessageClass .= ' test-message-checkSum';
+                }
+
+                switch ($Result->getStatus()) {
+                    case TestResult::STATUS_OPTIONAL:
+                    case TestResult::STATUS_OK:
+                        $html .= '<li><span class="fa fa-check" title="';
+                        break;
+
+                    case TestResult::STATUS_FAILED:
+                        $html .= '<li class="failed"><span class="fa fa-remove" title="';
+                        break;
+
+                    case TestResult::STATUS_UNKNOWN:
+                    case TestResult::STATUS_WARNING:
+                        $html .= '<li><span class="fa fa-exclamation-circle" title="';
+                        break;
+                }
+
+                $html .= $Result->getStatusHumanReadable() . '"></span>';
+                $html .= '<span class="test-name">' . $Test->getName() . '</span>';
+                $html .= '<div class="' . $testMessageClass . '">';
+                $html .= $Result->getMessage();
+                $html .= '</div>';
+            }
+            $html .= '</ul>';
+            $html .= '</div>';
+            $html .= '</div>';
+        }
+
+        $html .= '</div>';
+
+        return $html;
+    }
 }
