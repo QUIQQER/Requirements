@@ -130,16 +130,16 @@ abstract class Test
 
     /**
      * Returns the last test result from the cache.
-     * If on result is present in the cache, null is returned.
+     * If the result isn't in the cache an empty TestResult with status UNKNOWN is returned.
      *
-     * @return TestResult|null - null, if no value is in cache
+     * @return TestResult
      */
     public function getResultFromCache()
     {
         try {
             return Manager::get('quiqqer.test.result.' . $this->getIdentifier());
         } catch (Exception $Exception) {
-            return null;
+            return new TestResult(TestResult::STATUS_UNKNOWN);
         }
     }
 
