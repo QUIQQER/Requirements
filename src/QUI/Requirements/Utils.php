@@ -9,8 +9,6 @@ use QUI\System\Log;
 
 class Utils
 {
-    const CACHE_KEY_SYSTEM_CHECK_RESULTS = 'quiqqer.requirements.systemcheck.results';
-
     /**
      * Parses the megabyte value from the human readable size notation.
      *
@@ -40,7 +38,7 @@ class Utils
         }
 
         // 1024 * 1024 = 1048576  ==> Bytes in one MegaByte
-        $megaByte  =  round((int)$byte / 1048576);
+        $megaByte = round((int)$byte / 1048576);
 
         return (int)$megaByte;
     }
@@ -59,14 +57,6 @@ class Utils
      */
     public static function getSystemCheckResults($force = false)
     {
-        if (!$force) {
-            try {
-                return Manager::get(self::CACHE_KEY_SYSTEM_CHECK_RESULTS);
-            } catch (Exception $Exception) {
-                return [];
-            }
-        }
-
         try {
             $Requirements = new Requirements();
         } catch (\Exception $Exception) {
@@ -81,14 +71,16 @@ class Utils
         foreach ($tests as $testGroup) {
             foreach ($testGroup as $Test) {
                 /** @var Test $Test */
-                $results[$Test->getIdentifier()] = $Test->getResult()->getStatus();
-            }
-        }
+                $TestResult = $force ? $Test->getResult() : $Test->getResultFromCache();
 
-        try {
-            Manager::set(self::CACHE_KEY_SYSTEM_CHECK_RESULTS, $results);
-        } catch (\Exception $Exception) {
-            Log::writeException($Exception);
+                $Status = TestResult::STATUS_UNKNOWN;
+
+                if (!is_null($TestResult)) {
+                    $Status = $TestResult->getStatus();
+                }
+
+                $results[$Test->getIdentifier()] = $Status;
+            }
         }
 
         return $results;
