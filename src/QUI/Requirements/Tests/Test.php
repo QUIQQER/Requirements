@@ -2,6 +2,8 @@
 
 namespace QUI\Requirements\Tests;
 
+use QUI\Cache\Manager;
+use QUI\Exception;
 use QUI\Requirements\Locale;
 use QUI\Requirements\TestResult;
 
@@ -103,8 +105,8 @@ abstract class Test
 
         $namespace = $ReflectionObject->getNamespaceName();
 
-        $namespace = str_replace("QUI\\Requirements\\Tests\\", "", $namespace);
-        $namespace = strtolower($namespace);
+        $namespace       = str_replace("QUI\\Requirements\\Tests\\", "", $namespace);
+        $namespace       = strtolower($namespace);
         $groupIdentifier = str_replace("\\", ".", $namespace);
 
         return $groupIdentifier;
@@ -117,10 +119,28 @@ abstract class Test
     {
         if (!$this->didRun) {
             $this->Result = $this->run();
+
+            Manager::set('quiqqer.test.result.' . $this->getIdentifier(), $this->Result);
+
             $this->didRun = true;
         }
 
         return $this->Result;
+    }
+
+    /**
+     * Returns the last test result from the cache.
+     * If the result isn't in the cache an empty TestResult with status UNKNOWN is returned.
+     *
+     * @return TestResult
+     */
+    public function getResultFromCache()
+    {
+        try {
+            return Manager::get('quiqqer.test.result.' . $this->getIdentifier());
+        } catch (Exception $Exception) {
+            return new TestResult(TestResult::STATUS_UNKNOWN);
+        }
     }
 
     public function getIdentifier()

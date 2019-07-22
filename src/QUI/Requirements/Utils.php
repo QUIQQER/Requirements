@@ -9,8 +9,6 @@ use QUI\System\Log;
 
 class Utils
 {
-    const CACHE_KEY_SYSTEM_CHECK_RESULTS = 'quiqqer.requirements.systemcheck.results';
-
     /**
      * Parses the megabyte value from the human readable size notation.
      *
@@ -40,7 +38,7 @@ class Utils
         }
 
         // 1024 * 1024 = 1048576  ==> Bytes in one MegaByte
-        $megaByte  =  round((int)$byte / 1048576);
+        $megaByte = round((int)$byte / 1048576);
 
         return (int)$megaByte;
     }
@@ -59,14 +57,6 @@ class Utils
      */
     public static function getSystemCheckResults($force = false)
     {
-        if (!$force) {
-            try {
-                return Manager::get(self::CACHE_KEY_SYSTEM_CHECK_RESULTS);
-            } catch (Exception $Exception) {
-                return [];
-            }
-        }
-
         try {
             $Requirements = new Requirements();
         } catch (\Exception $Exception) {
@@ -81,16 +71,83 @@ class Utils
         foreach ($tests as $testGroup) {
             foreach ($testGroup as $Test) {
                 /** @var Test $Test */
-                $results[$Test->getIdentifier()] = $Test->getResult()->getStatus();
+                $TestResult = $force ? $Test->getResult() : $Test->getResultFromCache();
+
+                $Status = TestResult::STATUS_UNKNOWN;
+
+                if (!is_null($TestResult)) {
+                    $Status = $TestResult->getStatus();
+                }
+
+                $results[$Test->getIdentifier()] = $Status;
             }
         }
 
-        try {
-            Manager::set(self::CACHE_KEY_SYSTEM_CHECK_RESULTS, $results);
-        } catch (\Exception $Exception) {
-            Log::writeException($Exception);
+        return $results;
+    }
+
+
+    /**
+     * Returns the results of a given array of tests in html format.
+     * By default the results are taken from cache.
+     * If the seconds parameter is set to false, the tests are executed and the live-results are used.
+     * Executing all tests may take a lot of time!
+     *
+     * @param array   $allTests  - Array of tests (as returned by Requirements->getTests())
+     * @param boolean $fromCache - Return results from cache or execute test to get live result?
+     *
+     * @return string
+     */
+    public static function htmlFormatTestResults($allTests, $fromCache = true)
+    {
+        $html = '<div class="check-table">';
+
+        /** @var \QUI\Requirements\Tests\Test $Test */
+        foreach ($allTests as $category => $Tests) {
+            $html .= '<div class="system-check check-table-row">';
+            $html .= '<div class="check-table-col check-table-col-test">';
+            $html .= $category;
+            $html .= '</div>';
+            $html .= '<div class="check-table-col check-table-col-message">';
+            $html .= '<ul>';
+            foreach ($Tests as $Test) {
+                $Result           = $fromCache ? $Test->getResultFromCache() : $Test->getResult();
+                $testMessageClass = 'test-message';
+
+                // extra class for checksum
+                if ($Test->getIdentifier() == 'quiqqer.checksums') {
+                    $testMessageClass .= ' test-message-checkSum';
+                }
+
+                switch ($Result->getStatus()) {
+                    case TestResult::STATUS_OPTIONAL:
+                    case TestResult::STATUS_OK:
+                        $html .= '<li><span class="fa fa-check" title="';
+                        break;
+
+                    case TestResult::STATUS_FAILED:
+                        $html .= '<li class="failed"><span class="fa fa-remove" title="';
+                        break;
+
+                    case TestResult::STATUS_UNKNOWN:
+                    case TestResult::STATUS_WARNING:
+                        $html .= '<li><span class="fa fa-exclamation-circle" title="';
+                        break;
+                }
+
+                $html .= $Result->getStatusHumanReadable() . '"></span>';
+                $html .= '<span class="test-name">' . $Test->getName() . '</span>';
+                $html .= '<div class="' . $testMessageClass . '">';
+                $html .= $Result->getMessage();
+                $html .= '</div>';
+            }
+            $html .= '</ul>';
+            $html .= '</div>';
+            $html .= '</div>';
         }
 
-        return $results;
+        $html .= '</div>';
+
+        return $html;
     }
 }
