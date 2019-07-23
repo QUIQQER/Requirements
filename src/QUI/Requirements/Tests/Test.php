@@ -120,7 +120,9 @@ abstract class Test
         if (!$this->didRun) {
             $this->Result = $this->run();
 
-            Manager::set('quiqqer.test.result.' . $this->getIdentifier(), $this->Result);
+            if (class_exists('QUI\Cache\Manager')) {
+                Manager::set('quiqqer.test.result.' . $this->getIdentifier(), $this->Result);
+            }
 
             $this->didRun = true;
         }
