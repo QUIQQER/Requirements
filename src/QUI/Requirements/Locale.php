@@ -3,6 +3,9 @@
 namespace QUI\Requirements;
 
 use Exception;
+use QUI\Requirements\Api\AbstractRequirementProvider;
+use QUI\Requirements\Api\Coordinator;
+use QUI\Requirements\Tests\Test;
 
 /**
  * Class Locale
@@ -35,15 +38,14 @@ class Locale
         }
 
         if (!isset($this->locales[$this->langCode][$variable])) {
-            throw new Exception("Variable '" . $variable . "' not found in current language '" . $this->langCode . "'!");
+            throw new Exception("Variable '".$variable."' not found in current language '".$this->langCode."'!");
         }
 
         $text = $this->locales[$this->langCode][$variable];
 
         foreach ($params as $key => $value) {
-            $text = str_replace("%" . $key . "%", $value, $text);
+            $text = str_replace("%".$key."%", $value, $text);
         }
-
 
         return $text;
     }
@@ -60,6 +62,7 @@ class Locale
         $this->loadLocales();
         if (in_array($langCode, $this->getAvailableLanguages())) {
             $this->langCode = $langCode;
+
             return;
         }
 
@@ -68,6 +71,7 @@ class Locale
             $parts = explode("_", $langCode);
             if (in_array($parts[0], $this->getAvailableLanguages())) {
                 $this->langCode = $parts[0];
+
                 return;
             }
         }
@@ -75,11 +79,13 @@ class Locale
         // Check for english as default
         if (in_array("en_GB", $this->getAvailableLanguages())) {
             $this->langCode = "en_GB";
+
             return;
         }
 
         if (in_array("en", $this->getAvailableLanguages())) {
             $this->langCode = "en";
+
             return;
         }
 
@@ -114,10 +120,10 @@ class Locale
      */
     protected function loadLocales()
     {
-        $iniFile = dirname(dirname(dirname(dirname(__FILE__)))) . "/locales.ini.php";
+        $iniFile = dirname(dirname(dirname(dirname(__FILE__))))."/locales.ini.php";
 
         if (!file_exists($iniFile)) {
-            throw new Exception("LanguageFile was not found: " . $iniFile);
+            throw new Exception("LanguageFile was not found: ".$iniFile);
         }
 
         $locales = parse_ini_file($iniFile, true);
@@ -128,7 +134,28 @@ class Locale
 
         $this->locales = $locales;
 
+        $this->loadExternalModuleLocales();
+
         return $locales;
+    }
+
+    /**
+     * Adds the locales provided by other modules to the existing locales property
+     *
+     * @throws Exception
+     */
+    protected function loadExternalModuleLocales()
+    {
+        $registeredProviders = Coordinator::getInstance()->getRequirementsProvider();
+        /** @var AbstractRequirementProvider $Provider */
+        foreach ($registeredProviders as $Provider) {
+            $moduleLocales = $Provider->getLocales();
+            foreach ($moduleLocales as $langGroup => $locales) {
+                foreach ($locales as $localeVariableName => $translation) {
+                    $this->locales[$langGroup][$localeVariableName] = $translation;
+                }
+            }
+        }
     }
 
     /**
