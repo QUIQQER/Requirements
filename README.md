@@ -112,10 +112,10 @@ Now you need to add the following locale variables:
 
 * requirements.tests.\<your identifier here>.name // Test name
 * requirements.tests.\<your identifier here>.desc // Test description
-* requirements.tests.groups.\<namespce identifier>\* // Test group name
+* requirements.tests.groups.\<namespace identifier>\* // Test group name
 
 \* \<namespace identifier> This is the identifier for the namespace. it
-will get generated from the namespace by substracting the common
+will get generated from the namespace by subtracting the common
 namespace part: `QUI\\Requirements\\Tests\\` and putting the result to
 all lower case and replacing the slashes with dots.
 
@@ -139,7 +139,7 @@ class ExampleTest extends Test
     public function run()
     {
         /*
-        * Your Testlogix should be executed here
+        * Your Testlogic should be executed here
         */
 
         // Create and return a testresult Object

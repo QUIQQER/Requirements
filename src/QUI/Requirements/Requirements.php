@@ -2,6 +2,7 @@
 
 namespace QUI\Requirements;
 
+use QUI\Requirements\Api\Coordinator;
 use QUI\Requirements\Tests\Quiqqer\Checksums;
 use QUI\Requirements\Tests\Test;
 
@@ -22,13 +23,17 @@ class Requirements
 
     /**
      * Returns all available tests
-     * It is recommended to use @see Requirements::getTests()
+     * It is recommended to use @return array
      *
-     * @return array
+     * @see Requirements::getTests()
+     *
      */
     public function getAllTests()
     {
-        return $this->getTestsFromDirectory(dirname(__FILE__) . "/Tests");
+        $requirementTests    = $this->getTestsFromDirectory(dirname(__FILE__).'/Tests');
+        $externalModuleTests = $this->getExternalModuleTests();
+        
+        return array_merge($requirementTests, $externalModuleTests);
     }
 
     /**
@@ -39,7 +44,7 @@ class Requirements
      */
     public function getTests(array $ignore = [])
     {
-        $result = [];
+        $result             = [];
         $checksumsGroupName = "";
         foreach ($this->getAllTests() as $groupName => $Tests) {
 
@@ -62,11 +67,11 @@ class Requirements
                 if ($Test->getIdentifier() == "quiqqer.checksums") {
                     $checksumsGroupName = $Test->getGroupName();
                 }
-                
+
                 $result[$groupName][] = $Test;
             }
         }
-        
+
         // Put the group of the checksums test at the end of the array
         if (!empty($checksumsGroupName) && isset($result[$checksumsGroupName])) {
             $checksumsGroup = $result[$checksumsGroupName];
@@ -90,7 +95,7 @@ class Requirements
                 continue;
             }
 
-            $fullpath = $directory . "/" . $entry;
+            $fullpath = $directory."/".$entry;
 
             if (is_dir($fullpath)) {
                 $tests = array_merge($tests, $this->getTestsFromDirectory($fullpath));
@@ -118,10 +123,34 @@ class Requirements
             if (!($Test instanceof Test)) {
                 continue;
             }
-            
+
             $tests[$Test->getGroupName()][] = $Test;
         }
 
         return $tests;
+    }
+
+    /**
+     * Returns a list of instantiated Test Objects by querying other installed modules ServiceProviders
+     *
+     * @return array
+     * @see Test
+     *
+     */
+    protected function getExternalModuleTests()
+    {
+        $externalModuleTests = [];
+
+        $provider = Coordinator::getInstance()->getRequirementsProvider();
+
+        foreach ($provider as $Provider) {
+            $moduleTests = $Provider->getTests();
+            /** @var Test $moduleTest */
+            foreach ($moduleTests as $moduleTest) {
+                $externalModuleTests[$moduleTest->getGroupName()][] = $moduleTest;
+            }
+        }
+
+        return $externalModuleTests;
     }
 }
