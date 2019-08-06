@@ -6,6 +6,7 @@ use Exception;
 use QUI\Requirements\Api\AbstractRequirementProvider;
 use QUI\Requirements\Api\Coordinator;
 use QUI\Requirements\Tests\Test;
+use QUI\System\Log;
 
 /**
  * Class Locale
@@ -149,10 +150,18 @@ class Locale
         $registeredProviders = Coordinator::getInstance()->getRequirementsProvider();
         /** @var AbstractRequirementProvider $Provider */
         foreach ($registeredProviders as $Provider) {
-            $moduleLocales = $Provider->getLocales();
-            foreach ($moduleLocales as $langGroup => $locales) {
-                foreach ($locales as $localeVariableName => $translation) {
-                    $this->locales[$langGroup][$localeVariableName] = $translation;
+            try {
+                $moduleLocales = $Provider->getLocales();
+                foreach ($moduleLocales as $langGroup => $locales) {
+                    foreach ($locales as $localeVariableName => $translation) {
+                        $this->locales[$langGroup][$localeVariableName] = $translation;
+                    }
+                }
+            } catch (\Exception $Exception) {
+                if (\class_exists('\QUI\System\Log')) {
+                    Log::addDebug(
+                        'Could not load the locales for provider "'.\get_class($Provider).'": '.$Exception->getMessage()
+                    );
                 }
             }
         }
