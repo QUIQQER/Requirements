@@ -2,7 +2,6 @@
 
 namespace QUI\Requirements\Tests\Quiqqer;
 
-use function DusanKasan\Knapsack\contains;
 use QUI\Cache\Manager;
 use QUI\Composer\Composer;
 use QUI\Exception;
@@ -56,7 +55,7 @@ class Checksums extends Test
      */
     const STATE_UNKNOWN = 4;
 
-    
+
     /**
      * Contains the packagelist of the private packages
      * @var array
@@ -70,7 +69,7 @@ class Checksums extends Test
      * @var array
      */
     protected $publicPackages = [];
-    
+
     /**
      * Hols the checksums for future reference
      * @var array
@@ -81,7 +80,9 @@ class Checksums extends Test
      * @var array
      */
     protected $ignoredFiles = [
-        "checklist.md5"
+        "checklist.md5",
+        "./checklist.md5",
+        "./.gitignore",
     ];
 
     /**
@@ -100,17 +101,17 @@ class Checksums extends Test
         }
 
         $packages = \QUI::getPackageManager()->getInstalled();
-        $result = [];
+        $result   = [];
         foreach ($packages as $packageData) {
             try {
-                $packageName = $packageData['name'];
+                $packageName          = $packageData['name'];
                 $result[$packageName] = $this->checkPackage($packageName);
             } catch (\Exception $Exception) {
                 continue;
             }
         }
 
-        $htmlOutput = $this->buildHTMLOutput($result);
+        $htmlOutput    = $this->buildHTMLOutput($result);
         $consoleOutput = $this->buildConsoleOutput($result);
 
         if ($this->hasErrors($result)) {
@@ -134,9 +135,9 @@ class Checksums extends Test
      */
     protected function buildHTMLOutput($result)
     {
-        $output = "";
-        $cacheFile = VAR_DIR . "/tmp/requirements_checks_result_package";
-        $cache = [];
+        $output    = "";
+        $cacheFile = VAR_DIR."/tmp/requirements_checks_result_package";
+        $cache     = [];
 
         if (file_exists($cacheFile)) {
             unlink($cacheFile);
@@ -158,19 +159,19 @@ class Checksums extends Test
             uasort($files, function ($a, $b) {
                 $aState = $this->getRowState($a);
                 $bState = $this->getRowState($b);
-                
+
                 if ($aState == $bState) {
                     return 0;
                 }
-                
-                if (in_array($aState, [self::STATE_ADDED,self::STATE_MODIFIED,self::STATE_REMOVED])) {
+
+                if (in_array($aState, [self::STATE_ADDED, self::STATE_MODIFIED, self::STATE_REMOVED])) {
                     return -1;
                 }
-                
+
                 if ($bState == self::STATE_OK) {
                     return -1;
                 }
-                
+
                 return 1;
             });
 
@@ -193,47 +194,47 @@ class Checksums extends Test
                 $rowWarning = ($states['local'] == self::STATE_UNKNOWN || $states['remote'] == self::STATE_UNKNOWN);
                 // Check if file is corrupted
                 $rowError = ($states['local'] == self::STATE_ADDED ||
-                    $states['local'] == self::STATE_MODIFIED ||
-                    $states['local'] == self::STATE_REMOVED ||
-                    $states['remote'] == self::STATE_ADDED ||
-                    $states['remote'] == self::STATE_MODIFIED ||
-                    $states['remote'] == self::STATE_REMOVED
+                             $states['local'] == self::STATE_MODIFIED ||
+                             $states['local'] == self::STATE_REMOVED ||
+                             $states['remote'] == self::STATE_ADDED ||
+                             $states['remote'] == self::STATE_MODIFIED ||
+                             $states['remote'] == self::STATE_REMOVED
                 );
 
                 $rowClass = "tr-ok";
                 if (!$rowError && $rowWarning && $packageClass !== "package-error") {
-                    $rowClass = "tr-warning";
+                    $rowClass     = "tr-warning";
                     $packageClass = "package-warning";
                     $packageState = self::STATE_UNKNOWN;
                 }
                 if ($rowError) {
-                    $rowClass = "tr-error";
+                    $rowClass     = "tr-error";
                     $packageClass = "package-error";
                 }
 
                 try {
-                    $checksumFile = isset($this->checksums[$package][$file]['file']) ? $this->checksums[$package][$file]['file'] : "--";
-                    $checksumLocal = isset($this->checksums[$package][$file]['local']) ? $this->checksums[$package][$file]['local'] : "--";
+                    $checksumFile   = isset($this->checksums[$package][$file]['file']) ? $this->checksums[$package][$file]['file'] : "--";
+                    $checksumLocal  = isset($this->checksums[$package][$file]['local']) ? $this->checksums[$package][$file]['local'] : "--";
                     $checksumRemote = isset($this->checksums[$package][$file]['remote']) ? $this->checksums[$package][$file]['remote'] : "--";
 
-                    $row = "<tr class='" . $rowClass . "' title='" . $this->getRowStateDescription($rowState) . "'>";
-                    $row .= "<td>" . $file . "</td>";
+                    $row = "<tr class='".$rowClass."' title='".$this->getRowStateDescription($rowState)."'>";
+                    $row .= "<td>".$file."</td>";
 
-                    $row .= "<td title='" . $checksumFile . "'>" .
-                        substr($checksumFile, 0, 4) .
-                        "</td>";
+                    $row .= "<td title='".$checksumFile."'>".
+                            substr($checksumFile, 0, 4).
+                            "</td>";
 
-                    $row .= "<td title='" . $checksumLocal . "' class='td-state-" . $states['local'] . "'>" .
-                        $this->getStateHumanReadable($states['local']) .
-                        " (" . substr($checksumLocal, 0, 4) . ")" .
-                        "</td>";
+                    $row .= "<td title='".$checksumLocal."' class='td-state-".$states['local']."'>".
+                            $this->getStateHumanReadable($states['local']).
+                            " (".substr($checksumLocal, 0, 4).")".
+                            "</td>";
 
-                    $row .= "<td title='" . $checksumRemote . "' class='td-state-" . $states['remote'] . "'>" .
-                        $this->getStateHumanReadable($states['remote']) .
-                        " (" . substr($checksumRemote, 0, 4) . ")" .
-                        "</td>";
+                    $row .= "<td title='".$checksumRemote."' class='td-state-".$states['remote']."'>".
+                            $this->getStateHumanReadable($states['remote']).
+                            " (".substr($checksumRemote, 0, 4).")".
+                            "</td>";
 
-                    $row .= "</tr>";
+                    $row        .= "</tr>";
                     $rowsString .= $row;
                 } catch (\Exception $Exception) {
                     continue;
@@ -249,10 +250,10 @@ class Checksums extends Test
             $table = "<table>";
             $table .= "<thead>";
             $table .= "    <tr>";
-            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.file") . "</th>";
-            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.checksum.file") . "</th>";
-            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.checksum.local") . "</th>";
-            $table .= "        <th>" . Locale::getInstance()->get("checksums.table.header.checksum.remote") . "</th>";
+            $table .= "        <th>".Locale::getInstance()->get("checksums.table.header.file")."</th>";
+            $table .= "        <th>".Locale::getInstance()->get("checksums.table.header.checksum.file")."</th>";
+            $table .= "        <th>".Locale::getInstance()->get("checksums.table.header.checksum.local")."</th>";
+            $table .= "        <th>".Locale::getInstance()->get("checksums.table.header.checksum.remote")."</th>";
             $table .= "    </tr>";
             $table .= "</thead>";
             $table .= "<tbody>";
@@ -268,12 +269,12 @@ class Checksums extends Test
             }
 
             // Build output for package
-            $output .= "<div class='" . $packageClass . "' data-package='" . $package . "'>";
-            $output .= "<span>" . $package . "</span>";
+            $output .= "<div class='".$packageClass."' data-package='".$package."'>";
+            $output .= "<span>".$package."</span>";
             $output .= "</div>";
         }
 
-        $output .= "<span class='unknown-packages-warning' title='" . implode(PHP_EOL, $unknownPackages) . "'>";
+        $output .= "<span class='unknown-packages-warning' title='".implode(PHP_EOL, $unknownPackages)."'>";
         $output .= Locale::getInstance()->get("checksums.unknown.packages");
         $output .= "</span>";
 
@@ -292,14 +293,21 @@ class Checksums extends Test
      */
     protected function buildConsoleOutput($result)
     {
+        // no console
+        if (\php_sapi_name() != 'cli') {
+            return '';
+        }
+
         $output = "";
+
         foreach ($result as $package => $files) {
-            $output .= "========== " . str_pad($package, 30, " ", STR_PAD_BOTH) . " ==========" . PHP_EOL;
+            $output .= "========== ".str_pad($package, 30, " ", STR_PAD_BOTH)." ==========".PHP_EOL;
+
             foreach ($files as $file => $states) {
                 try {
-                    $output .= "\t" . str_pad($file, 100, " ", STR_PAD_RIGHT);
-                    $output .= "\t" . str_pad($this->getStateHumanReadable($states['local']), 15, " ", STR_PAD_LEFT);
-                    $output .= "\t" . str_pad($this->getStateHumanReadable($states['remote']), 15, " ", STR_PAD_LEFT);
+                    $output .= "\t".str_pad($file, 100, " ", STR_PAD_RIGHT);
+                    $output .= "\t".str_pad($this->getStateHumanReadable($states['local']), 15, " ", STR_PAD_LEFT);
+                    $output .= "\t".str_pad($this->getStateHumanReadable($states['remote']), 15, " ", STR_PAD_LEFT);
                     $output .= PHP_EOL;
                 } catch (\Exception $Exception) {
                     continue;
@@ -319,9 +327,8 @@ class Checksums extends Test
      */
     protected function checkPackage($package)
     {
-
-        $result = [];
-        $packageDir = OPT_DIR . $package;
+        $result         = [];
+        $packageDir     = OPT_DIR.$package;
         $packageContent = $this->getDirContents($packageDir);
 
         /* ******************************** */
@@ -343,7 +350,7 @@ class Checksums extends Test
         /* ******************************************************************* */
 
         // Check the remote package md5
-        if (!file_exists($packageDir . "/composer.json")) {
+        if (!file_exists($packageDir."/composer.json")) {
             foreach ($packageContent as $file) {
                 $result[$file]['remote'] = self::STATE_UNKNOWN;
             }
@@ -352,7 +359,7 @@ class Checksums extends Test
         }
 
         // Check if this module is a QUIQQER package
-        $packageData = json_decode(file_get_contents($packageDir . "/composer.json"), true);
+        $packageData = json_decode(file_get_contents($packageDir."/composer.json"), true);
         if (!isset($packageData['type']) || strpos(strtolower($packageData['type']), "quiqqer") === false) {
             foreach ($packageContent as $file) {
                 $result[$file]['remote'] = self::STATE_UNKNOWN;
@@ -376,6 +383,7 @@ class Checksums extends Test
 
         try {
             $remoteResult = $this->checkRemotePackageMD5($package, $packageData['version']);
+
             foreach ($remoteResult as $file => $state) {
                 $result[$file]['remote'] = $state;
             }
@@ -395,18 +403,17 @@ class Checksums extends Test
      * Returns an array wirh all files and their states.
      * States:
      *
-     * @see Checksums::STATE_OK
-     * @see Checksums::STATE_ADDED
-     * @see Checksums::STATE_MODIFIED
-     * @see Checksums::STATE_REMOVED
-     *
-     * @see Checksum::MOD_CHANGED
-     *
      * @param $package
      * @param $version
      *
      * @return array| true
      * @throws Exception
+     * @see Checksum::MOD_CHANGED
+     *
+     * @see Checksums::STATE_OK
+     * @see Checksums::STATE_ADDED
+     * @see Checksums::STATE_MODIFIED
+     * @see Checksums::STATE_REMOVED
      */
     protected function checkRemotePackageMD5($package, $version)
     {
@@ -416,24 +423,26 @@ class Checksums extends Test
             throw $Exception;
         }
 
-        $packageDir = OPT_DIR . $package;
+        $packageDir     = OPT_DIR.$package;
         $packageContent = $this->getDirContents($packageDir);
+        $fileStates     = [];
 
-        $fileStates = [];
         foreach ($packageContent as $file) {
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
                 continue;
             }
 
-            $currentChecksum = md5_file($packageDir . "/" . $file);
+            $currentChecksum                          = md5_file($packageDir."/".$file);
             $this->checksums[$package][$file]['file'] = $currentChecksum;
+
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
             }
+
             $validChecksum = $validChecksums[$file];
-            
+
             $this->checksums[$package][$file]['remote'] = $validChecksum;
 
             $fileValid = ($validChecksum == $currentChecksum);
@@ -465,26 +474,25 @@ class Checksums extends Test
      */
     protected function checkLocalPackageMD5($package)
     {
-
         try {
             $validChecksums = $this->getCorrectLocalChecksums($package);
         } catch (\Exception $Exception) {
             throw new Exception("Could not read the packages local checksums.");
         }
 
-        $packageDir = OPT_DIR . $package;
+        $packageDir     = OPT_DIR.$package;
         $packageContent = $this->getDirContents($packageDir);
+        $fileStates     = [];
 
-        $fileStates = [];
         foreach ($packageContent as $file) {
             if (in_array($file, $this->ignoredFiles)) {
                 $fileStates[$file] = self::STATE_OK;
                 continue;
             }
 
-            $currentChecksum = md5_file($packageDir . "/" . $file);
+            $currentChecksum                          = md5_file($packageDir."/".$file);
             $this->checksums[$package][$file]['file'] = $currentChecksum;
-            
+
             if (!isset($validChecksums[$file])) {
                 $fileStates[$file] = self::STATE_ADDED;
                 continue;
@@ -492,10 +500,10 @@ class Checksums extends Test
 
             $validChecksum = $validChecksums[$file];
 
-            
             $this->checksums[$package][$file]['local'] = $validChecksum;
 
             $fileValid = ($validChecksum == $currentChecksum);
+
             if (!$fileValid) {
                 $fileStates[$file] = self::STATE_MODIFIED;
                 continue;
@@ -525,10 +533,10 @@ class Checksums extends Test
         $packageContent = [];
 
         $DirectoryIterator = new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS);
-        $Iterator = new \RecursiveIteratorIterator($DirectoryIterator);
+        $Iterator          = new \RecursiveIteratorIterator($DirectoryIterator);
 
         foreach ($Iterator as $key => $value) {
-            $packageContent[] = str_replace($directory . "/", "", $value);
+            $packageContent[] = './'.str_replace($directory."/", "", $value);
         }
 
         return $packageContent;
@@ -548,23 +556,28 @@ class Checksums extends Test
      */
     protected function getCorrectRemoteChecksums($package, $version)
     {
-        $vendor = explode("/", $package, 2)[0];
-        $packageName = explode("/", $package, 2)[1];
-        ;
+        $vendor      = explode("/", $package, 2)[0];
+        $packageName = explode("/", $package, 2)[1];;
 
         $isPrivate = !in_array($package, $this->publicPackages);
 
         // Build the checksum url for private and public packages respectively
         if ($isPrivate) {
             $privaterepository = $this->getPrivatePackagesRepo();
+
             if (!isset($privaterepository[$package][$version]['dist']['url'])) {
                 throw new Exception("Could not retrieve a checksum from the updateserver", 404);
             }
 
             $downloadURL = $privaterepository[$package][$version]['dist']['url'];
-            $url = str_replace("updateserver/bin/download.php", "updateserver/bin/getChecksum.php", $downloadURL);
+
+            $url = str_replace(
+                "updateserver/bin/download.php",
+                "updateserver/bin/getChecksum.php",
+                $downloadURL
+            );
         } else {
-            $url = "https://update.quiqqer.com/files/" . $package . "/" . $packageName . "-" . $version . ".zip.md5";
+            $url = "https://update.quiqqer.com/files/".$package."/".$packageName."-".$version.".zip.md5";
         }
 
         $ch = curl_init($url);
@@ -573,13 +586,13 @@ class Checksums extends Test
         ]);
 
         $result = curl_exec($ch);
-        $info = curl_getinfo($ch);
+        $info   = curl_getinfo($ch);
 
         if ($info['http_code'] !== 200) {
             throw new Exception("Could not retrieve a checksum from the updateserver", 404);
         }
 
-        $lines = explode(PHP_EOL, $result);
+        $lines     = explode(PHP_EOL, $result);
         $checksums = [];
 
         foreach ($lines as $line) {
@@ -588,7 +601,7 @@ class Checksums extends Test
             }
 
             $md5Sum = explode("  ", $line, 2)[0];
-            $file = explode("  ", $line, 2)[1];
+            $file   = explode("  ", $line, 2)[1];
 
             $checksums[$file] = $md5Sum;
         }
@@ -606,7 +619,7 @@ class Checksums extends Test
      */
     protected function getCorrectLocalChecksums($package)
     {
-        $packageDir = OPT_DIR . $package;
+        $packageDir = OPT_DIR.$package;
 
         $checksumFiles = [
             "checklist.md5",
@@ -614,22 +627,24 @@ class Checksums extends Test
         ];
 
         $checksums = [];
+
         foreach ($checksumFiles as $checksumFile) {
-            $path = $packageDir . "/" . $checksumFile;
+            $path = $packageDir."/".$checksumFile;
 
             if (!file_exists($path)) {
                 continue;
             }
 
             $content = file_get_contents($path);
-            $lines = explode(PHP_EOL, $content);
+            $lines   = explode(PHP_EOL, $content);
+
             foreach ($lines as $line) {
                 if (empty(trim($line))) {
                     continue;
                 }
 
                 $md5Sum = explode("  ", $line, 2)[0];
-                $file = explode("  ", $line, 2)[1];
+                $file   = explode("  ", $line, 2)[1];
 
                 $checksums[$file] = $md5Sum;
             }
@@ -647,16 +662,14 @@ class Checksums extends Test
     /**
      * Loads the packages,that are avaialable on the public updateserver
      *
-     * @throws Exception
      * @return array
+     * @throws Exception
      */
     protected function loadAvailablePublicPackages()
     {
-        $url = "https://update.quiqqer.com/packages.json";
+        $json = Url::get("https://update.quiqqer.com/packages.json");
 
-        $json = Url::get($url);
         $packages = json_decode($json, true);
-
         $packages = array_keys($packages['packages']);
 
         return $packages;
@@ -685,10 +698,10 @@ class Checksums extends Test
             return $this->privateRepository;
         }
 
-        $composerJson = json_decode(file_get_contents(VAR_DIR . "/composer/composer.json"), true);
+        $composerJson = json_decode(file_get_contents(VAR_DIR."/composer/composer.json"), true);
         $repositories = $composerJson['repositories'];
+        $header       = [];
 
-        $header = [];
         foreach ($repositories as $repoData) {
             if (!isset($repoData['url'])) {
                 continue;
@@ -713,7 +726,7 @@ class Checksums extends Test
             CURLOPT_HTTPHEADER => $header
         ]);
 
-        $data = json_decode($json, true);
+        $data                    = json_decode($json, true);
         $this->privateRepository = $data;
 
         return $data['packages'];
@@ -737,15 +750,19 @@ class Checksums extends Test
             case Checksums::STATE_UNKNOWN:
                 return Locale::getInstance()->get("checksums.state.unknown");
                 break;
+
             case Checksums::STATE_OK:
                 return Locale::getInstance()->get("checksums.state.ok");
                 break;
+
             case Checksums::STATE_MODIFIED:
                 return Locale::getInstance()->get("checksums.state.modified");
                 break;
+
             case Checksums::STATE_ADDED:
                 return Locale::getInstance()->get("checksums.state.added");
                 break;
+
             case Checksums::STATE_REMOVED:
                 return Locale::getInstance()->get("checksums.state.removed");
                 break;
@@ -769,15 +786,19 @@ class Checksums extends Test
             case self::STATE_OK:
                 $description = Locale::getInstance()->get("checksums.state.ok.desc");
                 break;
+
             case self::STATE_UNKNOWN:
                 $description = Locale::getInstance()->get("checksums.state.unknown.desc");
                 break;
+
             case self::STATE_ADDED:
                 $description = Locale::getInstance()->get("checksums.state.added.desc");
                 break;
+
             case self::STATE_MODIFIED:
                 $description = Locale::getInstance()->get("checksums.state.modified.desc");
                 break;
+
             case self::STATE_REMOVED:
                 $description = Locale::getInstance()->get("checksums.state.removed.desc");
                 break;
@@ -829,11 +850,8 @@ class Checksums extends Test
     protected function isInArrayRecursive($needle, $haystack, $strict = false)
     {
         foreach ($haystack as $item) {
-            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->isInArrayRecursive(
-                $needle,
-                $item,
-                $strict
-            ))) {
+            if (($strict ? $item === $needle : $item == $needle)
+                || (is_array($item) && $this->isInArrayRecursive($needle, $item, $strict))) {
                 return true;
             }
         }
@@ -857,8 +875,7 @@ class Checksums extends Test
         if (!isset($fileStates['remote'])) {
             $fileStates['remote'] = self::STATE_UNKNOWN;
         }
-        
-        
+
         if ($fileStates['local'] == self::STATE_REMOVED || $fileStates['remote'] == self::STATE_REMOVED) {
             return self::STATE_REMOVED;
         }
@@ -874,7 +891,7 @@ class Checksums extends Test
         if ($fileStates['local'] == self::STATE_UNKNOWN && $fileStates['remote'] == self::STATE_UNKNOWN) {
             return self::STATE_UNKNOWN;
         }
-        
+
         return self::STATE_OK;
     }
     #endregion
