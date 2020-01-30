@@ -557,7 +557,7 @@ class Checksums extends Test
     protected function getCorrectRemoteChecksums($package, $version)
     {
         $vendor      = explode("/", $package, 2)[0];
-        $packageName = explode("/", $package, 2)[1];;
+        $packageName = explode("/", $package, 2)[1];
 
         $isPrivate = !in_array($package, $this->publicPackages);
 
