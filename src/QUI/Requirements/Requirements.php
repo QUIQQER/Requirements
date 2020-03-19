@@ -32,7 +32,7 @@ class Requirements
     {
         $requirementTests    = $this->getTestsFromDirectory(dirname(__FILE__).'/Tests');
         $externalModuleTests = $this->getExternalModuleTests();
-        
+
         return array_merge($requirementTests, $externalModuleTests);
     }
 

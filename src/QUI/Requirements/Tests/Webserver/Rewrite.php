@@ -65,7 +65,13 @@ class Rewrite extends Test
         $ch = curl_init($serverUrl."/rewritetest");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        $result = curl_exec($ch);
+        $http_result = curl_exec($ch);
+        curl_close($ch);
+
+        $ch = curl_init("https://" . $serverUrl . "/rewritetest");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $https_result = curl_exec($ch);
         curl_close($ch);
 
         unlink($htAccesspath);
@@ -74,7 +80,7 @@ class Rewrite extends Test
             rename($htAccesspath.".bak", $htAccesspath);
         }
 
-        if ($result == $checkValue) {
+        if ($http_result == $checkValue || $https_result == $checkValue) {
             return true;
         }
 
