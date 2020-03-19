@@ -80,7 +80,7 @@ class Rewrite extends Test
             rename($htAccesspath.".bak", $htAccesspath);
         }
 
-        if ($http_result == $checkValue || $https_result == $checkValue ) {
+        if ($http_result == $checkValue || $https_result == $checkValue) {
             return true;
         }
 
