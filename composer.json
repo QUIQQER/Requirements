@@ -3,6 +3,7 @@
     "type": "quiqqer-module",
     "description": "This package provides methods to check the system requirements for quiqqer",
     "license": "GPL-3.0+",
+    "version": "2.1.0",
     "authors": [
         {
             "name": "Florian Bogner",
