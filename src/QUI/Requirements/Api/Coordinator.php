@@ -23,6 +23,10 @@ class Coordinator extends QUI\Utils\Singleton
      */
     public function getRequirementsProvider()
     {
+        if (!\class_exists('QUI\Cache\Manager')) {
+            return [];
+        }
+        
         $cache    = 'requirements/provider/collection';
         $provider = [];
 
