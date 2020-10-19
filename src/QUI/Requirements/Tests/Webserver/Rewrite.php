@@ -47,17 +47,13 @@ class Rewrite extends Test
 
         $baseDir      = dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))))));
         $htAccesspath = $baseDir."/.htaccess";
-
-        $serverUrl = $_SERVER['HTTP_HOST'];
-        $scheme    = 'https://';
-
+        $serverUrl    = $_SERVER['HTTP_HOST'];
+        
         if (defined('CMS_DIR')) {
             $baseDir = CMS_DIR;
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
-            $urlParts = \parse_url($_SERVER['HTTP_REFERER']);
-
+            $urlParts  = \parse_url($_SERVER['HTTP_REFERER']);
             $serverUrl = $serverUrl.$urlParts['path'];
-            $scheme    = $urlParts['scheme'].'://';
         }
 
         if (file_exists($htAccesspath)) {
@@ -72,17 +68,20 @@ class Rewrite extends Test
         file_put_contents($htAccesspath, $htAccessContent);
         file_put_contents($baseDir."/rewritetest.html", $checkValue);
 
-        $ch = curl_init($scheme.$serverUrl."/rewritetest");
+        // HTTP TEST
+        $ch = curl_init('http://'.$serverUrl."/rewritetest");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $http_result = curl_exec($ch);
         curl_close($ch);
 
-        $ch = curl_init($scheme.$serverUrl."/rewritetest");
+        // HTTPS TEST
+        $ch = curl_init('https://'.$serverUrl."/rewritetest");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $https_result = curl_exec($ch);
         curl_close($ch);
+
 
         unlink($htAccesspath);
         unlink($baseDir."/rewritetest.html");
