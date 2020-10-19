@@ -49,6 +49,16 @@ class Rewrite extends Test
         $htAccesspath = $baseDir."/.htaccess";
 
         $serverUrl = $_SERVER['HTTP_HOST'];
+        $scheme    = 'https://';
+
+        if (defined('CMS_DIR')) {
+            $baseDir = CMS_DIR;
+        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+            $urlParts = \parse_url($_SERVER['HTTP_REFERER']);
+
+            $serverUrl = $serverUrl.$urlParts['path'];
+            $scheme    = $urlParts['scheme'].'://';
+        }
 
         if (file_exists($htAccesspath)) {
             rename($htAccesspath, $htAccesspath.".bak");
@@ -62,13 +72,13 @@ class Rewrite extends Test
         file_put_contents($htAccesspath, $htAccessContent);
         file_put_contents($baseDir."/rewritetest.html", $checkValue);
 
-        $ch = curl_init($serverUrl."/rewritetest");
+        $ch = curl_init($scheme.$serverUrl."/rewritetest");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $http_result = curl_exec($ch);
         curl_close($ch);
 
-        $ch = curl_init("https://" . $serverUrl . "/rewritetest");
+        $ch = curl_init($scheme.$serverUrl."/rewritetest");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $https_result = curl_exec($ch);
@@ -76,6 +86,7 @@ class Rewrite extends Test
 
         unlink($htAccesspath);
         unlink($baseDir."/rewritetest.html");
+
         if (file_exists($htAccesspath.".bak")) {
             rename($htAccesspath.".bak", $htAccesspath);
         }
